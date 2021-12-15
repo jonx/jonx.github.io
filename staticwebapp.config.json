@@ -12,8 +12,5 @@
   },
   "globalHeaders": {
     "content-type": "application/json"
-  },
-  "mimeTypes": {
-    ".json": "application/json"
   }
 }
