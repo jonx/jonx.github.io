@@ -1,8 +1,8 @@
 {
   "routes": [
     {
-      "route": "/.well-known",
-      "redirect": "/empty"
+      "route": "/.well-known/microsoft-identity-association.json",
+      "rewrite": "/empty/microsoft-identity-association.json"
     }
   ],
   "responseOverrides": {
