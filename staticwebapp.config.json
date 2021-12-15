@@ -9,8 +9,5 @@
     "404": {
       "rewrite": "/404.html"
     }
-  },
-  "mimeTypes": {
-    ".json": "application/json"
   }
 }
