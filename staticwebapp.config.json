@@ -1,4 +1,10 @@
 {
+  "routes": [
+    {
+      "route": "/.well-known",
+      "redirect": "/empty"
+    }
+  ],
   "responseOverrides": {
     "404": {
       "rewrite": "/404.html"
