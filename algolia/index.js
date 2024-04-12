@@ -1,55 +1,9 @@
-function generateStars(starsCount) {
-    const totalStars = 5;
-    let starsHtml = '';
-    for (let i = 1; i <= totalStars; i++) {
-        if (i <= starsCount) {
-            starsHtml += '<img src="./assets/images/star_full.png" alt="Star" />';
-        } else {
-            starsHtml += '<img src="./assets/images/star_empty.png" alt="Star" />';
-        }
-    }
-    return starsHtml;
-}
-
-function formatNumber(number) {
-    if (number < 1000) {
-        return number; // return the same number if less than 1000
-    }
-    return (number / 1000).toFixed(1) + 'K'; // convert to 'K' format
-}
-
 var cityCoords = {
     "New York": { lat: 40.7128, lng: -74.0060 },
     "Chicago": { lat: 41.8781, lng: -87.6298 },
     "Houston": { lat: 29.7604, lng: -95.3698 },
     "Phoenix": { lat: 33.4484, lng: -112.0740 }
 };
-
-// This is just an example. You might want to use your user IDs from your authentication system.
-function generateUserToken() {
-    return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
-        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-    );
-}
-
-function fetchUserLocation(callback) {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function (position) {
-            callback({
-                lat: position.coords.latitude,
-                lng: position.coords.longitude
-            });
-        }, function (error) {
-            if (error.code === error.PERMISSION_DENIED) {
-                // Fallback to IP address-based location
-                fetchLocationFromIP(callback);
-            }
-        });
-    } else {
-        // Fallback to IP address-based location
-        fetchLocationFromIP(callback);
-    }
-}
 
 $(document).ready(function () {
     console.log("Document ready. Initializing Algolia...");
@@ -58,7 +12,7 @@ $(document).ready(function () {
     var client = algoliasearch('FL9NZ1762W', 'f8ba856e44fd9083be46ca297fa0b6cf');
     var helper = algoliasearchHelper(client, 'find_restaurant', {
         disjunctiveFacets: ['food_type', 'neighborhood', 'price_range', 'dining_style'],
-        facets: ['state', 'payment_options'], //, 'stars_count'],
+        facets: ['state', 'payment_options'],
         getRankingInfo: true, // Request ranking info to get geo-distance
         hitsPerPage: 10,
         enablePersonalization: true, // Enable personalization
@@ -89,23 +43,26 @@ $(document).ready(function () {
     $('#search-input').on('input', function () {
         var query = $(this).val();
 
-        if (query.length > 0) {
+        if (query.length >= 0) {
             $('.suggestions').empty(); // Clear suggestions immediately on input change
 
             suggestionsIndex.search(query, { hitsPerPage: 5 }).then(({ hits }) => {
-                // $('.suggestions').empty(); // TODO: Clear previous suggestions
-
+                $('.suggestions').empty(); // Clear previous suggestions
+                const suggestionsSet = new Set(); // Create a set to store unique suggestions
+        
                 // Process each hit to extract suggestions
                 hits.forEach(hit => {
                     console.log("Suggestion: ", hit);
 
                     // Check if 'find_restaurant' and 'exact_matches' exist, and if 'food_type' has entries
-                    // TODO: list more of the suggestions types
+                    // The access to one kind of suggestions is hard coded here but the server is also providing Neighborhood and City suggestions         
                     if (hit.find_restaurant && hit.find_restaurant.facets.exact_matches && hit.find_restaurant.facets.exact_matches.food_type.length > 0) {
-                        // Loop through each 'food_type' suggestion
                         hit.find_restaurant.facets.exact_matches.food_type.forEach(suggestion => {
-                            console.log("Appending suggestion: ", suggestion.value);
-                            $('.suggestions').append(`<div class="suggestion">${suggestion.value}</div>`); // Append to class 'suggestions'
+                            if (!suggestionsSet.has(suggestion.value)) {
+                                suggestionsSet.add(suggestion.value);
+                                console.log("Appending suggestion: ", suggestion.value);
+                                $('.suggestions').append(`<div class="suggestion">${suggestion.value}</div>`);
+                            }
                         });
                     }
                 });
@@ -288,13 +245,6 @@ function renderHits(content, append = false) {
     $hitsContainer.append(hitsHtml);
 }
 
-function RenderStats(content) {
-    const formattedHits = formatNumber(content.nbHits);
-    const boldText = `${formattedHits} results found`; // Text to be bolded
-    const statsMessage = `<strong>${boldText}</strong> in ${content.processingTimeMS}ms`;
-    $(".search-stats").html(statsMessage); // Use .html() to parse the HTML tags correctly
-}
-
 function renderFacets(content) {
     const $facetsContainer = $('#facets');
     $facetsContainer.empty(); // Clear previous facets
@@ -336,4 +286,55 @@ function renderFacets(content) {
     });
 }
 
+function fetchUserLocation(callback) {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function (position) {
+            callback({
+                lat: position.coords.latitude,
+                lng: position.coords.longitude
+            });
+        }, function (error) {
+            if (error.code === error.PERMISSION_DENIED) {
+                // Fallback to IP address-based location
+                fetchLocationFromIP(callback);
+            }
+        });
+    } else {
+        // Fallback to IP address-based location
+        fetchLocationFromIP(callback);
+    }
+}
 
+function formatNumber(number) {
+    if (number < 1000) {
+        return number; // return the same number if less than 1000
+    }
+    return (number / 1000).toFixed(1) + 'K'; // convert to 'K' format
+}
+
+function generateStars(starsCount) {
+    const totalStars = 5;
+    let starsHtml = '';
+    for (let i = 1; i <= totalStars; i++) {
+        if (i <= starsCount) {
+            starsHtml += '<img src="./assets/images/star_full.png" alt="Star" />';
+        } else {
+            starsHtml += '<img src="./assets/images/star_empty.png" alt="Star" />';
+        }
+    }
+    return starsHtml;
+}
+
+// This is just an example. You might want to use your user IDs from your authentication system.
+function generateUserToken() {
+    return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
+        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+    );
+}
+
+function RenderStats(content) {
+    const formattedHits = formatNumber(content.nbHits);
+    const boldText = `${formattedHits} results found`; // Text to be bolded
+    const statsMessage = `<strong>${boldText}</strong> in ${content.processingTimeMS}ms`;
+    $(".search-stats").html(statsMessage); // Use .html() to parse the HTML tags correctly
+}
