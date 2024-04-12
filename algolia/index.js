@@ -222,10 +222,11 @@ function renderHits(content, append = false) {
 
         const starRatingHtml = generateStars(hit.stars_count);
         let templateHtml = $('#result-template').html();
+        var formattedStarsCount = hit.stars_count.toFixed(1);
         templateHtml = templateHtml.replace('{{name}}', hit._highlightResult.name.value)
             .replace('{{food_type}}', hit.food_type || 'N/A')
             .replace('{{neighborhood}}', hit.neighborhood || 'N/A')
-            .replace('{{stars_count}}', hit.stars_count || 'N/A')
+            .replace('{{stars_count}}', formattedStarsCount || 'N/A')
             .replace('{{star_images}}', starRatingHtml)
             .replace('{{price_range}}', hit.price_range || 'N/A')
             .replace('{{payment_options}}', paymentOptionsHtml)
@@ -338,3 +339,5 @@ function RenderStats(content) {
     const statsMessage = `<strong>${boldText}</strong> in ${content.processingTimeMS}ms`;
     $(".search-stats").html(statsMessage); // Use .html() to parse the HTML tags correctly
 }
+
+
