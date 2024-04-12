@@ -5,7 +5,7 @@ Hello George,
 
 Welcome to the world of search engines! It's okay to be unfamiliar with some concepts initially. Let's break down the terms you're curious about:
 
-- **Records**: Think of records as the fundamental units of data in your search engine, similar to entries in a database table. Each record contains information about one item in your dataset. For instance, in an e-commerce website, a record might represent a single product with details like name, description, price, etc. For [What is in a record](https://www.algolia.com/doc/guides/sending-and-managing-data/prepare-your-data/in-depth/what-is-in-a-record/)
+- **Records**: Think of records as the fundamental units of data in your search engine, similar to entries in a database table. Each record contains information about one item in your dataset. For instance, in an e-commerce website, a record might represent a single product with details like name, description, price, etc. For reference: [What is in a record](https://www.algolia.com/doc/guides/sending-and-managing-data/prepare-your-data/in-depth/what-is-in-a-record/)
 
 - **Indexing**: Indexing is the process of taking your data and making it searchable. It involves organizing the data in a way that allows the search engine to efficiently find the records matching a query. This process is crucial for enabling fast and relevant search experiences.
 
