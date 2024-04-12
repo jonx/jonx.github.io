@@ -7,7 +7,7 @@ Welcome to the world of search engines! It's okay to be unfamiliar with some con
 
 - **Records**: Think of records as the fundamental units of data in your search engine, similar to entries in a database table. Each record contains information about one item in your dataset. For instance, in an e-commerce website, a record might represent a single product with details like name, description, price, etc. For reference: [What is in a record](https://www.algolia.com/doc/guides/sending-and-managing-data/prepare-your-data/in-depth/what-is-in-a-record/)
 
-- **Indexing**: Indexing is the process of taking your data and making it searchable. It involves organizing the data in a way that allows the search engine to efficiently find the records matching a query. This process is crucial for enabling fast and relevant search experiences.
+- **Indexing**: Indexing is the process of taking your data and making it searchable. It involves organizing the data in a way that allows the search engine to efficiently find the records matching a query. This process is crucial for enabling fast and relevant search experiences. For reference: [What is an index](https://support.algolia.com/hc/en-us/articles/4406981910289-What-is-an-index)
 
 Regarding Custom Ranking, it's a powerful feature that lets you tailor the order of search results based on criteria important to your application. Useful metrics to consider for Custom Ranking might include:
 
@@ -16,7 +16,7 @@ Regarding Custom Ranking, it's a powerful feature that lets you tailor the order
 - User ratings or reviews
 - Any business-specific metric that aligns with your goals, like stock levels or conversion rates
 
-By prioritizing these metrics in your Custom Ranking, you can ensure that the most relevant and valuable results appear first for your users.
+By prioritizing these metrics in your Custom Ranking, you can ensure that the most relevant and valuable results appear first for your users. More details on how to make your content relevant: https://www.algolia.com/doc/guides/managing-results/relevance-overview/
 
 I hope this helps clarify things for you, George! If you have any more questions or need further assistance, [please refer to our documentation](https://www.algolia.com/doc/) or feel free to reach out.
 
