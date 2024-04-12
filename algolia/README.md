@@ -159,19 +159,26 @@ Both scripts are integral to preparing the data for a seamless search experience
 ## Features Implemented
 
 - **Geolocation-Based Search**: Prioritizes restaurants based on the user's proximity, enhancing the relevance of search results.
-- **Advanced Filtering**: Allows users to filter restaurants by type of cuisine, leveraging Algolia's faceting capabilities.
+- **Advanced Filtering**: Allows users to filter restaurants by type of cuisine, leveraging Algolia's faceting capabilities. Both "AND" facets e.g. "Food Type", "City", etc. and "OR" facets e.g. "Open" are implemented. By default only open restaurants are listed. Restaurants in "Unknown" state do not exist anymore but have been kept for reference (you might have liked a restaurant that is closed and want it to influence your search results).
 - **As-You-Type Search**: Implements Algolia's JS Helper to deliver real-time search results as the user types their query.
 - **Custom UI Enhancements**: Adopts a UI closely aligned with the provided mock-ups but optimized for usability and aesthetics.
 
 ## Additional Features Implemented
 
-- **Suggestions**: Autocomplete suggestions improve search efficiency.
-- **Liked Restaurants**: Users can like restaurants, and these preferences are tracked for potential personalization.
+- **Suggestions**: Autocomplete suggestions improve search efficiency using query suggestions. Note that the implementation is storing a user id and those suggestions are specific to a user, so you might not get suggestions right away during testing, but the feature is implemented.
+- **Highlight Result**: Autocomplete suggestions improve search efficiency.
+- **Liked Restaurants**: Users can like restaurants (likes are not visually persisted), and these preferences are tracked using events for potential personalization.
 
 ## Server-Side Features
 
 - **Synonyms**: Synonym handling ensures that searches are flexible and understand similar culinary terms.
 - **Events**: Tracks user interactions for analytics purposes.
+
+## Notes
+
+- This code is just an example and is obviously not ready for production.
+- JQuery was used in order to make the JS less verbose comparing to using Vanilla JS.
+- This code has not been optimized for mobile viewing and is also not responsive.
 
 ## Conclusion
 
