@@ -4,6 +4,9 @@
 
 This project is a prototype designed to highlight the benefits of an enhanced search experience for a large restaurant reservation website. As per the assignment guidelines, this prototype integrates Algolia's search capabilities with a custom UI to deliver an intuitive and efficient as-you-type search experience.
 
+Below is a screenshot of our application's main interface, which illustrates how users can easily navigate through the various features:
+![Main Interface](images/main.png)
+
 ## Project Setup
 
 This project is published on GitHub Pages to allow for easy interaction and evaluation: [Visit Live Demo](https://jonx.github.io/algolia/)
