@@ -1,0 +1,396 @@
+/* General reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body, html {
+  font-family: 'Open Sans', sans-serif;
+  height: 100%; /* Make sure the html and body fill the full viewport height */
+}
+
+/* Search bar and location select styling */
+
+#search-input,
+#location-select #search-input {
+  padding: 10px;
+  background: #fff; /* Ensure the background is white */
+  border: none; /* Remove all borders */
+  border-radius: 4px; /* Maintain rounded corners */
+  box-shadow: inset 0 0 0 1px #ccc; /* Add a subtle shadow instead of a border for definition */
+}
+
+
+/* Search stats styling */
+.search-stats {
+  margin-bottom: 10px;
+  color: #555;
+  font-size: 14px;
+}
+
+/* Results list */
+.search-results {
+  width: 90%;
+}
+
+.result {
+  padding: 10px; /* Padding inside each result for spacing */
+  display: flex; /* Using flex to align image and text side by side */
+  align-items: center; /* Align items vertically in the center */
+}
+
+/* Individual result item */
+.results__item {
+  border-bottom: 1px solid #ccc;
+  padding: 20px;
+}
+
+.result__image-container {
+  float: left;
+  width: 100px;
+  height: 100px;
+  margin-right: 15px;
+}
+
+.result__image {
+  width: 100%; /* Initially set width to auto */
+  height: 100%; /* Make height full of the container */
+  min-width: 100%; /* Minimum width 100% to cover the space */
+  max-height: 90%; /* Ensure height does not exceed the container */
+  object-fit: cover; /* Cover the space, cropping the image if necessary */
+}
+
+.result__text-container {
+  font-size: 14px; /* Set a base font size for all text within the container */
+  color: #666; /* Uniform text color for less prominent elements */
+  display: flex;
+  flex-direction: column;
+}
+
+.result__title {
+  font-size: 14px; /* Slightly larger font size for the title */
+  font-weight: bold; /* Bold font weight for emphasis */
+  color: #333; /* Darker color for better visibility */
+  margin-left: 10px; /* Space between button and title */
+}
+
+.result__title-header {
+  display: flex;
+  align-items: center; /* Vertically center the elements */
+  font-size: 18px; /* Ensure font size is suitable */
+  line-height: 24px; /* Adjust line height to fit the button's height */
+}
+
+#show-more {
+  display: block;
+  width: 200px;
+  margin: 20px auto;
+  padding: 10px;
+  border: 1px solid #ccc; /* Grey border */
+  color: #333; /* Text color */
+  text-align: center;
+  background-color: transparent; /* No background color */
+  border-radius: 4px; /* Rounded corners */
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s; /* Smooth transition for hover */
+}
+
+#load-more:hover {
+  background-color: #2878d0;
+}
+
+.like-button {
+  background: url('./assets/images/bookmark.png') no-repeat center center;
+  width: 16px;
+  height: 16px;
+  border: none;
+  cursor: pointer;
+  background-size: contain; /* Ensure the icon fits the button */
+  padding: 0; /* Remove any default padding */
+  display: flex; /* Use flexbox to help with alignment */
+  align-items: center; /* Center align the background image vertically */
+}
+
+.like-button.liked {
+  background-image: url('./assets/images/bookmark_selected.png');
+}
+
+/* Set a textured background for the page */
+.page {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* Align to the top */
+  min-height: 100vh;
+  padding-top: 50px; /* Adjust as needed for some space from the top */
+  background: url("./assets/images/background.png") repeat;
+  background-color: #dddddd;
+}
+
+
+.page__search {
+  float: left;
+  width: 100%;
+}
+.page__content {
+  float: left;
+  width: 100%;
+  padding: 0 23px;
+  flex: 1 1 auto;
+}
+
+/* Search input highlight */
+.result__title em, .result__summary em {
+  background-color: yellow;
+  font-style: normal;
+  font-weight: bold;
+}
+
+.page__container:before,
+.page__container:after {
+  content: " ";
+  display: table;
+}
+.page__container:after {
+  clear: both;
+}
+
+.page__container {
+  width: 90%;
+  max-width: 1200px;
+  min-height: 80vh; /* Minimum height, but can grow */
+  background-color: #ffffff;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  overflow: hidden;
+  position: relative;
+  margin: 50px auto; /* Centered with space from top and bottom */
+}
+
+@media (min-width: 768px) {
+  .page__container {
+    position: relative; /* Changed to relative so it grows with content */
+    top: initial;
+    bottom: initial;
+    left: initial;
+    right: initial;
+    display: block; /* Changed to block for standard flow content */
+    width: 94%;
+    min-height: 84vh; /* Set to min-height so it can grow */
+    max-width: 1080px;
+    margin: 50px auto; /* Adjust as needed to center and give space from top and bottom */
+    border: 1px solid #cccccc;
+    box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.2);
+  }
+}
+
+
+/* Search bar and location box */
+.search-bar {
+  background-color: #1c688e;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+#search-input {
+  flex-grow: 1; /* search input takes more space */
+  margin-right: 10px; /* space between the input and the select box */
+}
+
+#location-select {
+  flex-basis: 20%; /* location box width */
+}
+
+/* Styles for search stats, suggestions, and main content */
+.search-stats,
+.suggestions {
+  margin: 10px 0;
+}
+
+.main-page {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.all-facets {
+  flex-basis: 20%;
+}
+
+.main-search {
+  flex-basis: 75%;
+  margin-left: 5%; /* spacing between facets and search results */
+}
+
+/* Search results styling */
+.search-results .results__item {
+  border-bottom: none; /* Changes the line to a lighter grey */
+  padding: 10px 0;
+}
+
+#stars-filter span.star-images {
+  cursor: pointer;
+  display: inline-block;
+  margin-right: 5px;
+  white-space: nowrap; /* Prevents the content from wrapping */
+  overflow: hidden; /* Keeps the content from spilling out */
+}
+
+#stars-filter span.star-images img {
+  height: 20px; /* Adjust the size of the stars as needed */
+  width: auto;
+  display: inline-block; /* Ensures images line up in a row */
+}
+
+
+/* Facets sidebar styling */
+.facets h4 {
+  font-size: 12px; /* smaller font size for header */
+  margin-bottom: 5px; /* less space below header */
+  padding: 5px 0; /* padding inside header */
+  border-bottom: 1px solid #ccc; /* adds a subtle line under the header */
+  color: #333; /* darker font color for better readability */
+}
+.facets ul {
+  margin: 0; /* no margin for the list */
+  padding: 0; /* no padding for the list */
+  list-style: none; /* removes bullet points */
+}
+
+.facet-list {
+  list-style: none;
+  padding: 0;
+  margin: 0; /* Remove margin for more compact listing */
+}
+
+.facet-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2px; /* Reduced from 4px for more compact spacing */
+}
+
+.facet-list li a {
+  text-decoration: none;
+  color: #333;
+  padding: 1px; /* Reduced padding for more compact appearance */
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 14px; /* Smaller font size */
+}
+
+.facet-name {
+  text-align: left;
+  white-space: nowrap; /* Prevent wrapping of text */
+}
+
+.facet-count {
+  margin-left: auto;
+  background: #f6f6f6;
+  padding: 2px 6px; /* Adjust padding for compactness */
+  border-radius: 4px;
+  font-weight: bold; /* Make number more prominent */
+}
+
+.facet-item a {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 10px;
+  color: #333;
+  text-decoration: none;
+}
+
+.facets li a {
+  display: flex; /* Enables flexbox for content alignment */
+  justify-content: space-between; /* Aligns name to the left and count to the right */
+  align-items: center; /* Centers items vertically */
+  text-decoration: none; /* Removes underline */
+  color: #666; /* Lighter text color */
+  font-size: 14px; /* Smaller font size for a compact look */
+  padding: 5px 10px; /* Consistent padding for all facet links */
+  border-radius: 4px; /* Rounded borders for all facet links */
+  transition: background-color 0.3s, color 0.3s; /* Smooth transition for hover and select */
+}
+
+/* Enhance hover effect for better user interaction */
+.facets li a:hover {
+  background-color: #e6f0fa; /* Very light blue on hover for unselected items */
+  color: #333; /* Darker text on hover for better readability */
+}
+
+.facet-name {
+  flex-grow: 1;
+}
+
+.facet-count {
+  width: 40px; 
+  text-align: right;
+}
+
+/* Target the <a> tag within .refined for background and border styling */
+.refined a {
+  background-color: #4BA0D8; /* Lighter blue than search input */
+  border-radius: 4px; /* Rounded borders */
+  display: block; /* Make sure the link fills the li for full area hover effect */
+  padding: 5px; /* Add padding for better visual effect */
+  color: white; /* Default text color for links in refined state */
+}
+
+/* Specifically target only the first <span> within .refined <a> tags */
+.refined a span:first-child {
+  color: white; /* Ensures text color is white in non-hover state */
+}
+
+/* Change text color on hover, even when refined */
+.refined a:hover span:first-child {
+  color: #333; /* Darker color for hover state */
+}
+
+/* Style for the star images to align with text */
+.result__summary, .result__payment-options, .result__distance {
+  font-size: 12px; /* Smaller font size for details */
+  margin: 2px 0; /* Reduce vertical margin for compactness */
+}
+
+.result__rating, .result__payment-options, .result__distance {
+  margin: 4px 0; /* Slight space for separation */
+}
+
+.star-images {
+  margin-left: 10px; /* Space between text and line */
+}
+
+.star-images img {
+  vertical-align: middle; /* Aligns stars with the text */
+  width: 16px; /* Adjust size of star icons */
+  height: auto; /* Maintain aspect ratio */
+}
+
+.reviews-count {
+  margin-left: 8px; /* Space between stars and review count */
+  color: #666; /* Lighter text color for emphasis */
+}
+
+/* Ensuring inline display */
+.result__rating > span {
+  display: inline-block; /* Inline-block for proper alignment */
+  vertical-align: middle; /* Align text and images vertically */
+}
+
+.stats-text {
+  display: flex;
+  align-items: flex-end;
+  width: 100%;
+  margin-bottom: 10px;
+  color: #555;
+  font-size: 14px;
+}
+
+.underline {
+  flex-grow: 1; /* Takes the remaining space */
+  height: 1px;
+  background-color: #ccc;
+  margin-left: 10px; /* Space between text and line */
+  margin-bottom: 10px; /* Space between text and line */
+}
