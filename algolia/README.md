@@ -168,14 +168,14 @@ Both scripts are integral to preparing the data for a seamless search experience
 
 ## Additional Features Implemented
 
-- **Suggestions**: Autocomplete suggestions improve search efficiency using query suggestions. Note that the implementation is storing a user id and those suggestions are specific to a user, so you might not get suggestions right away during testing, but the feature is implemented.
-- **Highlight Result**: Autocomplete suggestions improve search efficiency.
+- **Suggestions**: Autocomplete suggestions improve search efficiency using query suggestions. Note that the implementation is storing a user id and those suggestions are specific to a user, so you might not get suggestions right away during testing, but the feature is implemented. Try with typing mexican or italian.
+- **Highlight Result**: Autocomplete suggestions improve search efficiency. 
 - **Liked Restaurants**: Users can like restaurants (likes are not visually persisted), and these preferences are tracked using events for potential personalization.
 
 ## Server-Side Features
 
-- **Synonyms**: Synonym handling ensures that searches are flexible and understand similar culinary terms.
-- **Events**: Tracks user interactions for analytics purposes.
+- **Synonyms**: Synonym handling ensures that searches are flexible and understand similar culinary terms e.g. NYC, nyc, and New York City are equivalents.
+- **Events**: Tracks user interactions for analytics purposes. We're sending like events to the backend when the user clicks on the bookmark icon.
 
 ## Notes
 
