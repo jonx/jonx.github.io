@@ -28,9 +28,9 @@ Hello Matt,
 
 Thank you for your honest feedback on the new dashboard design. We understand that changes in the user interface can affect your workflow, especially when it comes to features you frequently use like clearing and deleting indexes.
 
-Your input is invaluable to us, and I'll make sure to pass it along to our product team for consideration. We're constantly looking to improve the user experience, and feedback from our users is crucial in guiding our design decisions.
+Your input is important to us, and I'll make sure to pass it along to our product team for consideration. We're constantly looking to improve the user experience, and feedback from our users is crucial in guiding our design decisions.
 
-In the meantime, if you're finding the new design significantly impacts your productivity, I'd be happy to walk you through some shortcuts or alternative methods to manage your indexes more efficiently. [Please let me know if that's something you'd be interested in.](#)
+In the meantime, if you're finding the new design significantly impacts your productivity, I'd be happy to walk you through some shortcuts or alternative methods to manage your indexes more efficiently. Please let me know if that's something you'd be interested in.
 
 Kind regards,
 John
@@ -40,12 +40,12 @@ Hi Leo,
 
 Integrating Algolia into your website can be a straightforward process, and we're here to help ensure it goes smoothly for you. The high-level process involves:
 
-1. **Setting Up Your Account**: Sign up for an Algolia account and create your first application.
-2. **Preparing Your Data**: Organize the information you want to make searchable into records. Each record should represent one searchable item on your site.
-3. **Pushing Your Data**: Upload your data to Algolia by indexing your records. This can be done via the Algolia dashboard or programmatically using one of our API clients.
-4. **Configuring Your Index**: Customize settings such as searchable attributes, ranking criteria, and filters to refine how your search works.
-5. **Integrating Search Into Your Site**: Use one of our InstantSearch libraries or the Algolia API to add a search interface to your website. This step involves a bit of front-end development work.
-6. **Going Live**: Once everything is set up and you're happy with the search experience, you're ready to launch.
+- **Setting Up Your Account**: Sign up for an Algolia account and create your first application. You can do that for free and without having to enter any payment details.
+- **Preparing Your Data**: Organize the information you want to make searchable into records. Each record should represent one searchable item on your site. 
+- **Pushing Your Data**: Upload your data to Algolia by indexing your records. This can be done via the Algolia dashboard or programmatically using one of our API clients. We also provide some sample data to get you started if you prefer not to use your own at this point.
+- **Configuring Your Index**: Customize settings such as searchable attributes, ranking criteria, and filters to refine how your search works.
+- **Integrating Search Into Your Site**: Use one of our InstantSearch libraries or the Algolia API to add a search interface to your website. This step involves a bit of front-end development work.
+- **Going Live**: Once everything is set up and you're happy with the search experience, you're ready to launch.
 
 The amount of development work required depends on your specific needs and how customized you want your search experience to be. Many users find our InstantSearch libraries enable them to get up and running quickly with minimal code.
 
