@@ -158,8 +158,8 @@ Both scripts are integral to preparing the data for a seamless search experience
 
 ## Features Implemented
 
-- **Geolocation-Based Search**: Prioritizes restaurants based on the user's proximity, enhancing the relevance of search results.
-- **Advanced Filtering**: Allows users to filter restaurants by type of cuisine, leveraging Algolia's faceting capabilities. Both "AND" facets e.g. "Food Type", "City", etc. and "OR" facets e.g. "Open" are implemented. By default only open restaurants are listed. Restaurants in "Unknown" state do not exist anymore but have been kept for reference (you might have liked a restaurant that is closed and want it to influence your search results).
+- **Geolocation-Based Search**: Prioritizes restaurants based on the user's proximity, enhancing the relevance of search results. The default choice is to not use any user location, but the user can decide to use his own location with a fallback to using his IP address. For testing purposes you can also select to be located in several cities in the US given it's not very useful to be located 6000 km away from the restaurants in the dataset.
+- **Advanced Filtering**: Allows users to filter restaurants by type of cuisine, leveraging Algolia's faceting capabilities. Both "AND" facets e.g. "Food Type", "City", etc. and "OR" facets e.g. "Open" are implemented. By default only open restaurants are listed. Restaurants in "Unknown" state do not exist anymore but have been kept for reference (you might have liked a restaurant that is closed and want it to influence your search results). An example of star rating filter is also implemented. Aray facets like payment where you can select more than one payment method is also supported.
 - **As-You-Type Search**: Implements Algolia's JS Helper to deliver real-time search results as the user types their query.
 - **Custom UI Enhancements**: Adopts a UI closely aligned with the provided mock-ups but optimized for usability and aesthetics.
 
