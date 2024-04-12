@@ -3,6 +3,10 @@
     {
       "route": "/.well-known/microsoft-identity-association.json",
       "rewrite": "/empty/microsoft-identity-association.json"
+    },
+    {
+      "route": "/algolia",
+      "redirect": "/algolia/"
     }
   ],
   "responseOverrides": {
