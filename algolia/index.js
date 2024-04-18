@@ -39,6 +39,14 @@ $(document).ready(function () {
     helper.toggleFacetRefinement('state', 'open');
     console.log("Excluding closed restaurants by default.");
 
+    // Initialize event handling for the star rating slider
+    $('#star-rating-slider').on('input change', function() {
+        var starValue = $(this).val();
+        $('#slider-value').text(starValue + ' Stars');
+        helper.removeNumericRefinement('stars_count');
+        helper.addNumericRefinement('stars_count', '>=', parseInt(starValue)).search();
+    });
+    
     // Reacting to search input changes
     $('#search-input').on('input', function () {
         var query = $(this).val();
