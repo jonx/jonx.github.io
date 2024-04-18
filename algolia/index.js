@@ -46,7 +46,35 @@ $(document).ready(function () {
         helper.removeNumericRefinement('stars_count');
         helper.addNumericRefinement('stars_count', '>=', parseInt(starValue)).search();
     });
-    
+
+    // Handle the interval slider
+    var starSlider = document.getElementById('star-rating-interval');
+    noUiSlider.create(starSlider, {
+        start: [3, 5], // Default range
+        connect: true, // Display a colored bar between the handles
+        step: 1,
+        range: {
+            'min': 1,
+            'max': 5
+        }
+    });
+
+    starSlider.noUiSlider.on('update', function (values, handle) {
+        var minStars = Math.floor(values[0]);
+        var maxStars = Math.floor(values[1]);
+        $('#slider-value-interval').text(minStars + ' - ' + maxStars + ' Stars');
+
+        // Update Algolia search
+        helper.removeNumericRefinement('stars_count');
+        if(minStars > 1) {
+            helper.addNumericRefinement('stars_count', '>=', minStars);
+        }
+        if(maxStars < 5) {
+            helper.addNumericRefinement('stars_count', '<=', maxStars);
+        }
+        helper.search();
+    });
+
     // Reacting to search input changes
     $('#search-input').on('input', function () {
         var query = $(this).val();
@@ -57,7 +85,7 @@ $(document).ready(function () {
             suggestionsIndex.search(query, { hitsPerPage: 5 }).then(({ hits }) => {
                 $('.suggestions').empty(); // Clear previous suggestions
                 const suggestionsSet = new Set(); // Create a set to store unique suggestions
-        
+
                 // Process each hit to extract suggestions
                 hits.forEach(hit => {
                     console.log("Suggestion: ", hit);
@@ -118,7 +146,7 @@ $(document).ready(function () {
     });
 
     // Handle star rating filter click
-    $('#stars-filter .star-images').on('click', function() {
+    $('#stars-filter .star-images').on('click', function () {
         var selectedStars = $(this).data('stars');
 
         helper.removeNumericRefinement('stars_count'); // Clear existing refinements
@@ -136,11 +164,11 @@ $(document).ready(function () {
 
     $('#location-select').change(function () {
         var selectedLocation = $(this).val();
-        
+
         // Reset location parameters before setting new ones
         helper.setQueryParameter('aroundLatLng', undefined);
         helper.setQueryParameter('aroundLatLngViaIP', false);
-    
+
         if (selectedLocation === "use-current-location") {
             // Use current location or fallback to IP
             helper.setQueryParameter('aroundLatLngViaIP', true);
@@ -154,7 +182,7 @@ $(document).ready(function () {
             }
         }
         helper.search(); // Perform the search with the updated location
-    });      
+    });
 
     $('#show-more').click(function () {
         helper.nextPage().search();
@@ -347,5 +375,3 @@ function RenderStats(content) {
     const statsMessage = `<strong>${boldText}</strong> in ${content.processingTimeMS}ms`;
     $(".search-stats").html(statsMessage); // Use .html() to parse the HTML tags correctly
 }
-
-
