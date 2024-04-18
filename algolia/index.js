@@ -50,7 +50,7 @@ $(document).ready(function () {
     // Handle the interval slider
     var starSlider = document.getElementById('star-rating-interval');
     noUiSlider.create(starSlider, {
-        start: [3, 5], // Default range
+        start: [1, 5], // Default range
         connect: true, // Display a colored bar between the handles
         step: 1,
         range: {
