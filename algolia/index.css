@@ -232,6 +232,11 @@ body, html {
   display: inline-block; 
 }
 
+.facets {
+  width: 220px; /* Set the width of the facet container */
+  overflow: hidden; /* Prevents overflow */
+}
+
 .facets h4 {
   font-size: 12px; 
   margin-bottom: 5px; 
@@ -386,4 +391,36 @@ body, html {
 
 .suggestions .suggestion:hover {
   background-color: #e0e0e0;
+}
+
+.slider-container,
+.slider-interval-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.slider-interval {
+  flex-grow: 1; /* Allows the interval slider to grow */
+  margin: 0 20px; /* Adds horizontal spacing to avoid cutting off */
+}
+
+#star-rating-slider {
+  margin: 0 10px 10px; /* Adds horizontal spacing to avoid cutting off */
+}
+
+#star-rating-interval {
+  width: 100%; /* Ensures the slider spans the full container width */
+}
+
+.slider, .slider-interval {
+  cursor: pointer;
+}
+
+.slider-value, #slider-value-interval {
+  white-space: nowrap; /* Prevents the label from wrapping */
+}
+
+.noUi-connect {
+  background: #4BA0D8 !important;
 }
