@@ -5,13 +5,17 @@
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <title>Restaurant Locator - by Algolia</title>
-  <base href="/algolia/"
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- <base href="/algolia/" -->
+  <base href="/solutions-hiring-assignment-master/project-files/" <meta name="viewport"
+    content="width=device-width, initial-scale=1" />
   <link rel="icon" href="./assets/favicon.ico" type="image/png" />
   <link rel="stylesheet" href="./index.css" />
+  <!-- jQuery for DOM manipulation -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/algoliasearch@3/dist/algoliasearchLite.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/algoliasearch-helper@3.17.0/dist/algoliasearch.helper.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nouislider/distribute/nouislider.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/nouislider/distribute/nouislider.min.js"></script>
   <script>
     var ALGOLIA_INSIGHTS_SRC = "https://cdn.jsdelivr.net/npm/search-insights@2.11.0/dist/search-insights.min.js";
 
@@ -39,7 +43,7 @@
           <option value="Houston">Houston</option>
           <option value="Phoenix">Phoenix</option>
           <option value="no-location">No Location</option>
-        </select>      
+        </select>
       </div>
       <div class="suggestions"></div>
       <div class="main-page">
@@ -47,8 +51,16 @@
           <!-- Stars Filter -->
           <div id="stars-filter" class="facets">
             <h4>Rating</h4>
-            <input type="range" id="star-rating-slider" min="1" max="5" step="1" value="5">
-            <span id="slider-value">5 Stars</span>
+            <!-- <div class="slider-container">
+              <input type="range" id="star-rating-slider" class="slider" min="1" max="5" step="1" value="5">
+              <span id="slider-value">5 Stars</span>
+            </div> -->
+            <br>
+            <div class="slider-interval-container">
+              <div id="star-rating-interval" class="slider-interval"></div>
+              <span id="slider-value-interval">3 - 5 Stars</span>
+            </div>
+            <br>
             <span class="star-images" data-stars="5">
               <img src="./assets/images/star_full.png" alt="Star">
               <img src="./assets/images/star_full.png" alt="Star">
@@ -89,7 +101,7 @@
               <img src="./assets/images/star_empty.png" alt="Star">
             </span>
             <br>
-          </div>     
+          </div>
           <!-- Facets Sidebar -->
           <aside id="facets" class="facets"></aside>
         </div>
