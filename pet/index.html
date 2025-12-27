@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NonoGotchi Beta Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        header {
+            text-align: center;
+            padding: 40px 0;
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        .badge {
+            display: inline-block;
+            background: #e94560;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+        .intro {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+        .intro p {
+            line-height: 1.6;
+        }
+        h2 {
+            color: #e94560;
+            margin: 30px 0 15px;
+            font-size: 1.3rem;
+        }
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+        li::before {
+            content: "•";
+            color: #e94560;
+            position: absolute;
+            left: 5px;
+        }
+        .downloads {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin: 30px 0;
+        }
+        .download-btn {
+            display: block;
+            background: #e94560;
+            color: #fff;
+            text-decoration: none;
+            padding: 18px 25px;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: transform 0.2s, background 0.2s;
+        }
+        .download-btn:hover {
+            background: #ff6b6b;
+            transform: translateY(-2px);
+        }
+        .download-btn.secondary {
+            background: rgba(255,255,255,0.15);
+        }
+        .download-btn.secondary:hover {
+            background: rgba(255,255,255,0.25);
+        }
+        .download-btn small {
+            display: block;
+            font-weight: normal;
+            font-size: 0.8rem;
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+        .warning {
+            background: rgba(233, 69, 96, 0.2);
+            border-left: 4px solid #e94560;
+            padding: 15px 20px;
+            border-radius: 0 10px 10px 0;
+            margin: 20px 0;
+        }
+        .easter-egg {
+            background: rgba(255, 215, 0, 0.15);
+            border-radius: 10px;
+            padding: 15px 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .install-steps {
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .install-steps ol {
+            padding-left: 20px;
+        }
+        .install-steps li {
+            padding: 5px 0;
+        }
+        .install-steps li::before {
+            display: none;
+        }
+        .privacy {
+            background: rgba(100, 200, 100, 0.15);
+            border-left: 4px solid #4ade80;
+            padding: 15px 20px;
+            border-radius: 0 10px 10px 0;
+            margin: 20px 0;
+        }
+        .privacy p {
+            margin-top: 8px;
+            line-height: 1.5;
+        }
+        footer {
+            text-align: center;
+            padding: 40px 0 20px;
+            opacity: 0.6;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>NonoGotchi</h1>
+            <span class="badge">BETA TEST</span>
+        </header>
+
+        <div class="intro">
+            <p>Thanks for testing NonoGotchi! This is an early beta for <strong>Nothing Phone</strong> users.</p>
+        </div>
+
+        <h2>What is it?</h2>
+        <p>A Tamagotchi-style virtual pet that lives on your phone's <strong>Glyph display</strong> (the LED matrix on the back).</p>
+
+        <h2>How to use</h2>
+        <ul>
+            <li>Feed, clean, play, and pet your creature using the buttons</li>
+            <li>Shake your phone to wake up your pet</li>
+            <li>The pet grows through stages: Egg → Baby → Child → Teen → Adult</li>
+            <li>Watch the weather sync with your location</li>
+        </ul>
+
+        <h2>Download</h2>
+        <div class="downloads">
+            <a href="nono-release.apk" class="download-btn">
+                Download Release APK
+                <small>Recommended for most testers (~40 MB)</small>
+            </a>
+            <a href="nono-debug.apk" class="download-btn secondary">
+                Download Debug APK
+                <small>Debug screens & features enabled (~56 MB)</small>
+            </a>
+        </div>
+
+        <div class="install-steps">
+            <strong>Installation:</strong>
+            <ol>
+                <li>Contact me to get a beta access code</li>
+                <li>Download the APK file</li>
+                <li>Open the file on your Nothing Phone</li>
+                <li>If prompted, enable "Install from unknown sources"</li>
+                <li>Complete the installation</li>
+                <li>Enter your access code when prompted</li>
+            </ol>
+        </div>
+
+        <h2>What to test</h2>
+        <ul>
+            <li>Does the Glyph display work properly?</li>
+            <li>Is the pet responsive and animations smooth?</li>
+            <li>Try the new "Weather on Glyph" toggle in Settings</li>
+            <li>Let your pet get hungry/tired and see how it reacts</li>
+        </ul>
+
+        <div class="easter-egg">
+            There's a secret easter egg hidden in the app...
+        </div>
+
+        <div class="warning">
+            <strong>Known issues:</strong>
+            <ul>
+                <li>This is pre-release, expect bugs</li>
+                <li>Database resets may happen between updates</li>
+            </ul>
+        </div>
+
+        <div class="privacy">
+            <strong>Privacy:</strong>
+            <p>No data is collected or shared, at all. The app only uses internet access to retrieve weather information based on the location you manually enter.</p>
+        </div>
+
+        <h2>Feedback</h2>
+        <p>Please report any issues or suggestions - screenshots and device info help a lot!</p>
+        <a href="https://nothing.community/d/38810-nonogotchi-a-tamagotchi-nothing-phone-3-toy/" class="download-btn" style="margin-top: 15px;">
+            Join the Discussion on Nothing Community
+        </a>
+
+        <footer>
+            NonoGotchi Beta
+        </footer>
+    </div>
+</body>
+</html>
