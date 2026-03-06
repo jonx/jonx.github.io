@@ -61,10 +61,30 @@
             position: relative;
         }
         li::before {
-            content: "•";
+            content: "\2022";
             color: #e94560;
             position: absolute;
             left: 5px;
+        }
+        .screenshots {
+            display: flex;
+            gap: 12px;
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+        .screenshots img {
+            width: 32%;
+            border-radius: 12px;
+            border: 2px solid rgba(255,255,255,0.1);
+            flex-shrink: 0;
+        }
+        .video-section {
+            margin: 20px 0;
+        }
+        .video-section video {
+            width: 100%;
+            border-radius: 12px;
+            border: 2px solid rgba(255,255,255,0.1);
         }
         .downloads {
             display: flex;
@@ -87,12 +107,6 @@
         .download-btn:hover {
             background: #ff6b6b;
             transform: translateY(-2px);
-        }
-        .download-btn.secondary {
-            background: rgba(255,255,255,0.15);
-        }
-        .download-btn.secondary:hover {
-            background: rgba(255,255,255,0.25);
         }
         .download-btn small {
             display: block;
@@ -157,41 +171,48 @@
         </header>
 
         <div class="intro">
-            <p>Thanks for testing NonoGotchi! This is an early beta for <strong>Nothing Phone</strong> users.</p>
+            <p>Thanks for testing NonoGotchi! Built for <strong>Nothing Phone 3</strong> (fully working). Nothing Phone (4a) Pro should work too, but the graphics should look hilariously ugly due to the graphics having not been rework for the smaller 13&times;13 LED matrix. It should also run on any Android phone (without Glyph of course) &mdash; please report back to <a href="mailto:pet@jkn.me" style="color: #e94560;">pet@jkn.me</a>!</p>
         </div>
 
         <h2>What is it?</h2>
         <p>A Tamagotchi-style virtual pet that lives on your phone's <strong>Glyph display</strong> (the LED matrix on the back).</p>
 
+        <div class="screenshots">
+            <img src="welcome.png" alt="NonoGotchi welcome screen">
+            <img src="baby.png" alt="NonoGotchi gameplay screen">
+            <img src="weather.png" alt="NonoGotchi weather display">
+        </div>
+
+        <div class="video-section">
+            <video controls playsinline muted>
+                <source src="nono.mp4" type="video/mp4">
+            </video>
+        </div>
+
         <h2>How to use</h2>
         <ul>
             <li>Feed, clean, play, and pet your creature using the buttons</li>
             <li>Shake your phone to wake up your pet</li>
-            <li>The pet grows through stages: Egg → Baby → Child → Teen → Adult</li>
+            <li>The pet grows through stages: Egg &rarr; Baby &rarr; Child &rarr; Teen &rarr; Adult</li>
             <li>Watch the weather sync with your location</li>
         </ul>
 
         <h2>Download</h2>
         <div class="downloads">
             <a href="/pet/nono-release.apk" class="download-btn">
-                Download Release APK
-                <small>Recommended for most testers (~40 MB)</small>
-            </a>
-            <a href="/pet/nono-debug.apk" class="download-btn secondary">
-                Download Debug APK
-                <small>Debug screens & features enabled (~56 MB)</small>
+                Download APK
+                <small>Nothing Phone 3 &amp; Phone (4a) Pro (~40 MB)</small>
             </a>
         </div>
 
         <div class="install-steps">
             <strong>Installation:</strong>
             <ol>
-                <li>Contact me to get a beta access code</li>
                 <li>Download the APK file</li>
                 <li>Open the file on your Nothing Phone</li>
                 <li>If prompted, enable "Install from unknown sources"</li>
                 <li>Complete the installation</li>
-                <li>Enter your access code when prompted</li>
+                <li>Activate NonoGotchi as a Glyph Toy in Settings</li>
             </ol>
         </div>
 
@@ -211,13 +232,16 @@
             <strong>Known issues:</strong>
             <ul>
                 <li>This is pre-release, expect bugs</li>
+                <li>Graphics are a work in progress &mdash; I am is not an artist, and it shows. Visual polish is coming! If someone wants to volonteer?</li>
                 <li>Database resets may happen between updates</li>
+                <li>When setting your city for weather, you must confirm by pressing the button on the right</li>
+                <li>Weather is live and syncs with your location, but it's purely cosmetic (rain/snow/sun on the display) &mdash; it doesn't affect your pet despite what the app may suggest</li>
             </ul>
         </div>
 
         <div class="privacy">
             <strong>Privacy:</strong>
-            <p>No data is collected or shared, at all. The app only uses internet access to retrieve weather information based on the location you manually enter.</p>
+            <p>No data is collected or shared, at <u>all</u>. None. Not even here on the web site. The app only uses internet access to retrieve weather information based on the location you manually enter.</p>
         </div>
 
         <h2>Feedback</h2>
