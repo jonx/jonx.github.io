@@ -1,0 +1,245 @@
+/*
+  Shared styles for the PawSeeBility static pages at jkn.me/paw/.
+  One file, three pages (index / privacy / terms). No framework.
+
+  Palette mirrors the Flutter app's dark palette (lib/theme.dart):
+    accent gold      #F4C35D
+    text high        #FFF5E4
+    text mid         #E4D7F7
+    text lo          #A695C6
+    bg               #07040F
+    card             #151026
+    card hi          #23183D
+    stroke           rgba(255,255,255,.18)
+
+  Dark-only for now — the marketing site is atmospheric by design.
+  Tuned for readability on phones first.
+*/
+
+@import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Manrope:wght@400;600;700&display=swap");
+
+:root {
+  --bg: #07040f;
+  --bg-deep: #020108;
+  --card: #151026;
+  --card-hi: #23183d;
+  --accent: #f4c35d;
+  --accent-soft: rgba(244, 195, 93, 0.18);
+  --text-hi: #fff5e4;
+  --text-mid: #e4d7f7;
+  --text-lo: #a695c6;
+  --stroke: rgba(255, 255, 255, 0.18);
+  --max-w: 640px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: radial-gradient(
+      1200px 800px at 20% 0%,
+      #241641 0%,
+      transparent 60%
+    ),
+    radial-gradient(900px 700px at 80% 120%, #1d1137 0%, transparent 55%),
+    var(--bg-deep);
+  color: var(--text-mid);
+  font-family: "Manrope", -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-size: 16px;
+  line-height: 1.62;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 48px 24px 64px;
+}
+
+/* --- hero (index.html) --------------------------------------------------- */
+
+.hero {
+  text-align: center;
+  padding: 32px 0 8px;
+}
+
+.hero .icon {
+  width: 108px;
+  height: 108px;
+  border-radius: 28px;
+  box-shadow: 0 10px 40px rgba(244, 195, 93, 0.18);
+  margin-bottom: 20px;
+}
+
+.hero h1 {
+  font-family: "Cinzel", serif;
+  font-weight: 700;
+  color: var(--text-hi);
+  font-size: clamp(34px, 6vw, 48px);
+  letter-spacing: -0.5px;
+  margin: 0 0 14px;
+}
+
+.tagline {
+  font-family: "Cinzel", serif;
+  color: var(--accent);
+  font-size: clamp(16px, 3vw, 20px);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 28px;
+}
+
+.pitch {
+  color: var(--text-mid);
+  font-size: 17px;
+  line-height: 1.7;
+  margin: 0 auto 28px;
+  max-width: 520px;
+}
+
+.cta-row {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 24px;
+}
+
+.cta {
+  display: inline-block;
+  padding: 14px 28px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-family: "Manrope", sans-serif;
+  font-size: 15px;
+  letter-spacing: 0.4px;
+  text-decoration: none;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.cta-primary {
+  background: var(--accent);
+  color: #1c1326;
+  box-shadow: 0 8px 24px rgba(244, 195, 93, 0.28);
+}
+
+.cta-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 32px rgba(244, 195, 93, 0.38);
+}
+
+.cta-soft {
+  background: transparent;
+  color: var(--text-hi);
+  border: 1px solid var(--stroke);
+}
+
+.cta-soft:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.badge {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+/* --- legal pages (privacy / terms) --------------------------------------- */
+
+article.legal {
+  padding: 16px 0 0;
+}
+
+article.legal h1 {
+  font-family: "Cinzel", serif;
+  color: var(--text-hi);
+  font-size: clamp(28px, 5vw, 36px);
+  letter-spacing: -0.4px;
+  margin: 0 0 6px;
+}
+
+article.legal .updated {
+  color: var(--text-lo);
+  font-size: 13px;
+  margin-bottom: 32px;
+}
+
+article.legal h2 {
+  font-family: "Manrope", sans-serif;
+  color: var(--text-hi);
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.1px;
+  margin: 36px 0 12px;
+}
+
+article.legal p,
+article.legal li {
+  color: var(--text-mid);
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+article.legal ul {
+  padding-left: 22px;
+  margin: 12px 0 16px;
+}
+
+article.legal li + li {
+  margin-top: 8px;
+}
+
+article.legal a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(244, 195, 93, 0.35);
+}
+
+article.legal a:hover {
+  border-bottom-color: var(--accent);
+}
+
+article.legal strong {
+  color: var(--text-hi);
+  font-weight: 700;
+}
+
+/* --- footer (all pages) -------------------------------------------------- */
+
+footer.site-footer {
+  margin-top: 56px;
+  padding-top: 24px;
+  border-top: 1px solid var(--stroke);
+  color: var(--text-lo);
+  font-size: 13px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px 22px;
+  justify-content: center;
+  align-items: center;
+}
+
+footer.site-footer a {
+  color: var(--text-mid);
+  text-decoration: none;
+}
+
+footer.site-footer a:hover {
+  color: var(--text-hi);
+}
+
+footer.site-footer .dot {
+  opacity: 0.4;
+}

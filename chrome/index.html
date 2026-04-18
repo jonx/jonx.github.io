@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Chrome extensions — John Knipper</title>
+    <meta
+      name="description"
+      content="Chrome extensions by John Knipper. Small, sharp, privacy-respecting tools."
+    />
+    <meta name="theme-color" content="#07040F" />
+    <meta property="og:title" content="Chrome extensions — John Knipper" />
+    <meta
+      property="og:description"
+      content="Small, sharp Chrome extensions by John Knipper."
+    />
+    <meta property="og:image" content="/chrome/assets/jkspeed.png" />
+    <link rel="icon" type="image/png" href="/chrome/assets/jkspeed.png" />
+    <link rel="stylesheet" href="/chrome/chrome.css" />
+  </head>
+  <body>
+    <main class="wrap">
+      <header class="page-head">
+        <h1>Chrome extensions</h1>
+        <p>
+          Small, sharp, privacy-respecting tools by John Knipper. No
+          telemetry, no ads, no accounts. One today; more on the way.
+        </p>
+      </header>
+
+      <!-- jkSpeed ----------------------------------------------------->
+      <section class="extension" id="jkspeed">
+        <div class="extension-head">
+          <img
+            class="extension-icon"
+            src="/chrome/assets/jkspeed.png"
+            alt="jkSpeed icon"
+          />
+          <div class="extension-title">
+            <h2>jkSpeed <span class="extension-version">v1.0.0</span></h2>
+            <p class="extension-tagline">
+              Control the speed of any HTML5 video — including YouTube
+              Shorts and videos inside iframes. Keyboard-first, with real
+              Picture-in-Picture.
+            </p>
+          </div>
+        </div>
+
+        <ul class="features">
+          <li>Works on any HTML5 video — Shorts and iframe-embedded included.</li>
+          <li>Speed presets (1×, 1.5×) and fine-tune ±0.25× nudges.</li>
+          <li>
+            <strong>Real Picture-in-Picture</strong> — pops the video into
+            a native OS window, unlike YouTube's in-page miniplayer.
+          </li>
+          <li>
+            Customizable keyboard shortcuts (default: <kbd>S</kbd> slower,
+            <kbd>D</kbd> faster). Fixes AZERTY / non-US keyboards where
+            YouTube's built-in shortcuts don't fire.
+          </li>
+          <li>Speed overlay, icon lights up when a video is detected.</li>
+          <li>
+            Opt-in: remembers your preferred speed per site (hostnames
+            are salted + hashed, never stored in the clear).
+          </li>
+        </ul>
+
+        <div class="extension-actions">
+          <a
+            class="btn btn-primary"
+            href="https://chromewebstore.google.com/detail/jkspeed/jpijoackjpmolfijhmhpmbfpkcdcbgdn"
+            target="_blank"
+            rel="noopener"
+            >Install on Chrome Web Store ↗</a
+          >
+          <a
+            class="btn btn-soft"
+            href="https://github.com/jonx/Speeder-Extension"
+            target="_blank"
+            rel="noopener"
+            >Source on GitHub ↗</a
+          >
+        </div>
+      </section>
+
+      <section class="coming-soon">
+        More extensions coming soon.
+      </section>
+
+      <footer class="site-footer">
+        <span>© 2026 John Knipper</span>
+        <span class="dot">·</span>
+        <a href="mailto:code@jkn.me">code@jkn.me</a>
+      </footer>
+    </main>
+  </body>
+</html>

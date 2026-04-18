@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Privacy Policy — PawSeeBility</title>
+    <meta
+      name="description"
+      content="Privacy policy for PawSeeBility: what data the app uses, where it lives, what we send to OpenAI."
+    />
+    <meta name="theme-color" content="#07040F" />
+    <link rel="icon" type="image/png" href="/paw/assets/icon.png" />
+    <link rel="stylesheet" href="/paw/paw.css" />
+  </head>
+  <body>
+    <main class="wrap">
+      <article class="legal">
+        <h1>Privacy Policy</h1>
+        <p class="updated">Last updated: 18 April 2026</p>
+
+        <p>
+          PawSeeBility (“the app”) is a local-first Flutter application
+          that turns a photo of your companion’s paw into a playful
+          AI-generated reading. This policy explains what data the app
+          handles, where that data lives, and which third parties see
+          any of it.
+        </p>
+
+        <p>
+          <strong>Short version:</strong> every photo, reading, walk,
+          note, and preference is stored <em>on your device only</em>.
+          We don’t run servers that see your data. The only outbound
+          transmissions are to OpenAI (to generate a reading) and to
+          Mapbox (to load map tiles for the Walks feature), both
+          triggered by you.
+        </p>
+
+        <h2>Who we are</h2>
+        <p>
+          PawSeeBility is a personal project by John Knipper. You can
+          reach us at
+          <a href="mailto:code@jkn.me">code@jkn.me</a>.
+        </p>
+
+        <h2>Photos and readings</h2>
+        <ul>
+          <li>
+            Photos you capture or pick are stored locally on your
+            device inside the app’s private storage (the attachment
+            store), never uploaded to a PawSeeBility server — we
+            don’t operate one.
+          </li>
+          <li>
+            When you ask for a reading, the photo bytes and a text
+            prompt are sent directly from your device to the OpenAI
+            API over HTTPS. OpenAI’s use of those bytes is governed by
+            <a href="https://openai.com/policies/privacy-policy/"
+              >OpenAI’s privacy policy</a
+            >.
+          </li>
+          <li>
+            The generated reading text is saved locally in the app’s
+            history. Deleting a reading or uninstalling the app removes
+            it.
+          </li>
+        </ul>
+
+        <h2>OpenAI API key (bring-your-own-key)</h2>
+        <p>
+          PawSeeBility uses the
+          <strong>bring-your-own-key</strong> model: you paste your
+          own OpenAI API key in Settings. The key is stored locally in
+          <code>SharedPreferences</code> on your device (unencrypted on
+          web) and sent with each request to OpenAI. It is never
+          transmitted to us, and we have no way to read it.
+        </p>
+
+        <h2>Location (Walks feature)</h2>
+        <ul>
+          <li>
+            When you start a walk, the app collects GPS samples via
+            the operating system’s location service and stores them
+            locally as part of that walk.
+          </li>
+          <li>
+            Location samples are <em>never</em> transmitted to a
+            PawSeeBility server — we don’t have one. They stay in the
+            app’s local database on your device.
+          </li>
+          <li>
+            Map tiles are loaded from Mapbox (see below). Mapbox
+            receives the coordinates needed to fetch the right tiles.
+          </li>
+          <li>
+            Background location is used only while a walk is
+            actively recording, and surfaces via a persistent
+            notification on Android so you can always see it’s on.
+            Stopping the walk stops the tracking.
+          </li>
+        </ul>
+
+        <h2>Third parties</h2>
+        <ul>
+          <li>
+            <strong>OpenAI</strong> — receives photo bytes + text
+            prompts when you request a reading, using your own API
+            key. See their
+            <a href="https://openai.com/policies/privacy-policy/"
+              >privacy policy</a
+            >.
+          </li>
+          <li>
+            <strong>Mapbox</strong> — receives the coordinate tiles
+            you view on the Walks map. Mapbox may log IP address and
+            device identifiers for abuse prevention and analytics.
+            See their
+            <a href="https://www.mapbox.com/legal/privacy"
+              >privacy notice</a
+            >.
+          </li>
+          <li>
+            <strong>Google Play / Apple App Store</strong> — if you
+            installed the app from one of these stores, the store
+            operator sees your download and may collect crash reports
+            under their own policies.
+          </li>
+        </ul>
+
+        <h2>What we don’t do</h2>
+        <ul>
+          <li>No analytics SDKs. No Firebase. No Mixpanel.</li>
+          <li>No advertising, no tracking pixels, no third-party
+            scripts on this page.</li>
+          <li>No account, no login, no cloud sync (yet). If that
+            changes, this policy will change with it.</li>
+        </ul>
+
+        <h2>Your data, your choice</h2>
+        <ul>
+          <li>
+            Delete individual readings from History, delete pets from
+            Profile, or clear the local database from Settings →
+            Developer → Reset.
+          </li>
+          <li>
+            Uninstalling the app permanently removes every photo,
+            reading, walk, and preference stored on your device.
+          </li>
+          <li>
+            Because no data leaves your device (except the transient
+            OpenAI + Mapbox calls described above), there is no
+            PawSeeBility server-side copy to request a deletion of.
+          </li>
+        </ul>
+
+        <h2>Children</h2>
+        <p>
+          PawSeeBility is not directed at children under 13. The AI
+          readings are written for adult readers even when the subject
+          is a pet.
+        </p>
+
+        <h2>International users</h2>
+        <p>
+          Because the app is local-first, most GDPR and CCPA
+          obligations don’t apply to us — we are neither a controller
+          nor a processor of your data. When you call OpenAI or
+          Mapbox, you are acting as your own data controller. Their
+          privacy policies govern their processing.
+        </p>
+
+        <h2>Changes to this policy</h2>
+        <p>
+          If we add server-side features, analytics, or any other
+          capability that changes what data we see, this page will
+          be updated and the “Last updated” date at the top will
+          change.
+        </p>
+
+        <h2>Contact</h2>
+        <p>
+          Questions, requests, or corrections:
+          <a href="mailto:code@jkn.me">code@jkn.me</a>.
+        </p>
+      </article>
+
+      <footer class="site-footer">
+        <a href="/paw/">← Back to PawSeeBility</a>
+        <span class="dot">·</span>
+        <a href="/paw/terms">Terms</a>
+        <span class="dot">·</span>
+        <a href="mailto:code@jkn.me">code@jkn.me</a>
+      </footer>
+    </main>
+  </body>
+</html>
