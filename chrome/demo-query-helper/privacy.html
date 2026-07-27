@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Privacy policy - Demo Query Helper</title>
+    <meta
+      name="description"
+      content="Privacy policy for the Demo Query Helper Chrome extension. No data collection, no tracking, everything stays in your browser."
+    />
+    <meta name="theme-color" content="#07040F" />
+    <link rel="icon" type="image/png" href="/chrome/assets/demo-query-helper.png" />
+    <link rel="stylesheet" href="/chrome/chrome.css" />
+    <style>
+      .policy {
+        background: var(--card);
+        border: 1px solid var(--stroke);
+        border-radius: 22px;
+        padding: 28px;
+      }
+      .policy h2 {
+        font-family: "Cinzel", serif;
+        color: var(--text-hi);
+        font-size: 20px;
+        margin: 26px 0 8px;
+      }
+      .policy h2:first-child {
+        margin-top: 0;
+      }
+      .policy p,
+      .policy li {
+        color: var(--text-mid);
+        font-size: 14.5px;
+        line-height: 1.6;
+      }
+      .policy ul {
+        padding-left: 20px;
+        margin: 8px 0;
+      }
+      .policy strong {
+        color: var(--text-hi);
+      }
+      .policy code {
+        background: var(--card-hi);
+        border-radius: 4px;
+        padding: 1px 6px;
+        font-size: 13px;
+      }
+      .back-link {
+        display: inline-block;
+        margin-bottom: 18px;
+        color: var(--text-lo);
+        text-decoration: none;
+        font-size: 14px;
+      }
+      .back-link:hover {
+        color: var(--text-hi);
+      }
+      .updated {
+        color: var(--text-lo);
+        font-size: 13px;
+        margin-top: -4px;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="wrap">
+      <a class="back-link" href="/chrome/">&larr; Chrome extensions</a>
+
+      <header class="page-head">
+        <h1>Privacy policy</h1>
+        <p>Demo Query Helper - Chrome extension</p>
+        <p class="updated">Last updated: July 2026</p>
+      </header>
+
+      <section class="policy">
+        <h2>Overview</h2>
+        <p>
+          Demo Query Helper lets you manage predefined text queries and
+          insert them into web pages during demos, tests, and
+          presentations. It is built so that
+          <strong>your data never leaves your browser</strong>.
+        </p>
+
+        <h2>Data collection</h2>
+        <p><strong>We do not collect any data. At all.</strong></p>
+        <ul>
+          <li>No personal information is collected.</li>
+          <li>No browsing activity is tracked.</li>
+          <li>No data is transmitted to us or to any third party.</li>
+          <li>No analytics, no telemetry, no ads, no accounts.</li>
+        </ul>
+
+        <h2>Where your data lives</h2>
+        <p>
+          Your query scripts, settings, and automatic backups are stored
+          locally in your browser via Chrome's storage API
+          (<code>chrome.storage</code>). If you enable the optional
+          <strong>"Sync across devices"</strong> setting, Chrome syncs
+          that data through your own Google account, handled by Google
+          under their privacy policy - it still never passes through any
+          server of ours.
+        </p>
+
+        <h2>Permissions explained</h2>
+        <ul>
+          <li>
+            <strong>storage</strong> - save your queries and settings
+            locally.
+          </li>
+          <li>
+            <strong>activeTab</strong> - insert the query you clicked
+            into the page you are currently viewing.
+          </li>
+          <li>
+            <strong>Host access (all sites)</strong> - you can insert
+            queries into any site you choose to demo on; the content
+            script must be able to run there. It only ever writes into
+            the input field you focused - it does not read or collect
+            page content.
+          </li>
+        </ul>
+
+        <h2>Third-party connections</h2>
+        <p>
+          The optional SharePoint integration connects exclusively to
+          Power Automate flow URLs that <strong>you</strong> configure.
+          The extension ships with no URLs and connects to nothing by
+          default.
+        </p>
+
+        <h2>Your rights</h2>
+        <ul>
+          <li>Inspect all stored data via Chrome's developer tools.</li>
+          <li>Export your scripts at any time (they are plain text).</li>
+          <li>
+            Delete everything by removing the extension - nothing
+            remains anywhere else.
+          </li>
+        </ul>
+
+        <h2>Changes</h2>
+        <p>
+          Any change to this policy will be reflected on this page with
+          an updated date above.
+        </p>
+
+        <h2>Contact</h2>
+        <p>
+          John Knipper -
+          <a href="mailto:code@jkn.me" style="color: var(--accent)">code@jkn.me</a>
+          - or open an issue on
+          <a
+            href="https://github.com/jonx/chrome-demo-script-helper"
+            style="color: var(--accent)"
+            >GitHub</a
+          >.
+        </p>
+      </section>
+
+      <footer class="site-footer">
+        <span>&copy; 2026 John Knipper</span>
+        <span class="dot">&middot;</span>
+        <a href="/chrome/">Chrome extensions</a>
+      </footer>
+    </main>
+  </body>
+</html>
