@@ -1,0 +1,448 @@
+/*
+  Shared styles for /blog/ - writing by John Knipper.
+
+  Two page shapes share this sheet:
+    - the index (list of posts), body class "index"
+    - a single post,          body class "post"
+
+  Palette + type stack mirror /chrome/chrome.css and /paw/paw.css so
+  jkn.me feels like one site. Dark only; tuned for mobile-first reading.
+
+  Adding a post: create /blog/<slug>/index.html (copy an existing one),
+  then add one entry to /blog/posts.json. The index renders itself from
+  that file. No build step - everything ships verbatim on push.
+*/
+
+@import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Manrope:wght@400;500;600;700&display=swap");
+
+:root {
+  --bg: #07040f;
+  --bg-deep: #020108;
+  --card: #151026;
+  --card-hi: #23183d;
+  --accent: #f4c35d;
+  --accent-soft: rgba(244, 195, 93, 0.18);
+  --text-hi: #fff5e4;
+  --text-mid: #e4d7f7;
+  --text-lo: #a695c6;
+  --stroke: rgba(255, 255, 255, 0.18);
+  --max-w: 720px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: radial-gradient(
+      1200px 800px at 20% 0%,
+      #241641 0%,
+      transparent 60%
+    ),
+    radial-gradient(900px 700px at 80% 120%, #1d1137 0%, transparent 55%),
+    var(--bg-deep);
+  color: var(--text-mid);
+  font-family: "Manrope", -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-size: 16px;
+  line-height: 1.62;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 56px 24px 64px;
+}
+
+/* --- back link (breadcrumb) --- */
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--text-lo);
+  text-decoration: none;
+  font-size: 13px;
+  letter-spacing: 0.3px;
+  margin-bottom: 28px;
+  transition: color 0.15s ease, transform 0.15s ease;
+}
+
+.back:hover {
+  color: var(--accent);
+}
+
+.back .arrow {
+  transition: transform 0.15s ease;
+}
+
+.back:hover .arrow {
+  transform: translateX(-3px);
+}
+
+/* --- page header (index) --- */
+
+.page-head {
+  text-align: center;
+  margin-bottom: 44px;
+}
+
+.page-head h1 {
+  font-family: "Cinzel", serif;
+  font-weight: 700;
+  color: var(--text-hi);
+  font-size: clamp(34px, 6vw, 48px);
+  letter-spacing: -0.5px;
+  margin: 0 0 10px;
+}
+
+.page-head p {
+  color: var(--text-lo);
+  font-size: 15px;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+/* --- index layout: article list (left) + card feed --- */
+
+.blog-layout {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 32px;
+  align-items: start;
+}
+
+.blog-sidebar {
+  position: sticky;
+  top: 24px;
+}
+
+.sidebar-title {
+  font-family: "Manrope", sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--text-lo);
+  margin: 0 0 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--stroke);
+}
+
+.article-list {
+  display: grid;
+  gap: 2px;
+}
+
+.article-link {
+  display: block;
+  padding: 8px 10px;
+  border-radius: 10px;
+  text-decoration: none;
+  color: var(--text-mid);
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.article-link:hover {
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-hi);
+}
+
+.article-link-title {
+  display: block;
+  font-size: 13.5px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.article-link-date {
+  display: block;
+  font-size: 11px;
+  color: var(--text-lo);
+  margin-top: 2px;
+}
+
+.sidebar-loading {
+  color: var(--text-lo);
+  font-size: 13px;
+  margin: 0;
+}
+
+@media (max-width: 640px) {
+  .blog-layout {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .blog-sidebar {
+    position: static;
+  }
+}
+
+/* --- post list (index) --- */
+
+.post-list {
+  display: grid;
+  gap: 16px;
+}
+
+.post-card {
+  display: block;
+  padding: 24px 24px 22px;
+  background: linear-gradient(
+      160deg,
+      rgba(244, 195, 93, 0.04) 0%,
+      transparent 45%
+    ),
+    var(--card);
+  border: 1px solid var(--stroke);
+  border-radius: 20px;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.18s ease, border-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.post-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(244, 195, 93, 0.4);
+  box-shadow: 0 12px 30px rgba(244, 195, 93, 0.08);
+}
+
+.post-card .meta {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+
+.post-card h2 {
+  font-family: "Cinzel", serif;
+  font-weight: 700;
+  color: var(--text-hi);
+  font-size: 22px;
+  letter-spacing: -0.2px;
+  margin: 0 0 8px;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.post-card h2 .arrow {
+  font-family: "Manrope", sans-serif;
+  color: var(--text-lo);
+  font-size: 18px;
+  transition: transform 0.18s ease, color 0.18s ease;
+}
+
+.post-card:hover h2 .arrow {
+  color: var(--accent);
+  transform: translateX(3px);
+}
+
+.post-card p {
+  color: var(--text-mid);
+  font-size: 14.5px;
+  line-height: 1.55;
+  margin: 0;
+}
+
+.empty {
+  text-align: center;
+  padding: 28px;
+  border: 1px dashed var(--stroke);
+  border-radius: 18px;
+  color: var(--text-lo);
+  font-size: 14px;
+}
+
+/* --- single post --- */
+
+.post-head {
+  margin-bottom: 36px;
+  padding-bottom: 26px;
+  border-bottom: 1px solid var(--stroke);
+}
+
+.post-head .meta {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 14px;
+}
+
+.post-head h1 {
+  font-family: "Cinzel", serif;
+  font-weight: 700;
+  color: var(--text-hi);
+  font-size: clamp(28px, 5.4vw, 42px);
+  letter-spacing: -0.4px;
+  line-height: 1.15;
+  margin: 0;
+}
+
+/* article prose */
+
+article.prose {
+  color: var(--text-mid);
+  font-size: 16.5px;
+  line-height: 1.7;
+}
+
+article.prose > * {
+  margin: 0 0 20px;
+}
+
+article.prose h2 {
+  font-family: "Cinzel", serif;
+  font-weight: 700;
+  color: var(--text-hi);
+  font-size: 24px;
+  letter-spacing: -0.2px;
+  margin: 40px 0 14px;
+}
+
+article.prose h3 {
+  color: var(--text-hi);
+  font-size: 19px;
+  font-weight: 700;
+  margin: 30px 0 10px;
+}
+
+article.prose a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid var(--accent-soft);
+  transition: border-color 0.15s ease;
+}
+
+article.prose a:hover {
+  border-bottom-color: var(--accent);
+}
+
+article.prose strong {
+  color: var(--text-hi);
+}
+
+article.prose ul,
+article.prose ol {
+  padding-left: 0;
+  list-style: none;
+  display: grid;
+  gap: 10px;
+}
+
+article.prose ul li,
+article.prose ol li {
+  position: relative;
+  padding-left: 24px;
+}
+
+article.prose ul li::before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  top: 1px;
+  color: var(--accent);
+  font-size: 12px;
+}
+
+article.prose ol {
+  counter-reset: item;
+}
+
+article.prose ol li::before {
+  counter-increment: item;
+  content: counter(item);
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 14px;
+}
+
+article.prose blockquote {
+  margin: 26px 0;
+  padding: 4px 0 4px 20px;
+  border-left: 3px solid var(--accent-soft);
+  color: var(--text-lo);
+  font-style: italic;
+}
+
+article.prose code {
+  font-family: ui-monospace, "SFMono-Regular", Menlo, monospace;
+  font-size: 13.5px;
+  background: var(--card-hi);
+  color: var(--text-hi);
+  padding: 2px 7px;
+  border-radius: 6px;
+}
+
+article.prose pre {
+  background: var(--card);
+  border: 1px solid var(--stroke);
+  border-radius: 14px;
+  padding: 18px 20px;
+  overflow-x: auto;
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+
+article.prose pre code {
+  background: none;
+  padding: 0;
+  font-size: inherit;
+}
+
+article.prose img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 14px;
+  border: 1px solid var(--stroke);
+}
+
+article.prose hr {
+  border: 0;
+  border-top: 1px solid var(--stroke);
+  margin: 36px 0;
+}
+
+/* --- footer --- */
+
+footer.site-footer {
+  margin-top: 56px;
+  padding-top: 22px;
+  border-top: 1px solid var(--stroke);
+  color: var(--text-lo);
+  font-size: 13px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px 22px;
+  justify-content: center;
+  align-items: center;
+}
+
+footer.site-footer a {
+  color: var(--text-mid);
+  text-decoration: none;
+}
+
+footer.site-footer a:hover {
+  color: var(--text-hi);
+}
+
+footer.site-footer .dot {
+  opacity: 0.4;
+}

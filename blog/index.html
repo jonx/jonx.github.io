@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Blog - John Knipper</title>
+    <meta
+      name="description"
+      content="Notes on small, sharp tools - building Chrome extensions, mobile apps, and experiments. By John Knipper."
+    />
+    <meta name="theme-color" content="#07040F" />
+    <meta property="og:title" content="Blog - John Knipper" />
+    <meta
+      property="og:description"
+      content="Notes on building small, sharp tools by John Knipper."
+    />
+    <link rel="icon" type="image/png" href="/paw/assets/icon.png" />
+    <link rel="stylesheet" href="/blog/blog.css" />
+  </head>
+  <body class="index">
+    <main class="wrap">
+      <a class="back" href="/"><span class="arrow">←</span> jkn.me</a>
+
+      <header class="page-head">
+        <h1>Blog</h1>
+        <p>
+          Notes from building small, sharp tools - extensions, apps,
+          and experiments that scratch my own itch.
+        </p>
+      </header>
+
+      <!--
+        The article list and card feed below are rendered from
+        /blog/posts.json - the single source of truth for what's
+        published. To add a post: create /blog/<slug>/index.html, then
+        add one entry to posts.json. No need to touch this file.
+      -->
+      <div class="blog-layout">
+        <aside class="blog-sidebar">
+          <h2 class="sidebar-title">Articles</h2>
+          <nav id="article-list" class="article-list" aria-label="All articles">
+            <p class="sidebar-loading">Loading...</p>
+          </nav>
+        </aside>
+
+        <section id="post-list" class="post-list">
+          <noscript>
+            <p class="empty">
+              This list is rendered with JavaScript. Enable it, or browse
+              posts directly under <code>/blog/</code>.
+            </p>
+          </noscript>
+        </section>
+      </div>
+
+      <footer class="site-footer">
+        <span>© 2026 John Knipper</span>
+        <span class="dot">·</span>
+        <a href="/">jkn.me</a>
+        <span class="dot">·</span>
+        <a href="https://github.com/jonx" target="_blank" rel="noopener"
+          >GitHub</a
+        >
+      </footer>
+    </main>
+
+    <script>
+      // Render the blog index from posts.json. Newest first.
+      (function () {
+        var esc = function (s) {
+          return String(s).replace(/[&<>"']/g, function (c) {
+            return {
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              '"': "&quot;",
+              "'": "&#39;",
+            }[c];
+          });
+        };
+
+        var listEl = document.getElementById("article-list");
+        var feedEl = document.getElementById("post-list");
+
+        fetch("/blog/posts.json", { cache: "no-cache" })
+          .then(function (r) {
+            if (!r.ok) throw new Error("HTTP " + r.status);
+            return r.json();
+          })
+          .then(function (posts) {
+            posts.sort(function (a, b) {
+              return String(b.date).localeCompare(String(a.date));
+            });
+
+            if (!posts.length) {
+              listEl.innerHTML = "";
+              feedEl.innerHTML =
+                '<p class="empty">No posts yet. Check back soon.</p>';
+              return;
+            }
+
+            listEl.innerHTML = posts
+              .map(function (p) {
+                return (
+                  '<a class="article-link" href="/blog/' +
+                  esc(p.slug) +
+                  '/">' +
+                  '<span class="article-link-title">' +
+                  esc(p.title) +
+                  "</span>" +
+                  '<span class="article-link-date">' +
+                  esc(p.date) +
+                  "</span>" +
+                  "</a>"
+                );
+              })
+              .join("");
+
+            feedEl.innerHTML = posts
+              .map(function (p) {
+                return (
+                  '<a class="post-card" href="/blog/' +
+                  esc(p.slug) +
+                  '/">' +
+                  '<span class="meta">' +
+                  esc(p.date) +
+                  " · " +
+                  esc(p.category) +
+                  "</span>" +
+                  "<h2>" +
+                  esc(p.title) +
+                  ' <span class="arrow">→</span></h2>' +
+                  "<p>" +
+                  esc(p.description) +
+                  "</p>" +
+                  "</a>"
+                );
+              })
+              .join("");
+          })
+          .catch(function () {
+            listEl.innerHTML = "";
+            feedEl.innerHTML =
+              '<p class="empty">Couldn\'t load the article list. Try refreshing.</p>';
+          });
+      })();
+    </script>
+  </body>
+</html>
