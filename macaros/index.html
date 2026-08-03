@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Macaros - AmigaOS as a native app on Apple silicon</title>
+    <meta
+      name="description"
+      content="AROS, the open-source AmigaOS reimplementation, running as an ordinary arm64 macOS process. A native AArch64 CPU backend, a Cocoa/Metal display, and a control harness that drives the whole system from the command line."
+    />
+    <meta name="theme-color" content="#07040F" />
+    <meta property="og:title" content="Macaros" />
+    <meta
+      property="og:description"
+      content="AmigaOS running as a native app on Apple silicon - AROS on a fresh AArch64 backend, hosted on macOS."
+    />
+    <meta property="og:image" content="/macaros/assets/macaros-hero.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" type="image/png" href="/macaros/assets/icon.png" />
+    <link rel="stylesheet" href="/macaros/macaros.css" />
+  </head>
+  <body>
+    <main>
+      <a class="back" href="/">← jkn.me</a>
+
+      <section class="hero">
+        <div class="hero-row">
+          <img
+            class="hero-icon"
+            src="/macaros/assets/icon.png"
+            alt="The Macaros app icon: a purple macaron"
+            width="104"
+            height="104"
+          />
+          <div>
+            <span class="label">Operating system</span>
+            <h1>Macaros</h1>
+            <p class="tagline">
+              AmigaOS, running as a native app on your Mac. AROS - the
+              open-source AmigaOS reimplementation - is an ordinary arm64 macOS
+              process here: macOS owns every driver, and AROS reaches them
+              through standard exec I/O.
+            </p>
+
+            <div class="specs">
+              <span>native AArch64 backend</span>
+              <span>hosted darwin-aarch64</span>
+              <span>signed + notarized</span>
+              <span>v0.1</span>
+            </div>
+
+            <div class="downloads">
+              <a
+                class="dl"
+                href="https://github.com/jonx/AROS-AArch64/releases/download/v0.1/Macaros.dmg"
+              >
+                Download for macOS
+                <small>Macaros.dmg · 221 MB · Apple silicon, macOS 12+</small>
+              </a>
+              <a
+                class="dl dl-soft"
+                href="https://github.com/jonx/AROS-AArch64"
+              >
+                Source on GitHub
+                <small>graft layer, docs and build instructions</small>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <figure class="shot">
+        <img
+          src="/macaros/assets/macaros-hero.png"
+          alt="The AROS Wanderer desktop running in a Cocoa window on macOS, beside the Macaros About panel and the AROS Settings window"
+          width="1400"
+        />
+        <figcaption>
+          <b>A double-clickable .app.</b> The Wanderer desktop in a Cocoa/Metal
+          window, with a real menu bar, an About panel and a schema-driven
+          settings window - not an emulator of a specific old machine, but the
+          AROS operating system compiled for AArch64.
+        </figcaption>
+      </figure>
+
+      <div class="pair">
+        <figure class="shot">
+          <img
+            src="/macaros/assets/ferail-on-aros.png"
+            alt="The Ferail file manager running on AROS, with its context menu open"
+            width="1140"
+            loading="lazy"
+          />
+          <figcaption>
+            <b>A full GPUI app boots on it.</b>
+            <a href="/ferail/">Ferail</a> runs as <code>C:Ferail</code> through a
+            from-scratch software-raster GPUI backend - themed chrome, native
+            Intuition menus and asl.library requesters included.
+          </figcaption>
+        </figure>
+
+        <figure class="shot">
+          <img
+            src="/macaros/assets/zed-on-aros.png"
+            alt="The Zed editor running on AROS, showing a Rust file with syntax highlighting"
+            width="800"
+            loading="lazy"
+          />
+          <figcaption>
+            <b>So does an editor.</b> Zed, opening a Rust file off the AROS
+            filesystem with syntax highlighting intact. The hosted stack is an
+            application platform, not just a booting kernel.
+          </figcaption>
+        </figure>
+      </div>
+
+      <section class="term">
+        <pre><span class="c"># Boot it, type into the Shell, capture the framebuffer - no human,</span>
+<span class="c"># no window-server session, no screen-recording permission prompt.</span>
+<span class="p">$</span> graft/aros-ctl run
+<span class="p">$</span> graft/aros-ctl wait 3
+<span class="p">$</span> graft/aros-ctl type "echo hello"
+<span class="p">$</span> graft/aros-ctl enter
+<span class="p">$</span> graft/aros-ctl shot
+<span class="p">$</span> graft/aros-ctl stop</pre>
+      </section>
+
+      <section class="notes">
+        <div>
+          <h3>Drivable with nobody at the keyboard</h3>
+          <p>
+            One rule shapes the project: an agent must be able to run
+            build → boot → observe → judge unattended. Injected input enters the
+            same pump as real <code>NSEvent</code>s, and screenshots come from an
+            offscreen oracle rather than the on-screen drawable.
+          </p>
+        </div>
+        <div>
+          <h3>AROS's first native AArch64 bring-up</h3>
+          <p>
+            A clean-room CPU backend - vectors, MMU, context switch, exception
+            model, preemptive multitasking - proven on QEMU <code>virt</code>,
+            and reusable on every ARM64 target.
+          </p>
+        </div>
+        <div>
+          <h3>Hosted on purpose</h3>
+          <p>
+            Bare metal on Apple silicon is an explicit non-goal. Running hosted
+            sidesteps the undocumented interrupt controller and signed boot, so
+            the effort goes into the OS.
+          </p>
+        </div>
+        <div>
+          <h3>A 68k JIT for the classics</h3>
+          <p>
+            <code>run68k</code> runs self-contained 68k binaries with
+            68881/68882 hardware FP, byte-exact-verified against an independent
+            interpreter.
+          </p>
+        </div>
+      </section>
+
+      <table class="caps">
+        <caption>Each surface is one idea - macOS owns the driver, AROS reaches it via exec I/O</caption>
+        <tbody>
+          <tr>
+            <th scope="row">Display</th>
+            <td>Cocoa/Metal window, AROS-side <code>cocoa.hidd</code> over the full graphics/intuition/layers stack</td>
+          </tr>
+          <tr>
+            <th scope="row">Input</th>
+            <td>Keyboard, mouse and wheel on the same event path as real NSEvents; gadtools menu strips</td>
+          </tr>
+          <tr>
+            <th scope="row">Clipboard</th>
+            <td>Two-way NSPasteboard ↔ <code>clipboard.device</code></td>
+          </tr>
+          <tr>
+            <th scope="row">Host volumes</th>
+            <td>A Mac folder mounted as <code>MacRO:</code> / <code>MacRW:</code>, with drag-from-Finder</td>
+          </tr>
+          <tr>
+            <th scope="row">Audio</th>
+            <td>CoreAudio-backed AHI sub-driver</td>
+          </tr>
+          <tr>
+            <th scope="row">Networking</th>
+            <td><code>bsdsocket.library</code> forwarded to native sockets - TCP/IP and DNS</td>
+          </tr>
+          <tr>
+            <th scope="row">Media</th>
+            <td>ffmpeg decode, an FFViewX viewer and an <code>ffmpeg.datatype</code>, with GPU 2D via <code>gpufx.library</code></td>
+          </tr>
+          <tr>
+            <th scope="row">Rust std</th>
+            <td>Runs natively - net, fs, env, args, process, time and thread all verified live</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <section class="notes">
+        <div>
+          <h3>Experimental hobby project</h3>
+          <p>
+            Expect rough edges. The AmigaDOS Shell runs the full 116-command
+            <code>C:</code> set and the desktop is real, but this is a research
+            port, openly one.
+          </p>
+        </div>
+        <div>
+          <h3>Licensing</h3>
+          <p>
+            AROS is distributed under the AROS Public License. The graft layer,
+            its design docs and the build instructions are all in the
+            <a href="https://github.com/jonx/AROS-AArch64">repository</a>.
+          </p>
+        </div>
+      </section>
+
+      <footer class="site-footer">
+        <span>© 2026 John Knipper</span>
+        <span><a href="/">jkn.me</a></span>
+      </footer>
+    </main>
+  </body>
+</html>
