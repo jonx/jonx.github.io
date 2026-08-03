@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Ferail - A fast, native file manager</title>
+    <meta
+      name="description"
+      content="A keyboard-first file manager for macOS and Windows, written in Rust on GPUI. Disk usage, duplicates, archives, bulk rename and content-derived descriptions - built in."
+    />
+    <meta name="theme-color" content="#07040F" />
+    <meta property="og:title" content="Ferail" />
+    <meta
+      property="og:description"
+      content="A fast, native file manager in Rust. Disk usage, duplicates, archives and bulk rename, built in."
+    />
+    <meta property="og:image" content="/ferail/assets/tour-shell.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="stylesheet" href="/ferail/ferail.css" />
+  </head>
+  <body>
+    <main>
+      <a class="back" href="/">← jkn.me</a>
+
+      <section class="hero">
+        <span class="label">Desktop app</span>
+        <h1>Ferail</h1>
+        <p class="tagline">
+          A fast, keyboard-first file manager - with the tools you normally
+          install separately already built in.
+        </p>
+
+        <div class="specs">
+          <span>Rust + GPUI</span>
+          <span>macOS 12+ · Windows 10+</span>
+          <span>no telemetry</span>
+          <span>v0.2.2</span>
+        </div>
+
+        <div class="downloads">
+          <a class="dl" href="/ferail/downloads/Ferail-0.2.2.dmg">
+            Download for macOS
+            <small>Ferail-0.2.2.dmg · 20 MB · Apple silicon</small>
+          </a>
+          <a class="dl dl-soft" href="/ferail/downloads/Ferail-0.2.2-win-x64.zip">
+            Download for Windows
+            <small>Ferail-0.2.2-win-x64.zip · 36 MB · portable</small>
+          </a>
+        </div>
+      </section>
+
+      <figure class="shot">
+        <img
+          src="/ferail/assets/tour-shell.png"
+          alt="Ferail's main window: sidebar, tabs, file list and preview pane"
+          width="1400"
+        />
+        <figcaption>
+          <b>The main window.</b> Tabs, a sidebar you can collapse, and a
+          preview pane that renders text and code with syntax highlighting -
+          not just thumbnails.
+        </figcaption>
+      </figure>
+
+      <figure class="shot">
+        <img
+          src="/ferail/assets/tour-disk-usage.png"
+          alt="Disk usage treemap with a sunburst-style breakdown"
+          width="1400"
+          loading="lazy"
+        />
+        <figcaption>
+          <b>Disk usage, in the app.</b> A treemap you can drill into, with an
+          HTML export - no separate utility to go install when the disk is
+          suddenly full.
+        </figcaption>
+      </figure>
+
+      <div class="pair">
+        <figure class="shot">
+          <img
+            src="/ferail/assets/tour-dupes.png"
+            alt="Duplicate finder results grouped by identical content"
+            width="1400"
+            loading="lazy"
+          />
+          <figcaption>
+            <b>Duplicate finder.</b> A hash funnel - size, then a partial xxh3,
+            then full BLAKE3 - so only real candidates get read end to end.
+            Clone- and hard-link-aware.
+          </figcaption>
+        </figure>
+
+        <figure class="shot">
+          <img
+            src="/ferail/assets/tour-archive.png"
+            alt="Archive workbench listing the contents of an archive"
+            width="1400"
+            loading="lazy"
+          />
+          <figcaption>
+            <b>Archives open like folders.</b> Browse inside zip, 7z, tar.* and
+            lha without extracting first. Extract just what you selected, or
+            drag files in to add them.
+          </figcaption>
+        </figure>
+      </div>
+
+      <div class="pair">
+        <figure class="shot">
+          <img
+            src="/ferail/assets/tour-bulk-rename.png"
+            alt="Bulk rename dialog with a live preview of the resulting names"
+            width="1400"
+            loading="lazy"
+          />
+          <figcaption>
+            <b>Bulk rename.</b> Regex with capture groups and a live preview of
+            every resulting name, so you see the damage before you commit it.
+          </figcaption>
+        </figure>
+
+        <figure class="shot">
+          <img
+            src="/ferail/assets/tour-magic.png"
+            alt="File list showing content-derived descriptions in a column"
+            width="1400"
+            loading="lazy"
+          />
+          <figcaption>
+            <b>Descriptions from content.</b> Magic-byte sniffing, not
+            extensions: image dimensions, audio sample rates, executable
+            architecture, archive contents.
+          </figcaption>
+        </figure>
+      </div>
+
+      <figure class="shot">
+        <img
+          src="/ferail/assets/tour-palette.png"
+          alt="Command palette open over the file list"
+          width="1400"
+          loading="lazy"
+        />
+        <figcaption>
+          <b>Everything from the keyboard.</b> A command palette for every
+          action, with the shortcut shown next to it - so you stop needing the
+          palette.
+        </figcaption>
+      </figure>
+
+      <div class="pair">
+        <figure class="shot">
+          <img
+            src="/ferail/assets/tour-grid.png"
+            alt="Icon grid view with large thumbnails"
+            width="1400"
+            loading="lazy"
+          />
+          <figcaption>
+            <b>Grid view.</b> Real thumbnails for photos, video and PDFs,
+            generated off the UI thread and cached across tabs.
+          </figcaption>
+        </figure>
+
+        <figure class="shot">
+          <img
+            src="/ferail/assets/tour-viewer.png"
+            alt="Media viewer showing an image full-screen"
+            width="1400"
+            loading="lazy"
+          />
+          <figcaption>
+            <b>Built-in viewer.</b> Images and video with sticky zoom, so
+            stepping through a folder keeps your framing.
+          </figcaption>
+        </figure>
+      </div>
+
+      <section class="notes">
+        <div>
+          <h3>Native, not Electron</h3>
+          <p>
+            Rust on GPUI - the GPU-accelerated UI framework from Zed. One
+            codebase, no web runtime.
+          </p>
+        </div>
+        <div>
+          <h3>The UI never blocks</h3>
+          <p>
+            Nothing on the paint path touches the disk. Enumeration, hashing
+            and previews all run off-thread, so a spun-down drive stalls the
+            work and not the window.
+          </p>
+        </div>
+        <div>
+          <h3>No accounts, no telemetry</h3>
+          <p>
+            Nothing phones home. Metadata stays in a local SQLite database you
+            can delete.
+          </p>
+        </div>
+        <div>
+          <h3>Also on AROS</h3>
+          <p>
+            The same codebase runs on AROS, the open-source AmigaOS
+            reimplementation - a research port, but a real one.
+          </p>
+        </div>
+      </section>
+
+      <footer class="site-footer">
+        <span>© 2026 John Knipper</span>
+        <span><a href="/">jkn.me</a></span>
+      </footer>
+    </main>
+  </body>
+</html>
