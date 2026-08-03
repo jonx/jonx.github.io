@@ -3,13 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>John Knipper — jkn.me</title>
+    <title>John Knipper - jkn.me</title>
     <meta
       name="description"
       content="Small, sharp tools by John Knipper. Chrome extensions, mobile apps, and experiments."
     />
     <meta name="theme-color" content="#07040F" />
-    <meta property="og:title" content="John Knipper — jkn.me" />
+    <meta property="og:title" content="John Knipper - jkn.me" />
     <meta
       property="og:description"
       content="Small, sharp tools by John Knipper."
@@ -70,18 +70,47 @@
 
       .hero .name {
         font-family: "Cinzel", serif;
-        font-weight: 700;
-        color: var(--text-hi);
-        font-size: clamp(36px, 7vw, 56px);
-        letter-spacing: -0.6px;
-        margin: 0 0 14px;
+        font-weight: 500;
+        color: var(--text-mid);
+        font-size: clamp(24px, 3.6vw, 30px);
+        letter-spacing: 0.2px;
+        margin: 0 0 10px;
       }
 
       .hero .tagline {
         color: var(--text-lo);
-        font-size: 15px;
+        font-size: 14px;
         letter-spacing: 0.6px;
         margin: 0;
+      }
+
+      .hero-blog {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 20px;
+        padding: 9px 18px;
+        border-radius: 999px;
+        border: 1px solid var(--stroke);
+        color: var(--text-hi);
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: 0.3px;
+        transition: border-color 0.18s ease, background 0.18s ease,
+          transform 0.18s ease;
+      }
+
+      .hero-blog:hover {
+        border-color: rgba(244, 195, 93, 0.4);
+        background: rgba(255, 255, 255, 0.02);
+        transform: translateY(-1px);
+      }
+
+      .hero-blog svg {
+        width: 16px;
+        height: 16px;
+        color: var(--accent);
       }
 
       /* --- project grid --- */
@@ -215,9 +244,34 @@
       <header class="hero">
         <h1 class="name">John Knipper</h1>
         <p class="tagline">SMALL, SHARP TOOLS</p>
+        <a class="hero-blog" href="/blog/">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 20h9" />
+            <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" />
+          </svg>
+          Read the blog
+        </a>
       </header>
 
       <section class="projects">
+        <a class="project" href="/ferail/">
+          <span class="label">Desktop app</span>
+          <h2>Ferail <span class="arrow">→</span></h2>
+          <p>
+            A fast, keyboard-first file manager for macOS and Windows, with
+            disk usage, duplicates and archives built in.
+          </p>
+        </a>
+
+        <a class="project" href="/macaros/">
+          <span class="label">Operating system</span>
+          <h2>Macaros <span class="arrow">→</span></h2>
+          <p>
+            AmigaOS running as a native app on Apple silicon - AROS on a
+            fresh AArch64 backend, hosted on macOS.
+          </p>
+        </a>
+
         <a class="project" href="/paw/">
           <span class="label">Mobile app</span>
           <h2>PawSeeBility <span class="arrow">→</span></h2>
