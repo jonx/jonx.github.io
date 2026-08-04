@@ -29,6 +29,12 @@ House style, shared by every page:
 - **Hyphens, not em dashes**, in user-visible copy.
 - Absolute paths (`/blog/blog.css`), never relative.
 
+**The canonical host is `https://www.jkn.me`** — the bare `jkn.me` 301s to it at
+the Cloudflare edge. Page-internal links stay root-relative and so never care,
+but anything that must carry a full URL — `og:image`, `og:url`, feed links and
+`<guid>`s — uses the `www` form, or it sends every visitor and subscriber through
+a redirect.
+
 `staticwebapp.config.json` is a leftover Azure Static Web Apps file. The site is
 on GitHub Pages, so it is **inert** — do not put routing or headers there and
 expect them to apply.

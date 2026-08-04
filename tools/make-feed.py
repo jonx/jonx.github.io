@@ -18,7 +18,12 @@ from email.utils import format_datetime
 from datetime import datetime, timezone
 from xml.sax.saxutils import escape
 
-SITE = "https://jkn.me"
+# The canonical host: the apex 301s to www at the Cloudflare edge, and a feed's
+# <guid>s must stay stable forever - pointing them at the redirecting host would
+# mean every subscriber re-fetches through a 301, and a later switch would
+# re-deliver every post as new. If that redirect ever flips, change it here and
+# regenerate.
+SITE = "https://www.jkn.me"
 TITLE = "John Knipper"
 DESCRIPTION = "Notes from building small, sharp tools - extensions, apps, and experiments."
 LANGUAGE = "en"
