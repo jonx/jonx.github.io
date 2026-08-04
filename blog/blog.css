@@ -107,6 +107,35 @@ body {
   margin: 0 auto;
 }
 
+.subscribe {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 20px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--stroke);
+  color: var(--text-hi);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  transition: border-color 0.18s ease, background 0.18s ease,
+    transform 0.18s ease;
+}
+
+.subscribe:hover {
+  border-color: rgba(244, 195, 93, 0.4);
+  background: rgba(255, 255, 255, 0.02);
+  transform: translateY(-1px);
+}
+
+.subscribe svg {
+  width: 14px;
+  height: 14px;
+  color: var(--accent);
+}
+
 /* --- index layout: article list (left) + card feed --- */
 
 .blog-layout {

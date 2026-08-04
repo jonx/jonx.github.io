@@ -35,13 +35,16 @@ expect them to apply.
 
 ## Adding a blog post
 
-The blog has exactly two moving parts:
+The blog has exactly two moving parts you write by hand:
 
 1. **`/blog/posts.json`** — the single source of truth for what is published.
 2. **`/blog/<slug>/index.html`** — the post itself, plain static HTML.
 
 `/blog/index.html` fetches `posts.json` on load and renders both the sidebar list
 and the card feed from it. **You never edit `/blog/index.html` to publish.**
+
+A third file, **`/blog/feed.xml`** (RSS 2.0), is *generated* from `posts.json` by
+`tools/make-feed.py`. Never hand-edit it.
 
 ### Procedure
 
@@ -50,7 +53,15 @@ and the card feed from it. **You never edit `/blog/index.html` to publish.**
 2. Create `/blog/<slug>/index.html` from the template below.
 3. Add one entry to `/blog/posts.json`. The renderer sorts by date descending, so
    file order does not matter — but keep newest first so the file reads sensibly.
-4. Verify locally (see below), then commit **both files in one commit** and push.
+4. **Regenerate the feed** — subscribers get nothing if you skip this:
+   ```sh
+   python3 tools/make-feed.py
+   ```
+   It validates every entry (required fields, parseable date) and refuses to
+   write a broken feed. Output is deterministic — `lastBuildDate` is the newest
+   post's date, not "now" — so a no-op run produces no diff.
+5. Verify locally (see below), then commit **all three files in one commit** and
+   push.
 
 ### The posts.json entry
 
@@ -92,6 +103,12 @@ Copy this verbatim and fill in the four marked spots. `body class="post"` and
     <meta property="og:title" content="TITLE - John Knipper" />
     <meta property="og:description" content="DESCRIPTION" />
     <link rel="icon" type="image/png" href="/paw/assets/icon.png" />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="John Knipper"
+      href="/blog/feed.xml"
+    />
     <link rel="stylesheet" href="/blog/blog.css" />
   </head>
   <body class="post">
@@ -111,6 +128,8 @@ Copy this verbatim and fill in the four marked spots. `body class="post"` and
         <span>© 2026 John Knipper</span>
         <span class="dot">·</span>
         <a href="/blog/">All posts</a>
+        <span class="dot">·</span>
+        <a href="/blog/feed.xml">RSS</a>
         <span class="dot">·</span>
         <a href="https://github.com/jonx" target="_blank" rel="noopener"
           >GitHub</a
@@ -148,6 +167,7 @@ pipeline, so every byte you add is permanent history.
 
 ```sh
 python3 -m json.tool blog/posts.json >/dev/null   # invalid JSON empties the whole index
+python3 -c "import xml.dom.minidom; xml.dom.minidom.parse('blog/feed.xml')"
 cd ~/Source/jkn.me && python3 -m http.server 8811
 ```
 
@@ -160,6 +180,7 @@ After pushing, confirm live:
 
 ```sh
 curl -s https://jkn.me/blog/posts.json | grep <slug>
+curl -s https://jkn.me/blog/feed.xml    | grep <slug>
 curl -sI https://jkn.me/blog/<slug>/ | head -1
 ```
 
@@ -167,9 +188,15 @@ curl -sI https://jkn.me/blog/<slug>/ | head -1
 
 - **A JSON syntax error takes the whole index down**, not just the new post — the
   fetch rejects and every card disappears. Always run the `json.tool` check.
-- The index needs JavaScript. Post pages are static and fine without it.
-- There is **no RSS feed** and no pagination. Past ~20 posts the card feed gets
-  unwieldy.
+- The index needs JavaScript. Post pages and the RSS feed are static and fine
+  without it.
+- The feed carries each post's one-line `description`, not its full text — a
+  reader shows a summary and links through. Making it full-text would mean
+  parsing the post HTML, which nothing here does today.
+- Nothing enforces the regeneration step; a post committed without re-running
+  `tools/make-feed.py` is live on the site but invisible to subscribers. If in
+  doubt, run it — a no-op leaves no diff.
+- There is no pagination. Past ~20 posts the card feed gets unwieldy.
 - Cloudflare may serve a stale `posts.json` for a short while after a push even
   though the fetch asks for `no-cache`.
 
