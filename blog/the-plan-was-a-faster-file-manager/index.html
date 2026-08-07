@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>The plan was a faster file manager - John Knipper</title>
+    <meta
+      name="description"
+      content="How a slow tree view in Windows Explorer turned into Ferail: a Rust file manager built around speed, low cognitive cost and honest filenames - with the pun hiding in the name from day one."
+    />
+    <meta name="theme-color" content="#07040F" />
+    <meta
+      property="og:title"
+      content="The plan was a faster file manager - John Knipper"
+    />
+    <meta
+      property="og:description"
+      content="How a slow tree view in Windows Explorer turned into Ferail: a Rust file manager built around speed, low cognitive cost and honest filenames - with the pun hiding in the name from day one."
+    />
+    <link rel="icon" type="image/png" href="/paw/assets/icon.png" />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="John Knipper"
+      href="/blog/feed.xml"
+    />
+    <link rel="stylesheet" href="/blog/blog.css" />
+  </head>
+  <body class="post">
+    <main class="wrap">
+      <a class="back" href="/blog/"><span class="arrow">←</span> All posts</a>
+
+      <header class="post-head">
+        <div class="post-meta-row" aria-label="Article details">
+          <span class="meta">2026-08-08 · ENGINEERING,</span>
+          <span class="post-fact reading-time" data-minutes="8"
+            >8 min read</span
+          >
+          <span class="post-fact">
+            Technical
+            <span class="tech-level" aria-label="2 out of 5">★★☆☆☆</span>
+          </span>
+        </div>
+        <h1>The plan was a faster file manager</h1>
+      </header>
+
+      <article class="prose">
+        <aside class="post-summary" aria-labelledby="summary-label">
+          <span class="summary-label" id="summary-label">TL;DR</span>
+          <p>
+            A tree view that couldn't scroll pushed me to write my own file
+            manager. Along the way it became a bet on Rust, a study in how much
+            a file manager can tell you without being asked, a security
+            exercise in filenames that lie, and a codebase that runs on macOS,
+            Windows, Linux - and AROS. The pun was in the name the whole time.
+          </p>
+        </aside>
+
+        <p>
+          The plan was modest: scroll a folder tree without waiting for it.
+        </p>
+
+        <p>
+          For years my daily Windows machine had a folder tree that behaved
+          like it was paging results in from somewhere far away. Scrolling
+          Explorer's tree view was excruciating - visibly repainting,
+          hesitating on expand, losing my place. A file manager is the tool
+          you touch ten thousand times a year. When the tool that shows you
+          your own disk can't keep up with a scroll wheel, it stops being an
+          annoyance and becomes a standing question:
+          <strong>how hard can this actually be?</strong>
+        </p>
+
+        <h2>The confirmation came later</h2>
+
+        <p>
+          This spring, Microsoft
+          <a
+            href="https://www.windowslatest.com/2026/05/06/microsoft-confirms-windows-11s-file-explorer-is-sluggish-and-preloading-isnt-the-only-fix-coming/"
+            target="_blank"
+            rel="noopener"
+            >confirmed what every Windows user already knew</a
+          >: File Explorer is sluggish, and fixing it is now a program of
+          work. The first fix ships Explorer preloaded into memory at logon so
+          the window merely <em>appears</em> fast. The head of product for the
+          Windows shell describes an "AND" approach - launch-sequence
+          optimizations and removing bloat and foundational fixes for the disk
+          reads and hangs - rolling out incrementally over the coming months.
+        </p>
+
+        <p>
+          Critics called preloading a brute-force patch over an architectural
+          problem: modern XAML layered on a thirty-year-old Win32 foundation,
+          spending extra memory so the slowness starts earlier. I read that
+          article with the particular calm of someone who gave up waiting
+          years ago. The tree view radicalised me long before Redmond
+          confirmed the diagnosis.
+        </p>
+
+        <h2>Earning the feature set</h2>
+
+        <p>
+          Ferail did not appear in one attempt. There were several versions on
+          Windows first - iterations whose real job was to find out which
+          features deserve to exist and what they actually cost: what
+          instant-feeling enumeration needs, where thumbnails and metadata
+          have to come from, which ideas sound good and die on contact with a
+          spinning external drive. The last Windows iteration grew into a full
+          native codebase in its own right before I made the jump.
+        </p>
+
+        <p>
+          The jump was Rust. Partly for the usual reasons - a native binary,
+          no garbage collector to pause a scroll, and a compiler that turns
+          concurrency mistakes into compile errors. Partly because I wanted to
+          properly learn the language, and nothing teaches a language like a
+          project you refuse to abandon. The UI runs on
+          <a href="https://www.gpui.rs/" target="_blank" rel="noopener"
+            >GPUI</a
+          >, the GPU-accelerated framework extracted from the Zed editor:
+          every frame is drawn like a game renders, which is exactly the
+          discipline a file list that must never stutter wants.
+        </p>
+
+        <h2>The Mac detour</h2>
+
+        <p>
+          By then I was working on a Mac, which replaced one frustration with
+          a stranger one. Finder is slick and genuinely fast - and oddly
+          alien. Icons float wherever they were dropped until you remember to
+          order them somehow. Navigating to an arbitrary path means knowing
+          the secret handshake of Cmd+Shift+G. Copying a file's path is
+          Option+Cmd+C, which you learn from a forum post, not from the menu
+          you were looking at. None of it is slow; all of it is knowledge you
+          have to carry in your head.
+        </p>
+
+        <p>
+          That reframed the project. The enemy on Windows was wasted time.
+          The enemy on macOS was wasted <em>attention</em>. So the goal became
+          one sentence: a file manager that costs the least possible energy
+          to understand what is going on.
+        </p>
+
+        <h2>Answers before questions</h2>
+
+        <p>
+          Most of Ferail's personality follows from that sentence. The
+          information you would otherwise have to ask for is simply already
+          there:
+        </p>
+
+        <ul>
+          <li>
+            The <strong>Ant Trail</strong> shades the folders I actually
+            visit, so my own habits are visible and yesterday's working
+            directory is one glance away.
+          </li>
+          <li>
+            A folder's disclosure pointer - or its absence - tells me whether
+            there are subfolders <em>before</em> I click, not after.
+          </li>
+          <li>
+            A folder's size is its real, recursive size. The number means
+            what you think it means.
+          </li>
+          <li>
+            An archive's description says how many entries it holds and
+            whether it already has a single root folder - so I know before
+            extracting whether it will unpack tidily or explode across my
+            directory.
+          </li>
+          <li>
+            Every file is identified by its bytes, not its extension. The
+            description column states what a file <em>is</em>; when content
+            and extension disagree, the row says so.
+          </li>
+        </ul>
+
+        <p>
+          <img
+            src="/blog/the-plan-was-a-faster-file-manager/assets/tour-ant-trail.png"
+            alt="Ferail's Ant Trail: folders shaded by how often and how recently they were visited"
+          />
+        </p>
+
+        <p>
+          The same logic decided what belongs inside the app. Disk usage,
+          duplicate finding, bulk rename, real previews, archive browsing -
+          on every platform these are separate downloads, and archive
+          integration in particular is lame everywhere: a right-click
+          "extract", a read-only peek, no way to just <em>work</em> inside
+          one. In Ferail an archive opens like a folder - sortable,
+          filterable, drag in to add, drag out to extract - and disk usage,
+          duplicates and rename are windows of the same app sharing the same
+          identity of your files, not five utilities with five opinions.
+        </p>
+
+        <h2>Names that lie</h2>
+
+        <p>
+          Somewhere along the way the project also became quietly
+          security-minded, because a file manager is where deception meets
+          the user. The classic trick is a filename that isn't what it
+          reads as: a zero-width space inside
+          <code>invoice_final.exe</code>, a right-to-left override that
+          reverses the visible extension, a Cyrillic
+          <code>а</code> impersonating a Latin one in
+          <code>pаypal-login</code>, padding spaces that shove
+          <code>.exe</code> off the edge of the column.
+        </p>
+
+        <p>
+          <img
+            src="/blog/the-plan-was-a-faster-file-manager/assets/filename-hazards.png"
+            alt="Ferail rendering hostile filenames with visible chips for zero-width spaces, bidi overrides and homoglyphs"
+          />
+        </p>
+
+        <p>
+          Ferail pre-scans every name and draws what is actually there:
+          invisible characters become explicit
+          <code>⟨U+200B⟩</code>-style chips, homoglyphs and disguised
+          whitespace are highlighted in place. The same honesty runs through
+          the rest of the pipeline. Content sniffing reports a file's true
+          nature no matter what the extension claims. Downloaded files carry
+          their "where from" provenance. The duplicate finder compares
+          content hashes, not names. And previewing inside an archive never
+          spills its contents onto disk under their real names - the one
+          staging file the system previewer needs is anonymised to a
+          constant name, overwritten by the next preview, and swept away
+          even after a crash. Nothing phones home, because there is no home
+          to phone.
+        </p>
+
+        <h2>One codebase, four systems</h2>
+
+        <p>
+          Rust also paid for something I didn't originally dare to plan.
+          Ferail runs on macOS and Windows today, a Linux port is well under
+          way - and the same codebase builds for
+          <a href="http://www.aros.org/" target="_blank" rel="noopener"
+            >AROS</a
+          >, the open-source AmigaOS reimplementation, on top of a Rust
+          compiler I
+          <a href="/macaros/">ported to that platform myself</a>. That is the
+          same machinery behind
+          <a href="/blog/bringing-exfat-to-aros/">bringing exFAT to AROS</a>:
+          once the toolchain exists, "portable" stops being a slogan and
+          becomes a build target. A file manager whose UI stack runs from an
+          Apple-silicon Mac to an Amiga-descended hobby OS is a decent proof
+          that the foundations are actually foundations.
+        </p>
+
+        <p>
+          The source is now public at
+          <a
+            href="https://github.com/jonx/Ferail"
+            target="_blank"
+            rel="noopener"
+            >github.com/jonx/Ferail</a
+          >, dual-licensed MIT/Apache-2.0, with per-platform CI compiling and
+          testing every push - and downloads for
+          <a href="/ferail/">macOS and Windows</a> if you just want the app.
+        </p>
+
+        <hr />
+
+        <p>
+          The name came before most of the code. <em>Ferraille</em> is French
+          for scrap iron - the pile of old metal at the back of every
+          workshop, kept because one day you'll melt it down and build the
+          tool you actually wanted. Thirty years of file-manager history is a
+          lot of ferraille, and Microsoft is still sanding away at its own
+          oxide layer, one preload at a time.
+        </p>
+
+        <p>
+          So the plan was honest from the first day, and it was hiding in the
+          name: take everything that had gone rusty, and rebuild it in Rust.
+        </p>
+
+        <nav class="post-tags" aria-label="Article topics">
+          <span class="post-tags-label">Topics</span>
+          <a class="post-tag" href="/blog/?tag=Ferail">Ferail</a>
+          <a class="post-tag" href="/blog/?tag=Rust">Rust</a>
+          <a class="post-tag" href="/blog/?tag=GPUI">GPUI</a>
+          <a class="post-tag" href="/blog/?tag=AROS">AROS</a>
+          <a class="post-tag" href="/blog/?tag=Design">Design</a>
+        </nav>
+      </article>
+
+      <footer class="site-footer">
+        <span>© 2026 John Knipper</span>
+        <span class="dot">·</span>
+        <a href="/blog/">All posts</a>
+        <span class="dot">·</span>
+        <a href="/blog/feed.xml">RSS</a>
+        <span class="dot">·</span>
+        <a href="https://github.com/jonx" target="_blank" rel="noopener"
+          >GitHub</a
+        >
+      </footer>
+    </main>
+    <script src="/blog/blog.js" defer></script>
+  </body>
+</html>
