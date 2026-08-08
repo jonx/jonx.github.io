@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Bringing exFAT to AROS - John Knipper</title>
+    <meta
+      name="description"
+      content="What it took to build portable, writable exFAT support for AROS, from clean-room specification to a disk that moves safely between operating systems."
+    />
+    <meta name="theme-color" content="#07040F" />
+    <meta property="og:title" content="Bringing exFAT to AROS - John Knipper" />
+    <meta
+      property="og:description"
+      content="What it took to build portable, writable exFAT support for AROS, from clean-room specification to a disk that moves safely between operating systems."
+    />
+    <meta
+      property="og:image"
+      content="https://www.jkn.me/macaros/assets/macaros-hero.png"
+    />
+    <link rel="icon" type="image/png" href="/paw/assets/icon.png" />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="John Knipper"
+      href="/blog/feed.xml"
+    />
+    <link rel="stylesheet" href="/blog/blog.css" />
+  </head>
+  <body class="post">
+    <main class="wrap">
+      <a class="back" href="/blog/"><span class="arrow">←</span> All posts</a>
+
+      <header class="post-head">
+        <div class="post-meta-row" aria-label="Article details">
+          <span class="meta">2026-08-05 · ENGINEERING,</span>
+          <span class="post-fact reading-time" data-minutes="12"
+            >12 min read</span
+          >
+          <span class="post-fact">
+            Technical
+            <span class="tech-level" aria-label="5 out of 5">★★★★★</span>
+          </span>
+        </div>
+        <h1>Bringing exFAT to AROS</h1>
+      </header>
+
+      <article class="prose">
+        <aside class="post-summary" aria-labelledby="summary-label">
+          <span class="summary-label" id="summary-label">TL;DR</span>
+          <p>
+            AROS now has portable, writable exFAT support built from the public
+            specification. It works across architectures, survives interrupted
+            writes and removable-media changes, and produced a disk that moved
+            from macOS to AROS and back with every file and filesystem check intact.
+          </p>
+        </aside>
+
+        <p>
+          <abbr
+            class="term"
+            title="AROS Research Operating System, an open-source operating system compatible with AmigaOS APIs."
+            >AROS</abbr
+          > is an open-source reimplementation of the AmigaOS API, designed to
+          run on modern and classic architectures. You can find the project at
+          <a href="http://www.aros.org/" target="_blank" rel="noopener"
+            >aros.org</a
+          >.
+        </p>
+
+        <p>
+          <a href="/macaros/">Macaros</a> is my native AArch64 port of AROS,
+          hosted as an ordinary arm64 application on Apple silicon Macs. macOS
+          owns the hardware drivers while AROS runs its normal operating-system
+          stack above them. It gave this project a fast development environment,
+          while the same filesystem code was also built and tested for m68k and
+          real AROS hardware.
+        </p>
+
+        <p>
+          A disk format succeeds when it becomes boring. Put an SD card in a
+          camera, move it to a laptop, plug it into a television or a car, and
+          nobody should have to think about the
+          <abbr
+            class="term"
+            title="The on-disk structures and rules used to organize files and directories on a storage device."
+            >filesystem</abbr
+          >. On larger removable media, that boring format is very often exFAT.
+        </p>
+
+        <p>
+          AROS could use FAT12, FAT16 and FAT32, but not exFAT. I wanted an exFAT
+          disk created elsewhere to feel completely ordinary in AROS: mount it,
+          list it, read it, change it, remove it, and hand it back to another
+          operating system intact.
+        </p>
+
+        <p>
+          The finished handler is 5,783 logical lines of C. The supporting test
+          and validation code is another 4,571 lines. That ratio says something
+          important about filesystems. Reading a file once is the easy part.
+          Proving that every boundary and interrupted write leaves a disk in a
+          state another implementation understands is most of the work.
+        </p>
+
+        <!-- Add the final AROS FATX success screenshot here. -->
+
+        <h2>A filesystem as a process</h2>
+
+        <p>
+          The AROS filesystem model is one of the parts I particularly like.
+          A filesystem is a
+          <abbr
+            class="term"
+            title="A separate process that receives DOS packets and implements a filesystem."
+            >handler</abbr
+          > process.
+          <abbr
+            class="term"
+            title="Disk Operating System, the Amiga-style AROS subsystem for filesystems, volumes, paths, file handles and DOS devices."
+            >DOS</abbr
+          > sends it packets for operations such as opening, reading, writing,
+          examining, renaming and deleting. The handler receives a block device
+          and translates whatever is on that device into the common DOS view of
+          volumes, directories and files.
+        </p>
+
+        <p>
+          This is an elegant separation. Applications do not know whether they
+          are talking to FAT, exFAT or something much stranger. The kernel does
+          not need a new collection of filesystem-specific system calls. A
+          handler can be developed, loaded and tested as its own component while
+          keeping the DOS contract stable.
+        </p>
+
+        <p>
+          It also splits the problem cleanly in two. First, the handler has to
+          understand the filesystem. Then the partition and USB layers have to
+          recognize a disk and select that handler automatically. A filesystem
+          that works only when manually described in a Mountlist is useful for
+          development, but it is not the experience people expect from removable
+          media.
+        </p>
+
+        <h2>Starting from the specification</h2>
+
+        <p>
+          exFAT was developed by Microsoft and historically came with licensing
+          and intellectual-property questions that did not exist for every FAT
+          variant. The technical starting point for this implementation was
+          Microsoft's public
+          <a
+            href="https://learn.microsoft.com/en-us/windows/win32/fileio/exfat-specification"
+            target="_blank"
+            rel="noopener"
+            >exFAT File System Specification</a
+          >, revision 1.00.
+        </p>
+
+        <p>
+          In 2019 Microsoft published an updated release of the specification
+          without its earlier confidential and documentation-license language.
+          Microsoft also
+          <a
+            href="https://opensource.microsoft.com/blog/2019/08/28/exfat-linux-kernel"
+            target="_blank"
+            rel="noopener"
+            >announced support for exFAT in the Linux kernel</a
+          > and for its inclusion in the Open Invention Network's Linux System
+          Definition.
+        </p>
+
+        <p>
+          That announcement is specifically about Linux. AROS is not Linux, and
+          publishing a specification is not the same thing as granting every
+          possible patent right to every implementation. Microsoft still lists
+          exFAT among its
+          <a
+            href="https://www.microsoft.com/en-us/legal/intellectualproperty/tech-licensing/programs"
+            target="_blank"
+            rel="noopener"
+            >technology licensing programs</a
+          >. I am not going to pretend that a technical article settles a legal
+          question.
+        </p>
+
+        <p>
+          What I could control was the provenance of the code. The handler was
+          developed from a
+          <abbr
+            class="term"
+            title="An implementation produced from public specifications and observed behavior without consulting another implementation's source code."
+            >clean-room</abbr
+          > functional specification based on the published Microsoft document,
+          the existing AROS interfaces, and measurements made during this project.
+          No Linux exFAT driver,
+          <code>exfatprogs</code>, <code>fuse-exfat</code>, OS4 handler, Aminet
+          handler or other exFAT implementation source was consulted.
+        </p>
+
+        <p>
+          I labelled requirements by their origin: published specification,
+          existing AROS behaviour, measurements, or rules derived from the first
+          three. That turned out to be useful beyond clean provenance. Whenever
+          the implementation and a test disagreed, I could go back to the reason
+          the rule existed instead of relying on somebody's memory of what exFAT
+          probably did.
+        </p>
+
+        <h2>It is not FAT with larger numbers</h2>
+
+        <p>
+          exFAT belongs to the FAT family, but extending the existing AROS FAT
+          handler was not a small change. That handler contained 146 direct
+          assumptions about the traditional 32-byte FAT directory entry. In
+          exFAT, one file is represented by a checksummed set containing a File
+          entry, a Stream Extension entry, and one or more File Name entries.
+          Allocation uses a
+          <abbr
+            class="term"
+            title="A compact map with one bit recording whether each disk cluster is free or occupied."
+            >bitmap</abbr
+          >, and the FAT itself is not always consulted.
+        </p>
+
+        <p>
+          A stream marked <code>NoFatChain</code> occupies consecutive clusters.
+          Its next cluster is implied by its position and length rather than read
+          from the FAT. The root directory, on the other hand, is FAT-chained and
+          has no stored length. A cluster walker therefore cannot be written in
+          terms of only a volume and a cluster number. It needs to understand the
+          kind of stream it is walking.
+        </p>
+
+        <p>
+          Name lookup has another good surprise. exFAT is case-preserving and
+          case-insensitive, but the case conversion table is stored on the disk.
+          The handler must load and validate that up-case table before it can
+          decide whether two names are equal. It also has to validate the 16-bit
+          name hash without assuming that a hash match means the names match.
+          The tests include two different names with the same real on-disk hash.
+        </p>
+
+        <p>
+          File length also has two meanings. <code>DataLength</code> is the
+          visible size, while <code>ValidDataLength</code> says how much has been
+          initialized. Bytes between the two must read as zero. Returning the
+          sectors underneath would not merely be a small incompatibility. It
+          could expose old data left on the disk by another file.
+        </p>
+
+        <p>
+          Finally, exFAT has no portable field for an AmigaDOS file comment. The
+          honest implementation is to report that operation as unsupported.
+          Inventing a private entry would produce disks that other systems might
+          discard or misunderstand.
+        </p>
+
+        <h2>NTFS and exFAT arrive wearing the same badge</h2>
+
+        <p>
+          Before a handler can mount a volume, AROS must decide which handler to
+          load. The partition table is less helpful here than one might expect.
+          NTFS and exFAT both commonly use
+          <abbr
+            class="term"
+            title="Master Boot Record, the older PC partition-table format."
+            >MBR</abbr
+          > partition type <code>0x07</code>. On
+          <abbr
+            class="term"
+            title="GUID Partition Table, the modern partition-table format used with UEFI systems."
+            >GPT</abbr
+          > disks they both use the Microsoft Basic Data partition GUID.
+          The identifier describes the broad purpose of the partition, not the
+          filesystem inside it.
+        </p>
+
+        <p>
+          The solution is a small, allocation-free content probe shared by the
+          partition library and both AROS USB mass-storage stacks. It reads the
+          start of the volume, checks the <code>EXFAT&nbsp;&nbsp;&nbsp;</code>
+          filesystem name and enough of the boot-sector structure to distinguish
+          exFAT safely. If it matches, AROS selects the <code>FATX</code> DosType
+          and loads <code>exfat-handler</code>. A
+          <abbr
+            class="term"
+            title="The four-byte identifier AROS uses to select a filesystem handler."
+            >DosType</abbr
+          > is an AROS filesystem identifier, not a partition-table type.
+          Otherwise the existing mapping is left to select NTFS or another
+          appropriate handler.
+        </p>
+
+        <p>
+          The probe deliberately does not try to replace the mount-time
+          validator. Its job is routing, not trust. The handler still verifies
+          geometry, revision, reserved fields, both boot regions and every copy
+          of the boot
+          <abbr
+            class="term"
+            title="A value calculated from data so accidental changes or corruption can be detected."
+            >checksum</abbr
+          > before accepting the volume.
+        </p>
+
+        <h2>Portability is where assumptions become visible</h2>
+
+        <p>
+          The handler had to run on AArch64 and m68k, on little-endian and
+          big-endian targets, and through 32-bit and 64-bit DOS and device
+          interfaces. It had to work in hosted AROS, in an emulated target, and
+          on real hardware. It accepts logical sector sizes from 512 through
+          4096 bytes.
+        </p>
+
+        <p>
+          Every multi-byte field read from disk is decoded byte by byte. Mapping
+          a C structure directly over a boot sector is attractive and often
+          appears to work on AArch64. On m68k it can turn into an unaligned access,
+          and on any architecture the result can depend on compiler padding and
+          host byte order. Disk formats are byte layouts, not C layouts.
+        </p>
+
+        <p>
+          Building the same handler for m68k exposed a defect outside the
+          filesystem. The AROS library-call generator did not provide the right
+          alias for a 64-bit integer return value in one calling convention. The
+          module could be made to link while still being unable to return a full
+          64-bit file position correctly. Testing another architecture found a
+          real
+          <abbr
+            class="term"
+            title="Application Binary Interface, the low-level rules for how compiled code passes arguments and returns values."
+            >ABI</abbr
+          > problem that an AArch64-only build would never have shown.
+        </p>
+
+        <h2>When success reads the wrong part of the disk</h2>
+
+        <p>
+          The most dangerous 4 GiB bug did not return an error. With an old
+          32-bit device command, the high half of an offset can be ignored. A
+          request for byte <code>4 GiB + 1234</code> may report success after
+          reading byte <code>1234</code> instead.
+        </p>
+
+        <p>
+          This is why "it read successfully" is not a useful large-disk test.
+          The test image places distinct sentinels above 4, 8 and 12 GiB, then
+          places different values at the addresses produced by throwing away the
+          high 32 bits. A correct result must match the high sentinel and must
+          differ from its low-address alias.
+        </p>
+
+        <p>
+          File sizes are tested at exactly 4 GiB minus one byte, 4 GiB, and 4 GiB
+          plus one byte. Those are not chosen because 4 GiB is impressively
+          large. They are chosen because it is where arithmetic and transport
+          interfaces change behaviour. The handler refuses an access when the
+          device cannot represent its address rather than accepting a successful
+          transfer from somewhere else.
+        </p>
+
+        <h2>AROS started two years too early</h2>
+
+        <p>
+          There was a smaller disagreement about time. Amiga-style dates begin
+          in 1978. exFAT begins in 1980. A machine without a valid real-time clock
+          can therefore ask the handler to create a file at a time the filesystem
+          cannot represent.
+        </p>
+
+        <p>
+          Rejecting that timestamp would make file creation fail simply because
+          a retro or embedded machine had no working clock. For timestamps the
+          handler generates automatically, it clamps a pre-1980 clock to the
+          earliest representable exFAT date. User-supplied dates are still
+          validated normally. A filesystem should not become read-only because
+          the computer believes it is 1978.
+        </p>
+
+        <h2>Writing without leaving convincing wreckage</h2>
+
+        <p>
+          Read support can stop when it encounters damage. Write support has to
+          avoid creating damage in the first place. Every operation that changes
+          allocation follows an ordered publication sequence:
+        </p>
+
+        <ol>
+          <li>Set and flush the volume dirty flag.</li>
+          <li>Write and flush newly visible data.</li>
+          <li>Publish the FAT chain when one is needed.</li>
+          <li>Publish the allocation bitmap.</li>
+          <li>Publish the directory entry set that makes the change visible.</li>
+          <li>Clear the dirty flag only after everything else is durable.</li>
+        </ol>
+
+        <p>
+          Shrinking and deleting reverse the important ownership relationship.
+          The directory must stop making clusters reachable before the bitmap
+          says those clusters are free for reuse. Newly exposed gaps are zeroed
+          before a larger valid-data length is published.
+        </p>
+
+        <p>
+          I added deterministic failure points after each durable stage. The
+          test runner interrupts an operation at each one and examines the raw
+          image. Every interrupted image must remain marked dirty, must be
+          repairable by an independent checker, and must contain either the old
+          payload or the new payload. It must never present a clean mixture of
+          both.
+        </p>
+
+        <p>
+          Removable media adds one more rule. If a disk disappears while locks
+          and file handles still exist, those objects must become safe offline
+          objects. Dirty cache state from the removed disk must never be flushed
+          onto its replacement, even when the new volume has the same label.
+          Removal and reinsertion were tested with live objects and two separate
+          filesystem images, followed by an external check of both.
+        </p>
+
+        <h2>The tests became nearly another filesystem</h2>
+
+        <p>
+          The useful tests were not demonstrations. Each one had to prove its
+          own setup before judging the handler. A fragmentation test first reads
+          the raw FAT and requires at least eight extents. A contiguous-stream
+          test confirms that <code>NoFatChain</code> is set. A corruption test is
+          paired with a byte-identical clean control, so a handler that refuses
+          every disk cannot accidentally pass.
+        </p>
+
+        <p>The suite includes:</p>
+
+        <ul>
+          <li>A sparse 16 GiB image with checked markers around 4 GiB boundaries.</li>
+          <li>A directory containing exactly 10,000 fixture entries.</li>
+          <li>Distinct 255-unit names and a real 16-bit name-hash collision.</li>
+          <li>Both deliberately fragmented and deliberately contiguous files.</li>
+          <li>A completely full allocation bitmap.</li>
+          <li>Broken checksums, malformed entry sets and invalid geometry.</li>
+          <li>Six interruptions during ordered metadata publication.</li>
+          <li>Formatting with 512, 1024, 2048 and 4096-byte sectors.</li>
+          <li>Removal and replacement while files and locks remain open.</li>
+        </ul>
+
+        <p>
+          The
+          <abbr
+            class="term"
+            title="A file whose unwritten empty regions take little or no physical storage despite contributing to its logical size."
+            >sparse</abbr
+          > 16 GiB image does not consume 16 GiB on the host and the target does
+          not stream every byte through emulation. General full-file
+          reads are tested elsewhere. This fixture is designed specifically to
+          expose truncation, overflow and aliasing at high offsets.
+        </p>
+
+        <p>
+          Most mutation tests have three witnesses. A host-side oracle inspects
+          the raw FAT, bitmap, directory entries and data. AROS performs the
+          operation through normal DOS packets. Then macOS
+          <code>fsck_exfat</code> checks the resulting filesystem and the files
+          are compared again after a host remount. The external checker is
+          valuable precisely because it shares none of the handler's internal
+          assumptions.
+        </p>
+
+        <h2>A disk that can go anywhere</h2>
+
+        <p>
+          The final proof used a real 512 MiB SanDisk partition formatted as
+          exFAT by macOS, with 512-byte sectors and 32 KiB clusters. Files created
+          by macOS were read and compared in AROS. AROS then created and committed
+          a new file, renamed another, and deleted a third.
+        </p>
+
+        <p>
+          The tested image was written back to the physical partition. After the
+          stick returned to macOS, all expected SHA-256 values matched, the AROS
+          rename and deletion were visible, and <code>diskutil verifyVolume</code>
+          completed successfully.
+        </p>
+
+        <p>
+          The same discovery path is used for MBR and GPT partitions and by both
+          AROS USB mass-storage implementations. The point is not that one USB
+          stick worked. The point is that this is a disk format that could arrive
+          from anywhere. It may be on a flash drive, an SD card, a disk image, or
+          storage attached to hardware nobody considered while writing the
+          handler.
+        </p>
+
+        <p>
+          A successful <code>Dir</code> is the beginning of filesystem support,
+          not the proof of it. The proof is that one operating system can create
+          a disk, AROS can change it, another operating system can accept it
+          again, and the disk remains so ordinary that none of them needs an
+          explanation.
+        </p>
+
+        <nav class="post-tags" aria-label="Article topics">
+          <span class="post-tags-label">Topics</span>
+          <a class="post-tag" href="/blog/?tag=AROS">AROS</a>
+          <a class="post-tag" href="/blog/?tag=exFAT">exFAT</a>
+          <a class="post-tag" href="/blog/?tag=Filesystems">Filesystems</a>
+          <a class="post-tag" href="/blog/?tag=Amiga">Amiga</a>
+          <a class="post-tag" href="/blog/?tag=Portability">Portability</a>
+        </nav>
+      </article>
+
+      <footer class="site-footer">
+        <span>© 2026 John Knipper</span>
+        <span class="dot">·</span>
+        <a href="/blog/">All posts</a>
+        <span class="dot">·</span>
+        <a href="/blog/feed.xml">RSS</a>
+        <span class="dot">·</span>
+        <a href="https://github.com/jonx" target="_blank" rel="noopener"
+          >GitHub</a
+        >
+      </footer>
+    </main>
+    <script src="/blog/blog.js" defer></script>
+  </body>
+</html>

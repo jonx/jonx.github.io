@@ -26,7 +26,7 @@
   --text-mid: #e4d7f7;
   --text-lo: #a695c6;
   --stroke: rgba(255, 255, 255, 0.18);
-  --max-w: 720px;
+  --max-w: 860px;
 }
 
 * {
@@ -105,6 +105,60 @@ body {
   font-size: 15px;
   max-width: 520px;
   margin: 0 auto;
+}
+
+.tag-filters {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: -10px 0 34px;
+}
+
+.tag-filters[hidden] {
+  display: none;
+}
+
+.tag-filters-label {
+  margin-right: 3px;
+  color: var(--text-lo);
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 1.1px;
+  text-transform: uppercase;
+}
+
+.tag-filter {
+  appearance: none;
+  padding: 6px 11px;
+  background: transparent;
+  border: 1px solid var(--stroke);
+  border-radius: 999px;
+  color: var(--text-lo);
+  font: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.2;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.tag-filter:hover {
+  border-color: rgba(244, 195, 93, 0.5);
+  color: var(--text-hi);
+}
+
+.tag-filter.is-active {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.tag-filter:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
 .subscribe {
@@ -296,9 +350,8 @@ body {
 /* --- single post --- */
 
 .post-head {
-  margin-bottom: 36px;
-  padding-bottom: 26px;
-  border-bottom: 1px solid var(--stroke);
+  margin-bottom: 30px;
+  padding-bottom: 0;
 }
 
 .post-head .meta {
@@ -319,6 +372,149 @@ body {
   letter-spacing: -0.4px;
   line-height: 1.15;
   margin: 0;
+}
+
+.post-meta-row {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 5px 9px;
+  margin-bottom: 14px;
+}
+
+.post-meta-row .meta {
+  display: inline;
+  margin: 0;
+}
+
+.post-fact {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 30px;
+  padding: 5px 10px;
+  border: 1px solid var(--stroke);
+  border-radius: 999px;
+  color: var(--text-lo);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.tech-level {
+  color: var(--accent);
+  font-size: 12px;
+  letter-spacing: 1.5px;
+}
+
+.post-summary {
+  margin: 0 0 34px;
+  padding: 19px 21px;
+  background: linear-gradient(135deg, var(--accent-soft), transparent 72%),
+    var(--card);
+  border: 0;
+  border-radius: 14px;
+}
+
+.post-summary .summary-label {
+  display: block;
+  margin-bottom: 7px;
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.3px;
+  text-transform: uppercase;
+}
+
+.post-summary p {
+  margin: 0;
+  color: var(--text-hi);
+  font-size: 14.5px;
+  line-height: 1.6;
+}
+
+.reading-progress {
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.12);
+  pointer-events: none;
+}
+
+.reading-progress-fill {
+  display: block;
+  width: 0;
+  height: 100%;
+  background: linear-gradient(90deg, #c98f31, var(--accent));
+  box-shadow: 0 0 12px rgba(244, 195, 93, 0.62);
+}
+
+.reading-progress-label {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  top: 5px;
+  left: 0;
+  writing-mode: vertical-rl;
+  max-height: calc(100vh - 12px);
+  padding: 11px 7px 11px 6px;
+  background: var(--accent);
+  border-radius: 0 0 9px 0;
+  box-shadow: 6px 0 18px rgba(0, 0, 0, 0.35);
+  color: #1b102a;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  line-height: 1;
+  text-transform: uppercase;
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.reading-progress-title {
+  overflow: hidden;
+  color: #1b102a;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.reading-progress-time {
+  flex: none;
+  padding-top: 8px;
+  border-top: 1px solid rgba(27, 16, 42, 0.32);
+  white-space: nowrap;
+}
+
+.reading-progress-time[hidden] {
+  display: none;
+}
+
+/* The one interactive part of the spine: a single-click back-to-top.
+   The container is pointer-events: none, so re-enable here; upright
+   orientation keeps the arrow pointing up inside vertical-rl text. */
+.reading-progress-top {
+  flex: none;
+  padding-top: 8px;
+  border-top: 1px solid rgba(27, 16, 42, 0.32);
+  text-orientation: upright;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.reading-progress-top:hover {
+  opacity: 0.6;
+}
+
+.reading-progress.is-active .reading-progress-label {
+  opacity: 1;
+  transform: translateX(0);
 }
 
 /* article prose */
@@ -362,6 +558,44 @@ article.prose a:hover {
 
 article.prose strong {
   color: var(--text-hi);
+}
+
+abbr.term {
+  color: inherit;
+  text-decoration-line: underline;
+  text-decoration-style: dashed;
+  text-decoration-color: rgba(244, 195, 93, 0.88);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+  cursor: help;
+}
+
+abbr.term:hover,
+abbr.term:focus-visible {
+  color: var(--text-hi);
+  text-decoration-color: var(--accent);
+  outline: none;
+}
+
+.term-definition {
+  position: fixed;
+  z-index: 1100;
+  width: max-content;
+  max-width: min(320px, calc(100vw - 24px));
+  padding: 9px 11px;
+  background: #2b2040;
+  border: 1px solid rgba(244, 195, 93, 0.42);
+  border-radius: 8px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.48);
+  color: var(--text-hi);
+  font-size: 12.5px;
+  font-weight: 500;
+  line-height: 1.45;
+  pointer-events: none;
+}
+
+.term-definition[hidden] {
+  display: none;
 }
 
 article.prose ul,
@@ -446,6 +680,39 @@ article.prose hr {
   border: 0;
   border-top: 1px solid var(--stroke);
   margin: 36px 0;
+}
+
+.post-tags {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 44px;
+}
+
+.post-tags-label {
+  margin-right: 3px;
+  color: var(--text-lo);
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+}
+
+article.prose .post-tag {
+  padding: 5px 10px;
+  border: 1px solid rgba(244, 195, 93, 0.34);
+  border-radius: 999px;
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  line-height: 1.2;
+}
+
+article.prose .post-tag:hover {
+  background: var(--accent-soft);
+  border-color: var(--accent);
 }
 
 /* --- footer --- */

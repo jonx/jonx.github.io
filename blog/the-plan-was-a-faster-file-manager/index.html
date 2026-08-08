@@ -17,6 +17,10 @@
       property="og:description"
       content="How a slow tree view in Windows Explorer turned into Ferail: a Rust file manager built around speed, low cognitive cost and honest filenames - with the pun hiding in the name from day one."
     />
+    <meta
+      property="og:image"
+      content="https://www.jkn.me/blog/the-plan-was-a-faster-file-manager/assets/hero-shell.png"
+    />
     <link rel="icon" type="image/png" href="/paw/assets/icon.png" />
     <link
       rel="alternate"
@@ -33,8 +37,8 @@
       <header class="post-head">
         <div class="post-meta-row" aria-label="Article details">
           <span class="meta">2026-08-08 · ENGINEERING,</span>
-          <span class="post-fact reading-time" data-minutes="8"
-            >8 min read</span
+          <span class="post-fact reading-time" data-minutes="9"
+            >9 min read</span
           >
           <span class="post-fact">
             Technical
@@ -55,6 +59,13 @@
             Windows, Linux - and AROS. The pun was in the name the whole time.
           </p>
         </aside>
+
+        <p>
+          <img
+            src="/blog/the-plan-was-a-faster-file-manager/assets/hero-shell.png"
+            alt="Ferail's main window: tabs, collapsible sidebar, dense file list and a syntax-highlighting preview pane"
+          />
+        </p>
 
         <p>
           The plan was modest: scroll a folder tree without waiting for it.
@@ -97,6 +108,36 @@
           confirmed the diagnosis.
         </p>
 
+        <p>
+          To be fair, a
+          <a
+            href="https://www.windowscentral.com/microsoft/windows-11/control-panel-gets-tricky-microsoft-cvp-explains-why-killing-windows-legacy-code-takes-so-long-and-how-its-evolving-its-tools-to-make-modernizing-apps-like-file-explorer-and-registry-editor-faster"
+            target="_blank"
+            rel="noopener"
+            >later interview with Marcus Ash</a
+          >, Microsoft's CVP of design for Windows, explains why they
+          struggle: every modernization has to keep a thirty-year
+          compatibility promise, and the frameworks themselves have to be
+          rebuilt before the old UI can move onto them. Control Panel has
+          been mid-migration since Windows 8 - thirteen years and counting.
+          It is a real constraint, honestly described.
+        </p>
+
+        <p>
+          But I started from scratch, and starting from scratch cuts the
+          other way: <strong>there is no excuse for anything to be slow on
+          day one.</strong> That principle made real decisions. The early
+          Windows iterations embedded the native shell context menu - the
+          thing a file manager is "supposed" to use - and there is simply no
+          way to make it open reliably fast, because a right-click loads
+          every third-party extension installed on the machine, whenever it
+          feels like it. We prewarmed it, we cached it, and it still owned
+          our worst frame. So Ferail draws its own context menu, identical
+          on every platform, built from data the app already holds. Nothing
+          in the menu path can touch a disk, so nothing in the menu path can
+          stall.
+        </p>
+
         <h2>Earning the feature set</h2>
 
         <p>
@@ -122,6 +163,11 @@
           discipline a file list that must never stutter wants.
         </p>
 
+        <p>
+          The plan was honest from the first day, and it was hiding in the
+          name: take everything that had gone rusty, and rebuild it in Rust.
+        </p>
+
         <h2>The Mac detour</h2>
 
         <p>
@@ -131,8 +177,53 @@
           order them somehow. Navigating to an arbitrary path means knowing
           the secret handshake of Cmd+Shift+G. Copying a file's path is
           Option+Cmd+C, which you learn from a forum post, not from the menu
-          you were looking at. None of it is slow; all of it is knowledge you
-          have to carry in your head.
+          you were looking at. Even <em>moving</em> a file is half-hidden:
+          there is no Cut, so you either drag, or you discover that a copy
+          quietly becomes a move if you paste with Option+Cmd+V. None of it
+          is slow; all of it is knowledge you have to carry in your head.
+        </p>
+
+        <p>
+          The irony is that underneath the cryptic cockpit sits a wonderful
+          engine. The Mac's filesystem makes copying and moving a bliss -
+          clones are instantaneous, moves are atomic, nothing grinds. The
+          machinery was never the problem. The problem is how much you have
+          to already know before the machinery does what you meant.
+        </p>
+
+        <p>
+          The drawing side of macOS deserves the same respect. Windows on a
+          Mac glide because the operating system owns the display loop:
+          every app hands its rendered layers to
+          <a
+            href="https://en.wikipedia.org/wiki/Quartz_Compositor"
+            target="_blank"
+            rel="noopener"
+            >WindowServer</a
+          >, a separate system process that composites the whole screen at
+          the display's refresh rate, every frame, no matter what the apps
+          are doing. A stalled app freezes only its own content - the
+          desktop keeps gliding around it. The OS sets a rhythm and dares
+          every app to keep up with it. Ferail's answer is to render like a
+          game on the cadence the system hands it, with a standing rule that
+          nothing on the paint path may ever touch a disk.
+        </p>
+
+        <p>
+          Rendering like a game does not mean burning power like one - and
+          the fps readout in Ferail's status bar has to be read the other
+          way round from a game's. It measures how often the app
+          <em>chooses</em> to draw, not how fast it can: while you scroll
+          it reports the burst rate of the frames actually drawn - the
+          display's own refresh - and when nothing changes, Ferail draws
+          nothing at all, so at idle it honestly reads 0 fps. In a game,
+          0 fps is death; in a file manager it is the whole point. The
+          pixels are already right, so not a watt goes into repainting
+          them. The figure doubles as a tripwire, too: an app that redraws
+          while idle shows its leak as a number. Alongside it, the CPU
+          sits around one percent and the whole app lives in a couple of
+          hundred megabytes - reported live by the status bar, so the
+          claim is checkable from inside the tool making it.
         </p>
 
         <p>
@@ -171,9 +262,15 @@
             directory.
           </li>
           <li>
-            Every file is identified by its bytes, not its extension. The
-            description column states what a file <em>is</em>; when content
-            and extension disagree, the row says so.
+            Every file is identified by its bytes, not its extension, and a
+            Description column states what a file <em>is</em>:
+            <code>6000 × 4000</code> for a photo,
+            <code>stereo · 48 kHz · 42 min</code> for an audio file,
+            <code>arm64 + x86_64</code> for a universal binary,
+            <code>1,204 entries · single root folder</code> for a zip. And
+            when content and extension disagree - a
+            <code>Holiday Photo.jpg</code> whose bytes say ZIP - the row is
+            flagged and says so.
           </li>
         </ul>
 
@@ -194,6 +291,29 @@
           filterable, drag in to add, drag out to extract - and disk usage,
           duplicates and rename are windows of the same app sharing the same
           identity of your files, not five utilities with five opinions.
+        </p>
+
+        <p>
+          <img
+            src="/blog/the-plan-was-a-faster-file-manager/assets/tour-disk-usage.png"
+            alt="Ferail's disk-usage treemap, drillable in place and exportable to HTML"
+          />
+        </p>
+
+        <p>
+          Some of it doesn't even need the window. The same binary is a small
+          command-line toolbox: <code>ferail magic</code> prints what files
+          really are, <code>ferail du</code> a disk-usage summary,
+          <code>ferail thumb</code> extracts any file's thumbnail to a PNG,
+          <code>ferail doctor</code> runs a health check. Same engines as the
+          UI, scriptable from a shell.
+        </p>
+
+        <p>
+          <img
+            src="/blog/the-plan-was-a-faster-file-manager/assets/tour-cli.png"
+            alt="Ferail's command-line side: magic, du and thumb subcommands running in a terminal"
+          />
         </p>
 
         <h2>Names that lie</h2>
@@ -253,6 +373,13 @@
         </p>
 
         <p>
+          <img
+            src="/macaros/assets/ferail-on-aros.png"
+            alt="Ferail running on AROS, the open-source AmigaOS reimplementation"
+          />
+        </p>
+
+        <p>
           The source is now public at
           <a
             href="https://github.com/jonx/Ferail"
@@ -270,14 +397,9 @@
           The name came before most of the code. <em>Ferraille</em> is French
           for scrap iron - the pile of old metal at the back of every
           workshop, kept because one day you'll melt it down and build the
-          tool you actually wanted. Thirty years of file-manager history is a
-          lot of ferraille, and Microsoft is still sanding away at its own
-          oxide layer, one preload at a time.
-        </p>
-
-        <p>
-          So the plan was honest from the first day, and it was hiding in the
-          name: take everything that had gone rusty, and rebuild it in Rust.
+          tool you actually wanted. So while Microsoft is still sanding away
+          at its own oxide layer, one preload at a time, let's find out how
+          our <em>feraille</em> will stand the passage of time.
         </p>
 
         <nav class="post-tags" aria-label="Article topics">

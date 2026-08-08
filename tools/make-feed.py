@@ -32,7 +32,12 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 POSTS = ROOT / "blog" / "posts.json"
 FEED = ROOT / "blog" / "feed.xml"
 
-REQUIRED = ("slug", "title", "date", "category", "description")
+REQUIRED = ("slug", "title", "date", "category", "description", "tags", "image")
+
+# Every post carries an image (root-relative path, e.g. the post's hero
+# screenshot) so feed readers and link previews always have a thumbnail.
+# Emitted as an RSS <enclosure>, which wants the real byte size and mime.
+IMAGE_MIME = {".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".webp": "image/webp"}
 
 
 def rfc822(date: str) -> str:
@@ -49,7 +54,26 @@ def main() -> int:
         if missing:
             print(f"error: post {post.get('slug', '?')!r} is missing {missing}", file=sys.stderr)
             return 1
+        if (
+            not isinstance(post["tags"], list)
+            or not post["tags"]
+            or not all(isinstance(tag, str) and tag.strip() for tag in post["tags"])
+            or len({tag.casefold() for tag in post["tags"]}) != len(post["tags"])
+        ):
+            print(
+                f"error: post {post['slug']!r} tags must be a non-empty list "
+                "of unique, non-empty strings",
+                file=sys.stderr,
+            )
+            return 1
         rfc822(post["date"])  # raises on a malformed date rather than shipping one
+        image = ROOT / post["image"].lstrip("/")
+        if not image.is_file():
+            print(f"error: post {post['slug']!r} image {post['image']!r} does not exist", file=sys.stderr)
+            return 1
+        if image.suffix.lower() not in IMAGE_MIME:
+            print(f"error: post {post['slug']!r} image {post['image']!r} has an unsupported type", file=sys.stderr)
+            return 1
 
     posts.sort(key=lambda p: p["date"], reverse=True)
     built = rfc822(posts[0]["date"]) if posts else rfc822("2026-01-01")
@@ -57,6 +81,16 @@ def main() -> int:
     items = []
     for post in posts:
         url = f"{SITE}/blog/{post['slug']}/"
+        tag_categories = "".join(
+            f"      <category>{escape(tag)}</category>\n"
+            for tag in post["tags"]
+        )
+        image = ROOT / post["image"].lstrip("/")
+        enclosure = (
+            f'      <enclosure url="{escape(SITE + post["image"])}" '
+            f'length="{image.stat().st_size}" '
+            f'type="{IMAGE_MIME[image.suffix.lower()]}" />\n'
+        )
         items.append(
             "    <item>\n"
             f"      <title>{escape(post['title'])}</title>\n"
@@ -64,8 +98,10 @@ def main() -> int:
             f"      <guid isPermaLink=\"true\">{escape(url)}</guid>\n"
             f"      <pubDate>{rfc822(post['date'])}</pubDate>\n"
             f"      <category>{escape(post['category'])}</category>\n"
-            f"      <description>{escape(post['description'])}</description>\n"
-            "    </item>"
+            + tag_categories
+            + f"      <description>{escape(post['description'])}</description>\n"
+            + enclosure
+            + "    </item>"
         )
 
     feed = (

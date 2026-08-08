@@ -5,15 +5,35 @@
     <link>https://www.jkn.me/blog/</link>
     <description>Notes from building small, sharp tools - extensions, apps, and experiments.</description>
     <language>en</language>
-    <lastBuildDate>Tue, 07 Jul 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 08 Aug 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://www.jkn.me/blog/feed.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Hello, world</title>
-      <link>https://www.jkn.me/blog/hello-world/</link>
-      <guid isPermaLink="true">https://www.jkn.me/blog/hello-world/</guid>
-      <pubDate>Tue, 07 Jul 2026 00:00:00 +0000</pubDate>
-      <category>Meta</category>
-      <description>Hey, I'm John Knipper. I build small, sharp tools.</description>
+      <title>The plan was a faster file manager</title>
+      <link>https://www.jkn.me/blog/the-plan-was-a-faster-file-manager/</link>
+      <guid isPermaLink="true">https://www.jkn.me/blog/the-plan-was-a-faster-file-manager/</guid>
+      <pubDate>Sat, 08 Aug 2026 00:00:00 +0000</pubDate>
+      <category>Engineering</category>
+      <category>Ferail</category>
+      <category>Rust</category>
+      <category>GPUI</category>
+      <category>AROS</category>
+      <category>Design</category>
+      <description>How a slow tree view in Windows Explorer turned into Ferail: a Rust file manager built around speed, low cognitive cost and honest filenames - with the pun hiding in the name from day one.</description>
+      <enclosure url="https://www.jkn.me/blog/the-plan-was-a-faster-file-manager/assets/hero-shell.png" length="301625" type="image/png" />
+    </item>
+    <item>
+      <title>Bringing exFAT to AROS</title>
+      <link>https://www.jkn.me/blog/bringing-exfat-to-aros/</link>
+      <guid isPermaLink="true">https://www.jkn.me/blog/bringing-exfat-to-aros/</guid>
+      <pubDate>Wed, 05 Aug 2026 00:00:00 +0000</pubDate>
+      <category>Engineering</category>
+      <category>AROS</category>
+      <category>exFAT</category>
+      <category>Filesystems</category>
+      <category>Amiga</category>
+      <category>Portability</category>
+      <description>What it took to build portable, writable exFAT support for AROS, from clean-room specification to a disk that moves safely between operating systems.</description>
+      <enclosure url="https://www.jkn.me/macaros/assets/macaros-hero.png" length="808637" type="image/png" />
     </item>
   </channel>
 </rss>

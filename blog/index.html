@@ -47,6 +47,13 @@
         </a>
       </header>
 
+      <nav
+        id="tag-filters"
+        class="tag-filters"
+        aria-label="Filter articles by topic"
+        hidden
+      ></nav>
+
       <!--
         The article list and card feed below are rendered from
         /blog/posts.json - the single source of truth for what's
@@ -101,6 +108,7 @@
 
         var listEl = document.getElementById("article-list");
         var feedEl = document.getElementById("post-list");
+        var filtersEl = document.getElementById("tag-filters");
 
         fetch("/blog/posts.json", { cache: "no-cache" })
           .then(function (r) {
@@ -119,8 +127,61 @@
               return;
             }
 
-            listEl.innerHTML = posts
-              .map(function (p) {
+            var postTags = function (post) {
+              return Array.isArray(post.tags) ? post.tags : [];
+            };
+            var tags = [];
+
+            posts.forEach(function (post) {
+              postTags(post).forEach(function (tag) {
+                if (!tags.some(function (known) {
+                  return known.toLowerCase() === String(tag).toLowerCase();
+                })) tags.push(String(tag));
+              });
+            });
+            tags.sort(function (a, b) {
+              return a.localeCompare(b);
+            });
+
+            var requested = new URLSearchParams(window.location.search).get("tag");
+            var activeTag = tags.find(function (tag) {
+              return requested && tag.toLowerCase() === requested.toLowerCase();
+            }) || "";
+
+            var drawFilters = function () {
+              filtersEl.innerHTML =
+                '<span class="tag-filters-label">Filter by topic</span>' +
+                [""].concat(tags).map(function (tag) {
+                  var selected = tag === activeTag;
+                  return (
+                    '<button type="button" class="tag-filter' +
+                    (selected ? " is-active" : "") +
+                    '" data-tag="' + esc(tag) +
+                    '" aria-pressed="' + selected + '">' +
+                    esc(tag || "All") +
+                    "</button>"
+                  );
+                }).join("");
+              filtersEl.hidden = false;
+            };
+
+            var drawPosts = function () {
+              var visible = activeTag
+                ? posts.filter(function (post) {
+                    return postTags(post).some(function (tag) {
+                      return String(tag).toLowerCase() === activeTag.toLowerCase();
+                    });
+                  })
+                : posts;
+
+              if (!visible.length) {
+                listEl.innerHTML = "";
+                feedEl.innerHTML =
+                  '<p class="empty">No articles use this topic yet.</p>';
+                return;
+              }
+
+              listEl.innerHTML = visible.map(function (p) {
                 return (
                   '<a class="article-link" href="/blog/' +
                   esc(p.slug) +
@@ -133,11 +194,9 @@
                   "</span>" +
                   "</a>"
                 );
-              })
-              .join("");
+              }).join("");
 
-            feedEl.innerHTML = posts
-              .map(function (p) {
+              feedEl.innerHTML = visible.map(function (p) {
                 return (
                   '<a class="post-card" href="/blog/' +
                   esc(p.slug) +
@@ -155,8 +214,29 @@
                   "</p>" +
                   "</a>"
                 );
-              })
-              .join("");
+              }).join("");
+            };
+
+            filtersEl.addEventListener("click", function (event) {
+              var button = event.target.closest("button[data-tag]");
+              if (!button) return;
+
+              activeTag = button.getAttribute("data-tag");
+              var params = new URLSearchParams(window.location.search);
+              if (activeTag) params.set("tag", activeTag);
+              else params.delete("tag");
+              window.history.replaceState(
+                null,
+                "",
+                window.location.pathname +
+                  (params.toString() ? "?" + params.toString() : "")
+              );
+              drawFilters();
+              drawPosts();
+            });
+
+            drawFilters();
+            drawPosts();
           })
           .catch(function () {
             listEl.innerHTML = "";
