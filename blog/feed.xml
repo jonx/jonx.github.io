@@ -16,6 +16,7 @@
       <category>Ferail</category>
       <category>Rust</category>
       <category>GPUI</category>
+      <category>Linux</category>
       <category>AROS</category>
       <category>Design</category>
       <description>How a slow tree view in Windows Explorer turned into Ferail: a Rust file manager built around speed, low cognitive cost and honest filenames - with the pun hiding in the name from day one.</description>

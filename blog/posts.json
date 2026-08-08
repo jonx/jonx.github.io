@@ -5,7 +5,7 @@
     "date": "2026-08-08",
     "category": "Engineering",
     "description": "How a slow tree view in Windows Explorer turned into Ferail: a Rust file manager built around speed, low cognitive cost and honest filenames - with the pun hiding in the name from day one.",
-    "tags": ["Ferail", "Rust", "GPUI", "AROS", "Design"],
+    "tags": ["Ferail", "Rust", "GPUI", "Linux", "AROS", "Design"],
     "image": "/blog/the-plan-was-a-faster-file-manager/assets/hero-shell.png"
   },
   {
