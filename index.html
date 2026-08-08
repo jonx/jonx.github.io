@@ -129,8 +129,10 @@
       }
 
       .project {
-        display: block;
-        padding: 22px 22px 20px;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        overflow: hidden;
         background: linear-gradient(
             160deg,
             rgba(244, 195, 93, 0.04) 0%,
@@ -143,6 +145,74 @@
         color: inherit;
         transition: transform 0.18s ease, border-color 0.18s ease,
           box-shadow 0.18s ease;
+      }
+
+      .project-visual {
+        position: relative;
+        min-width: 0;
+        height: 142px;
+        overflow: hidden;
+        background: #0b0714;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .project-visual::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          180deg,
+          transparent 48%,
+          rgba(21, 16, 38, 0.72) 100%
+        );
+        pointer-events: none;
+      }
+
+      .project-visual img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .project-visual--ferail img {
+        object-position: 50% 20%;
+      }
+
+      .project-visual--macaros img {
+        object-position: 51% 49%;
+      }
+
+      .project-visual--icon {
+        display: grid;
+        place-items: center;
+        background: radial-gradient(
+            circle at 50% 55%,
+            rgba(166, 149, 198, 0.22),
+            transparent 56%
+          ),
+          #090612;
+      }
+
+      .project-visual--icon img {
+        width: 104px;
+        height: 104px;
+        object-fit: contain;
+      }
+
+      .project-visual--chrome img {
+        width: 112px;
+        height: 112px;
+      }
+
+      .project-visual--pet img {
+        object-position: 50% 24%;
+      }
+
+      .project-body {
+        flex: 1;
+        min-width: 0;
+        padding: 20px 22px 20px;
       }
 
       .project:hover {
@@ -197,6 +267,17 @@
         margin: 0;
       }
 
+      @media (prefers-reduced-motion: reduce) {
+        .project,
+        .project h2 .arrow {
+          transition: none;
+        }
+
+        .project:hover {
+          transform: none;
+        }
+      }
+
       /* --- social row --- */
 
       .social {
@@ -249,7 +330,7 @@
     <main>
       <header class="hero">
         <h1 class="name">John Knipper</h1>
-        <p class="tagline">TALL, SHARP</p>
+        <p class="tagline">TALL, SHARP, TOOLS</p>
         <a class="hero-blog" href="/blog/">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M12 20h9" />
@@ -261,48 +342,73 @@
 
       <section class="projects">
         <a class="project" href="/ferail/">
-          <span class="label">Desktop app</span>
-          <h2>Ferail <span class="arrow">→</span></h2>
-          <p>
-            A fast, keyboard-first file manager for macOS and Windows, with
-            disk usage, duplicates and archives built in.
-          </p>
+          <div class="project-visual project-visual--ferail" aria-hidden="true">
+            <img src="/ferail/assets/tour-grid.png" alt="" width="1400" height="900" />
+          </div>
+          <div class="project-body">
+            <span class="label">Desktop app</span>
+            <h2>Ferail <span class="arrow">→</span></h2>
+            <p>
+              A fast, keyboard-first file manager for macOS and Windows, with
+              disk usage, duplicates and archives built in.
+            </p>
+          </div>
         </a>
 
         <a class="project" href="/macaros/">
-          <span class="label">Operating system</span>
-          <h2>Macaros <span class="arrow">→</span></h2>
-          <p>
-            AmigaOS running as a native app on Apple silicon - AROS on a
-            fresh AArch64 backend, hosted on macOS.
-          </p>
+          <div class="project-visual project-visual--macaros" aria-hidden="true">
+            <img src="/macaros/assets/macaros-hero.png" alt="" width="1400" height="823" />
+          </div>
+          <div class="project-body">
+            <span class="label">Operating system</span>
+            <h2>Macaros <span class="arrow">→</span></h2>
+            <p>
+              AmigaOS running as a native app on Apple silicon - AROS on a
+              fresh AArch64 backend, hosted on macOS.
+            </p>
+          </div>
         </a>
 
         <a class="project" href="/paw/">
-          <span class="label">Mobile app</span>
-          <h2>PawSeeBility <span class="arrow">→</span></h2>
-          <p>
-            A playful AI that reads the paw, the companion, and the bond
-            between you. Coming soon to Android.
-          </p>
+          <div class="project-visual project-visual--icon" aria-hidden="true">
+            <img src="/paw/assets/icon.png" alt="" width="2048" height="2048" />
+          </div>
+          <div class="project-body">
+            <span class="label">Mobile app</span>
+            <h2>PawSeeBility <span class="arrow">→</span></h2>
+            <p>
+              A playful AI that reads the paw, the companion, and the bond
+              between you. Coming soon to Android.
+            </p>
+          </div>
         </a>
 
         <a class="project" href="/chrome/">
-          <span class="label">Chrome</span>
-          <h2>Extensions <span class="arrow">→</span></h2>
-          <p>
-            Small, focused browser extensions that fix everyday
-            friction. No telemetry, no ads, no accounts.
-          </p>
+          <div class="project-visual project-visual--icon project-visual--chrome" aria-hidden="true">
+            <img src="/chrome/assets/demo-query-helper.png" alt="" width="512" height="512" />
+          </div>
+          <div class="project-body">
+            <span class="label">Chrome</span>
+            <h2>Extensions <span class="arrow">→</span></h2>
+            <p>
+              Small, focused browser extensions that fix everyday
+              friction. No telemetry, no ads, no accounts.
+            </p>
+          </div>
         </a>
 
         <a class="project" href="/pet/">
-          <span class="label">Experiment</span>
-          <h2>NonoGotchi <span class="arrow">→</span></h2>
-          <p>
-            A Tamagotchi-style virtual pet that lives on the Nothing
-            Phone 3's Glyph display.
-          </p>
+          <div class="project-visual project-visual--pet" aria-hidden="true">
+            <img src="/pet/baby.png" alt="" width="1260" height="2800" />
+          </div>
+          <div class="project-body">
+            <span class="label">Experiment</span>
+            <h2>NonoGotchi <span class="arrow">→</span></h2>
+            <p>
+              A Tamagotchi-style virtual pet that lives on the Nothing
+              Phone 3's Glyph display.
+            </p>
+          </div>
         </a>
       </section>
 

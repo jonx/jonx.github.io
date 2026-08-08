@@ -52,6 +52,12 @@ and the card feed from it. **You never edit `/blog/index.html` to publish.**
 A third file, **`/blog/feed.xml`** (RSS 2.0), is *generated* from `posts.json` by
 `tools/make-feed.py`. Never hand-edit it.
 
+`/blog/blog.css` and `/blog/blog.js` are shared by every post. The stylesheet
+provides the prose, article-summary, metadata, tags and contextual-term
+components. The script adds the reading-progress bar and upgrades term
+definitions from native browser titles to positioned, keyboard-accessible
+tooltips. A new post uses both shared files; it does not copy their code.
+
 ### Procedure
 
 1. Choose a slug: lowercase, hyphen-separated, no date in it. The directory name
@@ -71,7 +77,8 @@ A third file, **`/blog/feed.xml`** (RSS 2.0), is *generated* from `posts.json` b
 
 ### The posts.json entry
 
-All five fields are required. A missing one renders as `undefined` on the card.
+All six fields are required. A missing scalar field renders as `undefined` on
+the card; missing or malformed tags fail feed generation.
 
 ```json
 {
@@ -79,7 +86,8 @@ All five fields are required. A missing one renders as `undefined` on the card.
   "title": "Why the UI never blocks",
   "date": "2026-08-04",
   "category": "Engineering",
-  "description": "One rule, and everything it costs to keep it."
+  "description": "One rule, and everything it costs to keep it.",
+  "tags": ["Interfaces", "Performance", "Architecture"]
 }
 ```
 
@@ -89,6 +97,9 @@ All five fields are required. A missing one renders as `undefined` on the card.
 - `category` is one or two words; it is displayed uppercase.
 - `description` is one or two sentences and should match the page's own
   `meta description`.
+- `tags` is a non-empty array of unique topic names. Keep capitalization and
+  spelling consistent across posts because the index builds its filters from
+  these values.
 - Values are **plain text**. The renderer HTML-escapes them, so any markup you
   put here shows up as literal `&lt;b&gt;`.
 
@@ -122,12 +133,31 @@ Copy this verbatim and fill in the four marked spots. `body class="post"` and
       <a class="back" href="/blog/"><span class="arrow">←</span> All posts</a>
 
       <header class="post-head">
-        <span class="meta">YYYY-MM-DD · CATEGORY</span>
+        <div class="post-meta-row" aria-label="Article details">
+          <span class="meta">YYYY-MM-DD · CATEGORY,</span>
+          <span class="post-fact reading-time" data-minutes="N"
+            >N min read</span
+          >
+          <span class="post-fact">
+            Technical
+            <span class="tech-level" aria-label="N out of 5">★★★★★</span>
+          </span>
+        </div>
         <h1>TITLE</h1>
       </header>
 
       <article class="prose">
+        <aside class="post-summary" aria-labelledby="summary-label">
+          <span class="summary-label" id="summary-label">TL;DR</span>
+          <p>ONE TO THREE SENTENCES FOR A READER IN A HURRY.</p>
+        </aside>
+
         <p>…</p>
+
+        <nav class="post-tags" aria-label="Article topics">
+          <span class="post-tags-label">Topics</span>
+          <a class="post-tag" href="/blog/?tag=TAG">TAG</a>
+        </nav>
       </article>
 
       <footer class="site-footer">
@@ -142,17 +172,90 @@ Copy this verbatim and fill in the four marked spots. `body class="post"` and
         >
       </footer>
     </main>
+    <script src="/blog/blog.js" defer></script>
   </body>
 </html>
 ```
 
 The date and category appear **twice** — in `posts.json` and in `.post-head .meta`.
-Nothing keeps them in sync, so set both.
+Tags also appear in `posts.json` and at the end of the article. Nothing keeps
+these copies in sync, so set both.
+
+### Tags and filtering
+
+Use three to six broad, reusable tags per post. Prefer `Filesystems` over a tag
+that only one article could ever use, but include a specific project or product
+name such as `AROS` when readers may want every post about it. Do not prefix tags
+with `#`.
+
+The blog index derives its filter buttons from every post's `tags` array. A
+filter is represented in the URL as `/blog/?tag=TAG`, so filtered views can be
+bookmarked and shared. The tags at the end of the article link to those views.
+They are real navigation, not decorative chips.
+
+Keep the article links and the `posts.json` array identical in spelling and
+capitalization. Encode spaces and punctuation in `href` values when needed. The
+feed generator validates that every post has a non-empty list of unique,
+non-empty tag strings and emits them as RSS categories.
+
+### Reader context, reading time and technical level
+
+This blog covers unrelated projects and subjects. Never assume a reader arrived
+from the rest of the site or already knows the topic. Near the start of every
+post:
+
+- Say what the central project, product or subject is in one short paragraph.
+- Link its canonical page or primary source.
+- Explain any directly related John Knipper project and link its page when that
+  relationship helps orient the reader.
+- Keep the context brief. It is an entrance ramp, not a second introduction.
+
+Every post also carries three quick signals above the main text:
+
+- A `TL;DR` box of one to three sentences that states the result and why it
+  matters. It must make sense without reading the title twice.
+- A reading-time estimate. Count the article prose at roughly 200 words per
+  minute and round up to a whole minute.
+- A technical rating from one to five stars. One star is general-interest prose;
+  three expects familiarity with the field; five includes implementation-level
+  details. Use filled and empty stars as needed (`★★★☆☆`) and keep the numeric
+  `aria-label` in sync.
+
+Including `/blog/blog.js` creates a gold reading-progress bar at the top of the
+viewport. While the reader scrolls through the article it also shows an updated
+`ARTICLE TITLE · N min left` badge, using the heading and the total from
+`.reading-time[data-minutes]`. On a narrow screen the title truncates before the
+time. At the end of the article the title remains attached to the completed bar
+and only the timer disappears. The script measures progress through
+`article.prose`; posts do not add their own progress markup or scroll handler.
+
+### Contextual terms
+
+Use contextual definitions sporadically for an acronym, specialist term or
+ambiguous word that could make a reader stop. Define the first useful occurrence,
+not every occurrence, and do not turn ordinary prose into a field of underlines.
+For example, `DOS` in an AROS article needs a definition because many readers
+will assume MS-DOS:
+
+```html
+<abbr
+  class="term"
+  title="Disk Operating System, the Amiga-style AROS subsystem for filesystems, volumes, paths, file handles and DOS devices."
+  >DOS</abbr
+>
+```
+
+The term receives a gold dashed underline. Its `title` is a no-JavaScript
+fallback; `/blog/blog.js` turns it into a styled tooltip on mouse hover or
+keyboard focus. Keep definitions to one plain-text sentence, expand acronyms,
+and explain the meaning in this article rather than trying to write a complete
+dictionary entry.
 
 ### What you can write inside `article.prose`
 
 `blog.css` already styles `h2`, `h3`, `p`, `ul`, `ol`, `li`, `blockquote`,
-`code`, `pre > code`, `img`, `hr`, `strong` and `a`. Two notes:
+`code`, `pre > code`, `img`, `hr`, `strong`, `a`, the article summary and
+contextual `abbr.term` elements. Two notes:
 
 - Lists get custom markers (`▸` and generated numbers). Do not type your own
   bullets or "1." prefixes.
