@@ -5,8 +5,22 @@
     <link>https://www.jkn.me/blog/</link>
     <description>Notes from building small, sharp tools - extensions, apps, and experiments.</description>
     <language>en</language>
-    <lastBuildDate>Sat, 08 Aug 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 15 Aug 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://www.jkn.me/blog/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Macaros: AROS as a native Apple Silicon app</title>
+      <link>https://www.jkn.me/blog/macaros-aros-on-apple-silicon/</link>
+      <guid isPermaLink="true">https://www.jkn.me/blog/macaros-aros-on-apple-silicon/</guid>
+      <pubDate>Sat, 15 Aug 2026 00:00:00 +0000</pubDate>
+      <category>Engineering</category>
+      <category>Macaros</category>
+      <category>AROS</category>
+      <category>Apple Silicon</category>
+      <category>Amiga</category>
+      <category>Systems</category>
+      <description>Macaros runs AROS as a native Apple Silicon Mac app, with host integration, legacy 68k support, exFAT, Zed, Ferail and an automated test harness.</description>
+      <enclosure url="https://www.jkn.me/blog/macaros-aros-on-apple-silicon/assets/macaros-hero.webp" length="50990" type="image/webp" />
+    </item>
     <item>
       <title>The plan was a faster file manager</title>
       <link>https://www.jkn.me/blog/the-plan-was-a-faster-file-manager/</link>

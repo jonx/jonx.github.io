@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Macaros: AROS as a native Apple Silicon app - John Knipper</title>
+    <meta
+      name="description"
+      content="Macaros runs AROS as a native Apple Silicon Mac app, with host integration, legacy 68k support, exFAT, Zed, Ferail and an automated test harness."
+    />
+    <meta name="theme-color" content="#07040F" />
+    <meta
+      property="og:title"
+      content="Macaros: AROS as a native Apple Silicon app - John Knipper"
+    />
+    <meta
+      property="og:description"
+      content="Macaros runs AROS as a native Apple Silicon Mac app, with host integration, legacy 68k support, exFAT, Zed, Ferail and an automated test harness."
+    />
+    <meta
+      property="og:image"
+      content="https://www.jkn.me/blog/macaros-aros-on-apple-silicon/assets/macaros-hero.webp"
+    />
+    <meta
+      property="og:url"
+      content="https://www.jkn.me/blog/macaros-aros-on-apple-silicon/"
+    />
+    <link rel="icon" type="image/png" href="/paw/assets/icon.png" />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="John Knipper"
+      href="/blog/feed.xml"
+    />
+    <link rel="stylesheet" href="/blog/blog.css" />
+  </head>
+  <body class="post">
+    <main class="wrap">
+      <a class="back" href="/blog/"><span class="arrow">←</span> All posts</a>
+
+      <header class="post-head">
+        <div class="post-meta-row" aria-label="Article details">
+          <span class="meta">2026-08-15 · ENGINEERING,</span>
+          <span class="post-fact reading-time" data-minutes="6"
+            >6 min read</span
+          >
+          <span class="post-fact">
+            Technical
+            <span class="tech-level" aria-label="3 out of 5">★★★☆☆</span>
+          </span>
+        </div>
+        <h1>Macaros: AROS as a native Apple Silicon app</h1>
+      </header>
+
+      <article class="prose">
+        <aside class="post-summary" aria-labelledby="summary-label">
+          <span class="summary-label" id="summary-label">TL;DR</span>
+          <p>
+            Macaros packages a native AArch64 build of AROS as a Mac
+            app. It boots the Wanderer desktop, connects AROS to Mac hardware and
+            files, runs modern applications and a growing body of legacy 68k
+            software, and can be tested end to end without a person at the
+            keyboard.
+          </p>
+        </aside>
+
+        <p>
+          <a href="/macaros/">Macaros</a> is my Apple Silicon home for
+          <abbr
+            class="term"
+            title="AROS Research Operating System, an open-source operating system compatible with AmigaOS APIs."
+            >AROS</abbr
+          >, the open-source AmigaOS-compatible operating system. AROS is
+          compiled for AArch64 and runs inside an arm64 Mac application.
+        </p>
+
+        <img
+          src="/blog/macaros-aros-on-apple-silicon/assets/macaros-hero.webp"
+          alt="The AROS Wanderer desktop running in a Macaros window on macOS"
+          width="1400"
+          height="823"
+        />
+
+        <p>
+          Double-click Macaros and the Wanderer desktop boots in a resizable
+          Cocoa and Metal window. AROS provides the operating-system environment;
+          macOS provides the hardware-facing services through a small set of
+          bridges.
+        </p>
+
+        <h2>Why host an operating system?</h2>
+
+        <p>
+          Much of Apple Silicon's bare-metal hardware interface is undocumented.
+          A native hardware port would first require substantial work on boot,
+          interrupts, graphics, audio, storage and networking.
+        </p>
+
+        <p>
+          Hosting changes the order of the work. Cocoa and Metal present the
+          AROS framebuffer. CoreAudio backs AHI sound. Native sockets provide
+          networking and DNS. NSPasteboard carries clipboard text. A Mac folder
+          becomes an AROS volume. Each bridge exposes a host capability through
+          a normal AROS interface, so applications continue to see an operating
+          system rather than a collection of Mac-specific shortcuts.
+        </p>
+
+        <p>
+          Macaros is a hosted system; I am not planning a bare-metal Apple
+          Silicon port. Code built for this AROS target has to follow the host
+          ABI and must never allocate register <code>x18</code>. Apple reserves
+          that platform register, and Darwin signal delivery does not preserve
+          a guest value there. C and C++ builds use <code>-ffixed-x18</code>; the
+          Rust target reserves it as well.
+        </p>
+
+        <p>
+          The AROS system and its modern applications execute as arm64 code.
+          Classic 68k programs use a separate compatibility layer.
+        </p>
+
+        <h2>What Macaros can do today</h2>
+
+        <p>
+          The current release includes the Wanderer desktop, keyboard and mouse
+          input, native menus, clipboard, audio, networking and a writable
+          exchange folder at
+          <code>~/AROS/Shared</code>. That folder appears inside AROS as writable
+          <code>MacRW:</code> and read-only <code>MacRO:</code>.
+        </p>
+
+        <p>
+          FFView opens images and video through a native AROS build of FFmpeg.
+          Metal compute accelerates expensive colour conversion and scaling.
+          Rust's standard library has been brought across far enough for large
+          native applications to use files, sockets, processes, time and threads.
+        </p>
+
+        <p>
+          The release desktop includes Zed and Ferail as native AArch64 AROS
+          applications. Zed brings editing and syntax highlighting; Ferail adds
+          search, duplicate detection, archive browsing and disk-usage views.
+        </p>
+
+        <h2>Old programs on a new architecture</h2>
+
+        <p>
+          Native AArch64 applications are only half of an Amiga-shaped platform.
+          Existing software is mostly 68k, with assumptions built around a very
+          different processor and calling convention. Macaros includes a
+          68k-to-AArch64
+          <abbr
+            class="term"
+            title="Just-in-time compiler, which translates program instructions while the program runs."
+            >JIT</abbr
+          > and an AROS execution bridge for a growing set of classic programs.
+        </p>
+
+        <p>
+          The JIT translates integer and floating-point instructions into native
+          AArch64 blocks. The surrounding bridge loads Amiga executables,
+          marshals calls into AROS libraries and contains faults so one bad
+          application does not have to take down the desktop. An independent
+          interpreter provides a second execution engine for byte-exact tests.
+          Compatibility is not complete; programs tied to original Amiga custom
+          hardware remain outside its scope.
+        </p>
+
+        <h2>A modern removable disk inside AROS</h2>
+
+        <p>
+          Macaros also carries the writable exFAT driver described in
+          <a href="/blog/bringing-exfat-to-aros/">Bringing exFAT to AROS</a>.
+          The handler was implemented from the public specification and tested
+          across architecture, byte-order and large-disk boundaries. It gives
+          AROS a practical way to exchange modern removable media and disk images
+          with macOS and other systems.
+        </p>
+
+        <p>
+          The driver lives in the AROS fork. Macaros supplies its host-side test
+          fixtures, corruption tests and removable-media checks, and verifies
+          both <code>exfat-handler</code> and its
+          <abbr class="term" title="The AROS configuration that associates a device with its filesystem handler.">DOSDriver</abbr>
+          in every release image.
+        </p>
+
+        <h2>Built to be observed</h2>
+
+        <p>
+          The <code>aros-ctl</code> harness makes the build, boot, input and
+          verification loop scriptable. It can start and stop the system, type
+          commands, click, resize the display, inspect tasks, collect logs and
+          capture the framebuffer.
+        </p>
+
+        <p>
+          Its screenshots come from an offscreen render target owned by Macaros,
+          not from macOS screen capture. Tests therefore need no Screen Recording
+          permission and cannot capture another application. The same interface
+          can be used by other tools that need to drive AROS directly.
+        </p>
+
+        <h2>Release structure</h2>
+
+        <p>
+          The project now has a dedicated
+          <a href="https://github.com/jonx/Macaros" target="_blank" rel="noopener"
+            >Macaros repository</a
+          > for host integration, tests, documentation and releases. Custom
+          AROS and Apple Silicon port work remains separate, as do Zed and
+          Ferail. Each release records the exact source revision of every
+          component.
+        </p>
+
+        <p>
+          The delivery image contains a short README, complete third-party
+          notices and a small compatibility checker for processor, macOS
+          version, memory, Metal, disk space and signature state. A candidate is
+          first built unsigned and tested from a relocated disk image. Only that
+          approved image is then signed with Developer ID, notarized and
+          published.
+        </p>
+
+        <p>
+          Legacy compatibility still needs a broader software corpus, Zed needs
+          more of its surrounding development tools, and some host configuration
+          changes require a restart. Today, Macaros boots AROS on Apple Silicon,
+          connects it to essential Mac services, runs substantial native
+          software and supports a growing set of 68k applications.
+        </p>
+
+        <nav class="post-tags" aria-label="Article topics">
+          <span class="post-tags-label">Topics</span>
+          <a class="post-tag" href="/blog/?tag=Macaros">Macaros</a>
+          <a class="post-tag" href="/blog/?tag=AROS">AROS</a>
+          <a class="post-tag" href="/blog/?tag=Apple%20Silicon">Apple Silicon</a>
+          <a class="post-tag" href="/blog/?tag=Amiga">Amiga</a>
+          <a class="post-tag" href="/blog/?tag=Systems">Systems</a>
+        </nav>
+      </article>
+
+      <footer class="site-footer">
+        <span>© 2026 John Knipper</span>
+        <span class="dot">·</span>
+        <a href="/blog/">All posts</a>
+        <span class="dot">·</span>
+        <a href="/blog/feed.xml">RSS</a>
+        <span class="dot">·</span>
+        <a href="https://github.com/jonx" target="_blank" rel="noopener"
+          >GitHub</a
+        >
+      </footer>
+    </main>
+    <script src="/blog/blog.js" defer></script>
+  </body>
+</html>

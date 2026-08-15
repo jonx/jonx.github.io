@@ -1,5 +1,14 @@
 [
   {
+    "slug": "macaros-aros-on-apple-silicon",
+    "title": "Macaros: AROS as a native Apple Silicon app",
+    "date": "2026-08-15",
+    "category": "Engineering",
+    "description": "Macaros runs AROS as a native Apple Silicon Mac app, with host integration, legacy 68k support, exFAT, Zed, Ferail and an automated test harness.",
+    "tags": ["Macaros", "AROS", "Apple Silicon", "Amiga", "Systems"],
+    "image": "/blog/macaros-aros-on-apple-silicon/assets/macaros-hero.webp"
+  },
+  {
     "slug": "the-plan-was-a-faster-file-manager",
     "title": "The plan was a faster file manager",
     "date": "2026-08-08",
