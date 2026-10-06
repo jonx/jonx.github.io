@@ -123,7 +123,7 @@ Copy this verbatim and fill in the four marked spots. `body class="post"` and
     <meta name="theme-color" content="#191323" />
     <meta property="og:title" content="TITLE - John Knipper" />
     <meta property="og:description" content="DESCRIPTION" />
-    <link rel="icon" type="image/png" href="/paw/assets/icon.png" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=20261006" />
     <link
       rel="alternate"
       type="application/rss+xml"
