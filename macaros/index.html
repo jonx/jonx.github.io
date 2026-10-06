@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -8,7 +8,7 @@
       name="description"
       content="AROS, the open-source AmigaOS reimplementation, running as an ordinary arm64 macOS process. A native AArch64 CPU backend, a Cocoa/Metal display, and a control harness that drives the whole system from the command line."
     />
-    <meta name="theme-color" content="#07040F" />
+    <meta name="theme-color" content="#191323" />
     <meta property="og:title" content="Macaros" />
     <meta
       property="og:description"
@@ -21,7 +21,10 @@
     />
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" type="image/png" href="/macaros/assets/icon.png" />
-    <link rel="stylesheet" href="/macaros/macaros.css" />
+    <link
+      rel="stylesheet"
+      href="/macaros/macaros.css?v=20261006-release-links"
+    />
   </head>
   <body>
     <main>
@@ -50,25 +53,22 @@
               <span>native AArch64 backend</span>
               <span>hosted darwin-aarch64</span>
               <span>signed + notarized</span>
-              <span>v0.2</span>
             </div>
 
-            <div class="downloads">
+            <nav class="project-links" aria-label="Downloads and source code">
               <a
-                class="dl"
-                href="https://github.com/jonx/Macaros/releases/latest"
+                href="https://github.com/jonx/Macaros/releases"
+                target="_blank"
+                rel="noopener"
+                >Releases on GitHub <span aria-hidden="true">↗</span></a
               >
-                Download from GitHub
-                <small>Latest release · Apple silicon · macOS 12+</small>
-              </a>
               <a
-                class="dl dl-soft"
                 href="https://github.com/jonx/Macaros"
+                target="_blank"
+                rel="noopener"
+                >Source code <span aria-hidden="true">↗</span></a
               >
-                Source on GitHub
-                <small>graft layer, docs and build instructions</small>
-              </a>
-            </div>
+            </nav>
           </div>
         </div>
       </section>
@@ -97,8 +97,8 @@
           />
           <figcaption>
             <b>A full GPUI app boots on it.</b>
-            <a href="/ferail/">Ferail</a> runs as <code>C:Ferail</code> through a
-            from-scratch software-raster GPUI backend - themed chrome, native
+            <a href="/ferail/">Ferail</a> runs as <code>C:Ferail</code> through
+            a from-scratch software-raster GPUI backend - themed chrome, native
             Intuition menus and asl.library requesters included.
           </figcaption>
         </figure>
@@ -133,9 +133,9 @@
         <div>
           <h3>Drivable with nobody at the keyboard</h3>
           <p>
-            One rule shapes the project: an agent must be able to run
-            build → boot → observe → judge unattended. Injected input enters the
-            same pump as real <code>NSEvent</code>s, and screenshots come from an
+            One rule shapes the project: an agent must be able to run build →
+            boot → observe → judge unattended. Injected input enters the same
+            pump as real <code>NSEvent</code>s, and screenshots come from an
             offscreen oracle rather than the on-screen drawable.
           </p>
         </div>
@@ -166,15 +166,24 @@
       </section>
 
       <table class="caps">
-        <caption>Each surface is one idea - macOS owns the driver, AROS reaches it via exec I/O</caption>
+        <caption>
+          Each surface is one idea - macOS owns the driver, AROS reaches it via
+          exec I/O
+        </caption>
         <tbody>
           <tr>
             <th scope="row">Display</th>
-            <td>Cocoa/Metal window, AROS-side <code>cocoa.hidd</code> over the full graphics/intuition/layers stack</td>
+            <td>
+              Cocoa/Metal window, AROS-side <code>cocoa.hidd</code> over the
+              full graphics/intuition/layers stack
+            </td>
           </tr>
           <tr>
             <th scope="row">Input</th>
-            <td>Keyboard, mouse and wheel on the same event path as real NSEvents; gadtools menu strips</td>
+            <td>
+              Keyboard, mouse and wheel on the same event path as real NSEvents;
+              gadtools menu strips
+            </td>
           </tr>
           <tr>
             <th scope="row">Clipboard</th>
@@ -182,7 +191,10 @@
           </tr>
           <tr>
             <th scope="row">Host volumes</th>
-            <td>A Mac folder mounted as <code>MacRO:</code> / <code>MacRW:</code>, with drag-from-Finder</td>
+            <td>
+              A Mac folder mounted as <code>MacRO:</code> / <code>MacRW:</code>,
+              with drag-from-Finder
+            </td>
           </tr>
           <tr>
             <th scope="row">Audio</th>
@@ -190,15 +202,25 @@
           </tr>
           <tr>
             <th scope="row">Networking</th>
-            <td><code>bsdsocket.library</code> forwarded to native sockets - TCP/IP and DNS</td>
+            <td>
+              <code>bsdsocket.library</code> forwarded to native sockets -
+              TCP/IP and DNS
+            </td>
           </tr>
           <tr>
             <th scope="row">Media</th>
-            <td>ffmpeg decode, an FFViewX viewer and an <code>ffmpeg.datatype</code>, with GPU 2D via <code>gpufx.library</code></td>
+            <td>
+              ffmpeg decode, an FFViewX viewer and an
+              <code>ffmpeg.datatype</code>, with GPU 2D via
+              <code>gpufx.library</code>
+            </td>
           </tr>
           <tr>
             <th scope="row">Rust std</th>
-            <td>Runs natively - net, fs, env, args, process, time and thread all verified live</td>
+            <td>
+              Runs natively - net, fs, env, args, process, time and thread all
+              verified live
+            </td>
           </tr>
         </tbody>
       </table>
@@ -217,9 +239,11 @@
           <p>
             AROS is distributed under the AROS Public License. The graft layer,
             its design docs and the build instructions are all in the
-            <a href="https://github.com/jonx/Macaros">repository</a>.
-            Macaros uses FFmpeg under the LGPL 2.1 or later; the exact
-            <a href="https://github.com/jonx/Macaros/releases/download/v0.2.0/Macaros-0.2.0-FFmpeg-8.1.2-source.tar.xz">FFmpeg source used by this release</a>
+            <a href="https://github.com/jonx/Macaros">repository</a>. Macaros
+            uses FFmpeg under the LGPL 2.1 or later; the
+            <a href="https://github.com/jonx/Macaros/releases/tag/v0.2.0"
+              >FFmpeg source for Macaros v0.2.0</a
+            >
             is available with the release assets.
           </p>
         </div>

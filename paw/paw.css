@@ -1,35 +1,20 @@
-/*
-  Shared styles for the PawSeeBility static pages at jkn.me/paw/.
-  One file, three pages (index / privacy / terms). No framework.
+/* PawSeeBility landing: the same violet and peach palette as jkn.me. */
 
-  Palette mirrors the Flutter app's dark palette (lib/theme.dart):
-    accent gold      #F4C35D
-    text high        #FFF5E4
-    text mid         #E4D7F7
-    text lo          #A695C6
-    bg               #07040F
-    card             #151026
-    card hi          #23183D
-    stroke           rgba(255,255,255,.18)
-
-  Dark-only for now - the marketing site is atmospheric by design.
-  Tuned for readability on phones first.
-*/
-
-@import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Manrope:wght@400;600;700&display=swap");
+@import url("/typography.css?v=20261006-1");
 
 :root {
-  --bg: #07040f;
-  --bg-deep: #020108;
-  --card: #151026;
-  --card-hi: #23183d;
-  --accent: #f4c35d;
-  --accent-soft: rgba(244, 195, 93, 0.18);
-  --text-hi: #fff5e4;
-  --text-mid: #e4d7f7;
-  --text-lo: #a695c6;
-  --stroke: rgba(255, 255, 255, 0.18);
-  --max-w: 640px;
+  --bg: #191323;
+  --bg-deep: #191323;
+  --card: #211a2b;
+  --card-hi: #2b2237;
+  --accent: #ffb578;
+  --accent-soft: rgba(255, 181, 120, 0.18);
+  --text-hi: #f4eff9;
+  --text-mid: #e3d9ec;
+  --text-lo: #b8acc5;
+  --stroke: #3b3048;
+
+  --max-w: 808px;
 }
 
 * {
@@ -40,17 +25,15 @@ html,
 body {
   margin: 0;
   padding: 0;
-  background: radial-gradient(
-      1200px 800px at 20% 0%,
-      #241641 0%,
-      transparent 60%
-    ),
-    radial-gradient(900px 700px at 80% 120%, #1d1137 0%, transparent 55%),
+
+  background:
+    radial-gradient(ellipse 900px 650px at 80% 0%, #30213e80, transparent),
     var(--bg-deep);
   color: var(--text-mid);
-  font-family: "Manrope", -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-family: var(--font-body);
   font-size: 16px;
-  line-height: 1.62;
+
+  line-height: 1.8;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
 }
@@ -58,54 +41,74 @@ body {
 .wrap {
   max-width: var(--max-w);
   margin: 0 auto;
-  padding: 48px 24px 64px;
+
+  padding: 38px 24px 56px;
 }
 
 /* --- hero (index.html) --------------------------------------------------- */
 
 .hero {
-  text-align: center;
-  padding: 32px 0 8px;
+  text-align: left;
+
+  padding: 0;
 }
 
 .hero .icon {
-  width: 108px;
-  height: 108px;
+  width: 88px;
+
+  height: 88px;
   border-radius: 28px;
-  box-shadow: 0 10px 40px rgba(244, 195, 93, 0.18);
-  margin-bottom: 20px;
+
+  box-shadow: none;
+
+  margin-bottom: 32px;
+
+  display: block;
 }
 
 .hero h1 {
-  font-family: "Cinzel", serif;
-  font-weight: 700;
+  font-family: var(--font-body);
+
+  font-weight: var(--title-weight);
   color: var(--text-hi);
-  font-size: clamp(34px, 6vw, 48px);
-  letter-spacing: -0.5px;
+
+  font-size: var(--title-size);
+
+  letter-spacing: var(--title-tracking);
   margin: 0 0 14px;
+
+  line-height: var(--title-leading);
 }
 
 .tagline {
-  font-family: "Cinzel", serif;
+  font-family: var(--font-body);
   color: var(--accent);
-  font-size: clamp(16px, 3vw, 20px);
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  margin-bottom: 28px;
+
+  font-size: 20px;
+
+  letter-spacing: 0;
+
+  text-transform: none;
+
+  margin-bottom: 24px;
 }
 
 .pitch {
-  color: var(--text-mid);
+  color: var(--text-lo);
   font-size: 17px;
-  line-height: 1.7;
-  margin: 0 auto 28px;
+
+  line-height: 1.9;
+
+  margin: 0 0 32px;
   max-width: 520px;
 }
 
 .cta-row {
   display: flex;
-  justify-content: center;
-  gap: 12px;
+
+  justify-content: flex-start;
+
+  gap: 16px;
   flex-wrap: wrap;
   margin-top: 24px;
 }
@@ -113,24 +116,30 @@ body {
 .cta {
   display: inline-block;
   padding: 14px 28px;
-  border-radius: 999px;
-  font-weight: 700;
-  font-family: "Manrope", sans-serif;
+
+  border-radius: 8px;
+
+  font-weight: 600;
+  font-family: var(--font-body);
   font-size: 15px;
   letter-spacing: 0.4px;
   text-decoration: none;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
 }
 
 .cta-primary {
   background: var(--accent);
   color: #1c1326;
-  box-shadow: 0 8px 24px rgba(244, 195, 93, 0.28);
+
+  box-shadow: none;
 }
 
 .cta-primary:hover {
   transform: translateY(-1px);
-  box-shadow: 0 10px 32px rgba(244, 195, 93, 0.38);
+
+  box-shadow: none;
 }
 
 .cta-soft {
@@ -145,12 +154,15 @@ body {
 
 .badge {
   display: inline-block;
-  padding: 6px 14px;
+
+  padding: 0;
   border-radius: 999px;
-  background: var(--accent-soft);
+
+  background: transparent;
   color: var(--accent);
   font-size: 11px;
-  font-weight: 800;
+
+  font-weight: 500;
   letter-spacing: 1.4px;
   text-transform: uppercase;
   margin-bottom: 20px;
@@ -163,7 +175,7 @@ article.legal {
 }
 
 article.legal h1 {
-  font-family: "Cinzel", serif;
+  font-family: var(--font-body);
   color: var(--text-hi);
   font-size: clamp(28px, 5vw, 36px);
   letter-spacing: -0.4px;
@@ -177,7 +189,7 @@ article.legal .updated {
 }
 
 article.legal h2 {
-  font-family: "Manrope", sans-serif;
+  font-family: var(--font-body);
   color: var(--text-hi);
   font-size: 18px;
   font-weight: 700;
@@ -204,7 +216,7 @@ article.legal li + li {
 article.legal a {
   color: var(--accent);
   text-decoration: none;
-  border-bottom: 1px solid rgba(244, 195, 93, 0.35);
+  border-bottom: 1px solid rgba(255, 181, 120, 0.35);
 }
 
 article.legal a:hover {
@@ -219,15 +231,17 @@ article.legal strong {
 /* --- footer (all pages) -------------------------------------------------- */
 
 footer.site-footer {
-  margin-top: 56px;
+  margin-top: 80px;
   padding-top: 24px;
   border-top: 1px solid var(--stroke);
   color: var(--text-lo);
-  font-size: 13px;
+
+  font-size: 12px;
   display: flex;
   flex-wrap: wrap;
   gap: 14px 22px;
-  justify-content: center;
+
+  justify-content: flex-start;
   align-items: center;
 }
 
@@ -242,4 +256,30 @@ footer.site-footer a:hover {
 
 footer.site-footer .dot {
   opacity: 0.4;
+}
+
+html {
+  background: var(--bg-deep);
+  color-scheme: dark;
+}
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 5px;
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition: none !important;
+  }
+}
+
+.back {
+  display: inline-block;
+  margin-bottom: 64px;
+  color: var(--text-lo);
+  font-size: 14px;
+  text-decoration: none;
 }

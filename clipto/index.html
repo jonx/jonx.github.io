@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta
+      name="description"
+      content="Convertissez votre presse-papiers en Markdown, texte brut, HTML ou texte enrichi. Votre contenu reste dans votre navigateur."
+    />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'none'; connect-src 'none'; frame-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"
+    />
+    <meta name="theme-color" content="#191323" />
+    <title>ClipTo Web - Copiez. Choisissez. Collez. - jkn.me</title>
+    <link rel="canonical" href="https://www.jkn.me/clipto/" />
+    <meta
+      property="og:title"
+      content="ClipTo Web - Copiez. Choisissez. Collez."
+    />
+    <meta
+      property="og:description"
+      content="Convertissez votre presse-papiers en Markdown, texte brut, HTML ou texte enrichi. Votre contenu reste dans votre navigateur."
+    />
+    <link rel="stylesheet" href="./style.css?v=20261006-jkn" />
+  </head>
+  <body>
+    <nav class="site-nav shell" aria-label="Navigation du site">
+      <a class="home-link" href="/">← jkn.me</a
+      ><a
+        class="native-link"
+        href="https://github.com/jonx/clip-to/releases"
+        target="_blank"
+        rel="noopener noreferrer"
+        >L’application Mac & Windows <span aria-hidden="true">↗</span></a
+      >
+    </nav>
+    <header class="site-header shell">
+      <a class="brand" href="./" aria-label="ClipTo, accueil"
+        ><span class="brand-icon" aria-hidden="true">⌘</span>ClipTo<span
+          class="edition"
+          >WEB</span
+        ></a
+      >
+      <h1 id="page-title">Copiez. Choisissez. <em>Collez.</em></h1>
+    </header>
+    <main class="shell">
+      <section class="workspace" aria-label="Convertisseur de presse-papiers">
+        <div class="source-panel">
+          <div class="panel-heading">
+            <span class="step">01</span>
+            <h2>Votre contenu</h2>
+            <button id="clear" class="text-button" type="button" disabled>
+              Effacer
+            </button>
+          </div>
+          <button id="read" class="read-button" type="button">
+            <span aria-hidden="true">▣</span> Lire le presse-papiers
+            <span aria-hidden="true">↙</span>
+          </button>
+          <p class="read-hint">
+            Autorisez le collage si le navigateur le demande.
+          </p>
+          <div class="source-meta">
+            <span id="source-label">FORMATS ACCESSIBLES</span
+            ><span id="source-origin"></span>
+          </div>
+          <div id="formats" class="format-chips">
+            <span class="empty-chip">En attente de contenu</span>
+          </div>
+          <div class="editor-heading">
+            <label for="input">Ou collez votre contenu ici</label
+            ><span class="key-hint" id="paste-key">Ctrl V</span>
+          </div>
+          <textarea
+            id="input"
+            spellcheck="false"
+            placeholder="Une note en Markdown, du texte copié depuis Word, un extrait d’un mail…"
+            aria-describedby="input-help"
+            maxlength="200000"
+          ></textarea>
+          <div class="input-options">
+            <label for="input-mode">Interpréter comme</label
+            ><select id="input-mode">
+              <option value="auto">Automatique</option>
+              <option value="markdown">Markdown</option>
+              <option value="plain">Texte brut</option>
+              <option value="html">Code HTML</option>
+            </select>
+          </div>
+          <p id="input-help" class="input-help">
+            Le collage conserve le HTML disponible. Modifier le texte retire sa
+            mise en forme.
+          </p>
+          <button id="example" type="button" class="example-button">
+            <span aria-hidden="true">✧</span> Essayer avec un exemple
+            <span aria-hidden="true">→</span>
+          </button>
+        </div>
+
+        <div class="result-panel">
+          <div class="panel-heading">
+            <span class="step">02</span>
+            <h2>Format de sortie</h2>
+          </div>
+          <div class="targets" role="group" aria-label="Format de sortie">
+            <button type="button" data-target="rich" aria-pressed="false">
+              <span class="target-symbol">Aa</span>Texte enrichi
+            </button>
+            <button
+              type="button"
+              data-target="markdown"
+              aria-pressed="true"
+              class="selected"
+            >
+              <span class="target-symbol">M↓</span>Markdown
+            </button>
+            <button type="button" data-target="plain" aria-pressed="false">
+              <span class="target-symbol">Tt</span>Texte brut
+            </button>
+            <button type="button" data-target="html" aria-pressed="false">
+              <span class="target-symbol">&lt;/&gt;</span>Code HTML
+            </button>
+          </div>
+          <div class="preview-heading">
+            <span id="preview-title">APERÇU · MARKDOWN</span
+            ><span id="count">0 caractère</span>
+          </div>
+          <div class="preview-area">
+            <div id="empty-state">
+              <div class="paper-mark" aria-hidden="true">
+                <span></span><span></span><span></span>
+              </div>
+              <h3>Votre aperçu ici.</h3>
+              <p>Collez du contenu pour commencer.</p>
+            </div>
+            <textarea
+              id="output"
+              readonly
+              spellcheck="false"
+              aria-label="Résultat de la conversion"
+              hidden
+            ></textarea>
+            <iframe
+              id="rich-preview"
+              title="Aperçu du texte enrichi"
+              sandbox=""
+              referrerpolicy="no-referrer"
+              hidden
+            ></iframe>
+          </div>
+          <div class="result-footer">
+            <p id="target-help">
+              Des titres, des listes et des liens, prêts pour votre éditeur
+              Markdown.
+            </p>
+            <div class="result-actions">
+              <button
+                id="download"
+                class="download-button"
+                type="button"
+                disabled
+                aria-label="Télécharger le résultat"
+              >
+                ↓ <span id="extension">.md</span></button
+              ><button id="copy" class="copy-button" type="button" disabled>
+                Copier le Markdown <span aria-hidden="true">↗</span>
+              </button>
+            </div>
+            <p id="copy-hint">Puis collez dans l’application de votre choix.</p>
+          </div>
+        </div>
+      </section>
+      <div id="status" class="status" role="status" aria-live="polite"></div>
+      <section class="notes" aria-label="Bon à savoir">
+        <div>
+          <span class="note-number">↔</span>
+          <h3>Le format choisi, vraiment.</h3>
+          <p>
+            Markdown, texte brut et code HTML sont copiés en texte uniquement.
+            Aucune ancienne mise en forme ne se glisse dans le collage.
+          </p>
+        </div>
+        <div>
+          <span class="note-number">◎</span>
+          <h3>Les limites du navigateur.</h3>
+          <p>
+            Seuls les formats que le navigateur expose sont affichés. Le RTF et
+            le collage automatique dans une autre app restent réservés à
+            l’application native.
+          </p>
+        </div>
+        <div>
+          <span class="note-number">⌁</span>
+          <h3>Le contenu avant le décor.</h3>
+          <p>
+            Titres, listes, liens et tableaux simples sont convertis. Les images
+            et les mises en page complexes ne sont pas reproduites.
+          </p>
+        </div>
+      </section>
+    </main>
+    <footer class="shell site-footer">
+      <span
+        >ClipTo <span class="footer-dot">·</span> Aucun contenu envoyé. Aucun
+        historique conservé.</span
+      >
+      <nav aria-label="Liens du projet">
+        <a href="/">jkn.me</a
+        ><a
+          href="https://github.com/jonx/clip-to"
+          target="_blank"
+          rel="noopener noreferrer"
+          >GitHub ↗</a
+        >
+      </nav>
+    </footer>
+    <script src="./vendor/turndown.js"></script>
+    <script src="./vendor/turndown-gfm.js"></script>
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>

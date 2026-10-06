@@ -7,20 +7,21 @@
   site. Dark only; tuned for mobile-first reading.
 */
 
-@import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Manrope:wght@400;600;700&display=swap");
+@import url("/typography.css?v=20261006-1");
 
 :root {
-  --bg: #07040f;
-  --bg-deep: #020108;
-  --card: #151026;
-  --card-hi: #23183d;
-  --accent: #f4c35d;
-  --accent-soft: rgba(244, 195, 93, 0.18);
-  --text-hi: #fff5e4;
-  --text-mid: #e4d7f7;
-  --text-lo: #a695c6;
-  --stroke: rgba(255, 255, 255, 0.18);
-  --max-w: 720px;
+  --bg: #191323;
+  --bg-deep: #191323;
+  --card: #211a2b;
+  --card-hi: #2b2237;
+  --accent: #ffb578;
+  --accent-soft: rgba(255, 181, 120, 0.18);
+  --text-hi: #f4eff9;
+  --text-mid: #e3d9ec;
+  --text-lo: #b8acc5;
+  --stroke: #3b3048;
+
+  --max-w: 908px;
 }
 
 * {
@@ -31,17 +32,15 @@ html,
 body {
   margin: 0;
   padding: 0;
-  background: radial-gradient(
-      1200px 800px at 20% 0%,
-      #241641 0%,
-      transparent 60%
-    ),
-    radial-gradient(900px 700px at 80% 120%, #1d1137 0%, transparent 55%),
+
+  background:
+    radial-gradient(ellipse 900px 650px at 80% 0%, #30213e80, transparent),
     var(--bg-deep);
   color: var(--text-mid);
-  font-family: "Manrope", -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-family: var(--font-body);
   font-size: 16px;
-  line-height: 1.62;
+
+  line-height: 1.8;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
 }
@@ -49,52 +48,65 @@ body {
 .wrap {
   max-width: var(--max-w);
   margin: 0 auto;
-  padding: 56px 24px 64px;
+
+  padding: 38px 24px 56px;
 }
 
 /* --- page header --- */
 
 .page-head {
-  text-align: center;
-  margin-bottom: 40px;
+  text-align: left;
+
+  margin-bottom: 64px;
 }
 
 .page-head h1 {
-  font-family: "Cinzel", serif;
-  font-weight: 700;
+  font-family: var(--font-body);
+
+  font-weight: var(--title-weight);
   color: var(--text-hi);
-  font-size: clamp(34px, 6vw, 48px);
-  letter-spacing: -0.5px;
-  margin: 0 0 10px;
+
+  font-size: var(--title-size);
+
+  letter-spacing: var(--title-tracking);
+
+  margin: 0 0 24px;
+
+  line-height: var(--title-leading);
 }
 
 .page-head p {
   color: var(--text-lo);
-  font-size: 15px;
+
+  font-size: 16px;
   max-width: 520px;
-  margin: 0 auto;
+
+  margin: 0;
 }
 
 /* --- extension card --- */
 
 .extension {
-  background: linear-gradient(
-      160deg,
-      rgba(244, 195, 93, 0.04) 0%,
-      transparent 45%
-    ),
-    var(--card);
-  border: 1px solid var(--stroke);
-  border-radius: 22px;
-  padding: 28px;
-  margin-bottom: 20px;
+  background: transparent;
+
+  border: 0;
+
+  border-radius: 0;
+
+  padding: 36px 0;
+
+  margin-bottom: 36px;
+
+  border-top: 1px solid var(--stroke);
 }
 
 .extension-head {
   display: flex;
   align-items: center;
-  gap: 18px;
-  margin-bottom: 18px;
+
+  gap: 24px;
+
+  margin-bottom: 28px;
 }
 
 .extension-icon {
@@ -107,10 +119,12 @@ body {
 }
 
 .extension-title h2 {
-  font-family: "Cinzel", serif;
-  font-weight: 700;
+  font-family: var(--font-body);
+
+  font-weight: 500;
   color: var(--text-hi);
-  font-size: 26px;
+
+  font-size: 28px;
   letter-spacing: -0.2px;
   margin: 0 0 6px;
   display: flex;
@@ -120,7 +134,7 @@ body {
 }
 
 .extension-version {
-  font-family: "Manrope", sans-serif;
+  font-family: var(--font-body);
   font-size: 11px;
   letter-spacing: 1.2px;
   text-transform: uppercase;
@@ -128,7 +142,7 @@ body {
   color: var(--accent);
   padding: 3px 9px;
   border-radius: 999px;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .extension-tagline {
@@ -141,15 +155,18 @@ body {
 .extension ul.features {
   list-style: none;
   padding: 0;
-  margin: 0 0 22px;
+
+  margin: 0 0 32px;
   display: grid;
-  gap: 8px;
+
+  gap: 16px;
 }
 
 .extension ul.features li {
-  color: var(--text-mid);
+  color: var(--text-lo);
   font-size: 14.5px;
-  line-height: 1.55;
+
+  line-height: 1.8;
   padding-left: 22px;
   position: relative;
 }
@@ -172,25 +189,31 @@ body {
 .btn {
   display: inline-block;
   padding: 12px 22px;
-  border-radius: 999px;
-  font-family: "Manrope", sans-serif;
-  font-weight: 700;
+
+  border-radius: 8px;
+  font-family: var(--font-body);
+
+  font-weight: 600;
   font-size: 14px;
   letter-spacing: 0.3px;
   text-decoration: none;
-  transition: transform 0.15s ease, box-shadow 0.15s ease,
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
     background 0.15s ease;
 }
 
 .btn-primary {
   background: var(--accent);
   color: #1c1326;
-  box-shadow: 0 6px 20px rgba(244, 195, 93, 0.24);
+
+  box-shadow: none;
 }
 
 .btn-primary:hover {
   transform: translateY(-1px);
-  box-shadow: 0 8px 26px rgba(244, 195, 93, 0.36);
+
+  box-shadow: none;
 }
 
 .btn-soft {
@@ -206,13 +229,18 @@ body {
 /* --- "more coming" teaser --- */
 
 .coming-soon {
-  text-align: center;
-  padding: 28px;
-  border: 1px dashed var(--stroke);
-  border-radius: 18px;
+  text-align: left;
+
+  padding: 28px 0;
+
+  border: 0;
+
+  border-radius: 0;
   color: var(--text-lo);
   font-size: 14px;
   letter-spacing: 0.2px;
+
+  border-top: 1px solid var(--stroke);
 }
 
 /* --- footer --- */
@@ -222,11 +250,13 @@ footer.site-footer {
   padding-top: 22px;
   border-top: 1px solid var(--stroke);
   color: var(--text-lo);
-  font-size: 13px;
+
+  font-size: 12px;
   display: flex;
   flex-wrap: wrap;
   gap: 14px 22px;
-  justify-content: center;
+
+  justify-content: flex-start;
   align-items: center;
 }
 
@@ -241,4 +271,49 @@ footer.site-footer a:hover {
 
 footer.site-footer .dot {
   opacity: 0.4;
+}
+
+html {
+  background: var(--bg-deep);
+  color-scheme: dark;
+}
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 5px;
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition: none !important;
+  }
+}
+
+.back {
+  display: inline-block;
+  margin-bottom: 64px;
+  color: var(--text-lo);
+  font-size: 14px;
+  text-decoration: none;
+}
+.extension-title {
+  min-width: 0;
+}
+@media (max-width: 500px) {
+  .extension-head {
+    align-items: flex-start;
+    gap: 16px;
+  }
+  .extension-icon {
+    width: 52px;
+    height: 52px;
+  }
+  .extension-title h2 {
+    font-size: 24px;
+  }
+  .back {
+    margin-bottom: 48px;
+  }
 }

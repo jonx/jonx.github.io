@@ -1,19 +1,21 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>John Knipper - jkn.me</title>
+    <title>John Knipper - Tools & projects</title>
     <meta
       name="description"
-      content="Small, sharp tools by John Knipper. Chrome extensions, mobile apps, and experiments."
+      content="Desktop apps, developer tools, and new work for the Amiga ecosystem. Projects by John Knipper, including Amigadex, ClipTo, Ferail and Macaros."
     />
-    <meta name="theme-color" content="#07040F" />
-    <meta property="og:title" content="John Knipper - jkn.me" />
+    <meta name="theme-color" content="#191323" />
+    <meta property="og:title" content="John Knipper - Tools & projects" />
     <meta
       property="og:description"
-      content="Small, sharp tools by John Knipper."
+      content="Tools I build, systems I explore. Desktop apps, developer tools, and new work for the Amiga ecosystem."
     />
+    <meta property="og:url" content="https://www.jkn.me/" />
+    <link rel="canonical" href="https://www.jkn.me/" />
     <link rel="icon" type="image/png" href="/paw/assets/icon.png" />
     <link
       rel="alternate"
@@ -21,439 +23,854 @@
       title="John Knipper"
       href="/blog/feed.xml"
     />
+    <link href="/typography.css?v=20261006-1" rel="stylesheet" />
     <style>
-      @import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Manrope:wght@400;500;600;700&display=swap");
-
       :root {
-        --bg-deep: #020108;
-        --card: #151026;
-        --accent: #f4c35d;
-        --accent-soft: rgba(244, 195, 93, 0.18);
-        --text-hi: #fff5e4;
-        --text-mid: #e4d7f7;
-        --text-lo: #a695c6;
-        --stroke: rgba(255, 255, 255, 0.18);
+        color-scheme: dark;
+        --bg: #191323;
+        --text: #f4eff9;
+        --muted: #b8acc5;
+        --accent: #ffb578;
+        --line: #3b3048;
       }
-
       * {
         box-sizing: border-box;
       }
-
-      html,
+      html {
+        scroll-behavior: smooth;
+        scroll-padding-top: 32px;
+      }
       body {
         margin: 0;
-        padding: 0;
-        min-height: 100vh;
-        background: radial-gradient(
-            1200px 800px at 20% 0%,
-            #241641 0%,
-            transparent 60%
+        background:
+          radial-gradient(
+            ellipse 900px 650px at 80% 0%,
+            #30213e80,
+            transparent
           ),
-          radial-gradient(900px 700px at 80% 120%, #1d1137 0%, transparent 55%),
-          var(--bg-deep);
-        color: var(--text-mid);
-        font-family: "Manrope", -apple-system, "Segoe UI", Roboto, sans-serif;
+          var(--bg);
+        color: var(--text);
+        font-family: var(--font-body);
         font-size: 16px;
-        line-height: 1.6;
+        line-height: 1.65;
         -webkit-font-smoothing: antialiased;
       }
-
-      main {
-        max-width: 760px;
-        margin: 0 auto;
-        padding: 72px 24px 48px;
-        min-height: 100vh;
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      a:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 7px;
+        border-radius: 3px;
+      }
+      a:hover {
+        color: var(--accent);
+      }
+      .wrap {
+        width: min(1064px, calc(100% - 96px));
+        margin: auto;
+      }
+      .skip {
+        position: absolute;
+        left: 24px;
+        top: -100px;
+        background: var(--bg);
+        padding: 12px;
+        z-index: 2;
+      }
+      .skip:focus {
+        top: 12px;
+      }
+      .nav {
         display: flex;
-        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        padding: 38px 0;
       }
-
-      /* --- hero --- */
-
+      .brand {
+        font-size: 17px;
+        font-weight: 700;
+        letter-spacing: -0.5px;
+      }
+      .brand span {
+        color: var(--accent);
+      }
+      .nav-links {
+        display: flex;
+        gap: 32px;
+        font-size: 13px;
+        color: var(--muted);
+      }
       .hero {
-        text-align: center;
-        margin-bottom: 56px;
+        padding: 100px 0 106px;
+        position: relative;
       }
-
-      .hero .name {
-        font-family: "Cinzel", serif;
-        font-weight: 500;
-        color: var(--text-mid);
-        font-size: clamp(24px, 3.6vw, 30px);
-        letter-spacing: 0.2px;
-        margin: 0 0 10px;
+      .eyebrow {
+        text-transform: uppercase;
+        letter-spacing: 2.5px;
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--muted);
+        margin: 0 0 24px;
       }
+      .hero h1 {
+        font-size: var(--title-size);
 
-      .hero .tagline {
-        color: var(--text-lo);
-        font-size: 14px;
-        letter-spacing: 0.6px;
+        line-height: var(--title-leading);
+
+        font-weight: var(--title-weight);
+
+        letter-spacing: var(--title-tracking);
+        margin: 0 0 30px;
+
+        font-family: var(--font-body);
+      }
+      .hero h1 span {
+        color: var(--accent);
+      }
+      .intro {
+        color: var(--muted);
+        font-size: 17px;
+        max-width: 510px;
+        line-height: 1.8;
         margin: 0;
       }
-
-      .hero-blog {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        margin-top: 20px;
-        padding: 9px 18px;
-        border-radius: 999px;
-        border: 1px solid var(--stroke);
-        color: var(--text-hi);
-        text-decoration: none;
-        font-size: 14px;
-        font-weight: 600;
-        letter-spacing: 0.3px;
-        transition: border-color 0.18s ease, background 0.18s ease,
-          transform 0.18s ease;
-      }
-
-      .hero-blog:hover {
-        border-color: rgba(244, 195, 93, 0.4);
-        background: rgba(255, 255, 255, 0.02);
-        transform: translateY(-1px);
-      }
-
-      .hero-blog svg {
-        width: 16px;
-        height: 16px;
-        color: var(--accent);
-      }
-
-      /* --- project grid --- */
-
-      .projects {
-        display: grid;
-        gap: 14px;
-        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-        margin-bottom: 48px;
-      }
-
-      .project {
-        display: flex;
-        flex-direction: column;
-        min-width: 0;
-        overflow: hidden;
-        background: linear-gradient(
-            160deg,
-            rgba(244, 195, 93, 0.04) 0%,
-            transparent 40%
-          ),
-          var(--card);
-        border: 1px solid var(--stroke);
-        border-radius: 18px;
-        text-decoration: none;
-        color: inherit;
-        transition: transform 0.18s ease, border-color 0.18s ease,
-          box-shadow 0.18s ease;
-      }
-
-      .project-visual {
-        position: relative;
-        min-width: 0;
-        height: 142px;
-        overflow: hidden;
-        background: #0b0714;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      }
-
-      .project-visual::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(
-          180deg,
-          transparent 48%,
-          rgba(21, 16, 38, 0.72) 100%
-        );
-        pointer-events: none;
-      }
-
-      .project-visual img {
-        display: block;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
-
-      .project-visual--ferail img {
-        object-position: 50% 20%;
-      }
-
-      .project-visual--macaros img {
-        object-position: 51% 49%;
-      }
-
-      .project-visual--icon {
-        display: grid;
-        place-items: center;
-        background: radial-gradient(
-            circle at 50% 55%,
-            rgba(166, 149, 198, 0.22),
-            transparent 56%
-          ),
-          #090612;
-      }
-
-      .project-visual--icon img {
-        width: 104px;
-        height: 104px;
-        object-fit: contain;
-      }
-
-      .project-visual--chrome img {
-        width: 112px;
-        height: 112px;
-      }
-
-      .project-visual--pet img {
-        object-position: 50% 24%;
-      }
-
-      .project-body {
-        flex: 1;
-        min-width: 0;
-        padding: 20px 22px 20px;
-      }
-
-      .project:hover {
-        transform: translateY(-2px);
-        border-color: rgba(244, 195, 93, 0.4);
-        box-shadow: 0 12px 30px rgba(244, 195, 93, 0.08);
-      }
-
-      .project .label {
-        display: inline-block;
-        font-family: "Manrope", sans-serif;
-        font-size: 10px;
-        font-weight: 800;
-        letter-spacing: 1.4px;
-        text-transform: uppercase;
-        color: var(--accent);
-        background: var(--accent-soft);
-        padding: 4px 10px;
-        border-radius: 999px;
-        margin-bottom: 14px;
-      }
-
-      .project h2 {
-        font-family: "Cinzel", serif;
-        font-weight: 700;
-        color: var(--text-hi);
-        font-size: 22px;
-        letter-spacing: -0.2px;
-        margin: 0 0 8px;
+      .section-head {
         display: flex;
         align-items: baseline;
         justify-content: space-between;
-        gap: 8px;
+        gap: 24px;
+        margin-bottom: 14px;
       }
-
-      .project h2 .arrow {
-        font-family: "Manrope", sans-serif;
-        color: var(--text-lo);
-        font-size: 18px;
-        transition: transform 0.18s ease, color 0.18s ease;
-      }
-
-      .project:hover h2 .arrow {
-        color: var(--accent);
-        transform: translateX(3px);
-      }
-
-      .project p {
-        color: var(--text-mid);
-        font-size: 14px;
-        line-height: 1.55;
+      .section-head h2 {
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 1.6px;
+        text-transform: uppercase;
         margin: 0;
       }
-
-      @media (prefers-reduced-motion: reduce) {
-        .project,
-        .project h2 .arrow {
-          transition: none;
-        }
-
-        .project:hover {
-          transform: none;
-        }
-      }
-
-      /* --- social row --- */
-
-      .social {
-        margin-top: auto;
-        padding-top: 32px;
-        display: flex;
-        gap: 16px;
-        justify-content: center;
-        flex-wrap: wrap;
-        align-items: center;
-        border-top: 1px solid var(--stroke);
-      }
-
-      .social a {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        color: var(--text-mid);
-        text-decoration: none;
-        font-size: 14px;
-        padding: 10px 16px;
-        border-radius: 999px;
-        border: 1px solid var(--stroke);
-        transition: border-color 0.18s ease, color 0.18s ease,
-          background 0.18s ease;
-      }
-
-      .social a:hover {
-        color: var(--text-hi);
-        border-color: rgba(244, 195, 93, 0.4);
-        background: rgba(255, 255, 255, 0.02);
-      }
-
-      .social svg {
-        width: 18px;
-        height: 18px;
-        flex-shrink: 0;
-      }
-
-      footer.c {
-        text-align: center;
-        color: var(--text-lo);
+      .section-head p {
         font-size: 12px;
-        padding: 24px 0 0;
-        opacity: 0.7;
+        color: var(--muted);
+        margin: 0;
+      }
+      .projects {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        column-gap: 72px;
+        row-gap: 16px;
+      }
+      .project {
+        border-top: 1px solid var(--line);
+        padding: 30px 0 38px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .project-meta {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        font-size: 11px;
+        letter-spacing: 0.6px;
+        color: var(--muted);
+        margin-bottom: 18px;
+      }
+      .amiga .project-meta > span:first-child {
+        color: var(--accent);
+      }
+      .number {
+        opacity: 0.6;
+        font-variant-numeric: tabular-nums;
+      }
+      .project h3 {
+        font-size: 27px;
+        line-height: 1.3;
+        letter-spacing: -0.9px;
+        font-weight: 600;
+        margin: 0 0 15px;
+      }
+      .project-title {
+        font-size: 15px;
+        margin: 0 0 8px;
+        color: #e3d9ec;
+      }
+      .project-description {
+        font-size: 14px;
+        color: var(--muted);
+        line-height: 1.85;
+        margin: 0 0 24px;
+        max-width: 410px;
+      }
+      .project-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px 28px;
+        margin-top: auto;
+      }
+      .project-link {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--accent);
+        margin-top: auto;
+        display: inline-flex;
+        gap: 16px;
+        align-items: center;
+        min-height: 30px;
+      }
+      .project-link span {
+        transition: transform 0.18s;
+      }
+      .project-link:hover span {
+        transform: translate(2px, -2px);
+      }
+      .more {
+        margin-top: 85px;
+      }
+      .more .section-head {
+        padding-bottom: 26px;
+        border-bottom: 1px solid var(--line);
+      }
+      .groups {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1.25fr;
+        gap: 48px;
+        padding-top: 17px;
+      }
+      .project-group h3 {
+        font-size: 14px;
+        font-weight: 600;
+        margin: 0 0 30px;
+        color: var(--accent);
+      }
+      ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      .project-group li {
+        margin-bottom: 25px;
+      }
+      .project-group a {
+        display: block;
+      }
+      .item-name {
+        font-size: 13px;
+        font-weight: 600;
+        display: block;
+        margin-bottom: 4px;
+      }
+      .small-arrow {
+        color: var(--muted);
+        font-weight: 400;
+        font-size: 12px;
+        display: inline-block;
+        margin-left: 5px;
+      }
+      .item-description {
+        font-size: 12px;
+        line-height: 1.75;
+        color: var(--muted);
+        display: block;
+      }
+      .contributions {
+        margin-top: 45px;
+        padding: 24px 0;
+        border-top: 1px solid var(--line);
+        display: flex;
+        gap: 35px;
+        align-items: baseline;
+        flex-wrap: wrap;
+      }
+      .contributions h3 {
+        font-size: 12px;
+        color: var(--muted);
+        font-weight: 500;
+        margin: 0;
+      }
+      .contribution-links {
+        display: flex;
+        gap: 25px;
+        flex-wrap: wrap;
+        font-size: 12px;
+      }
+      .writing {
+        margin-top: 72px;
+        margin-bottom: 90px;
+        padding: 35px 0;
+        border-top: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 24px;
+      }
+      .writing h2 {
+        font-size: 23px;
+        letter-spacing: -0.5px;
+        font-weight: 500;
+        margin: 0 0 7px;
+      }
+      .writing p {
+        font-size: 14px;
+        color: var(--muted);
+        margin: 0;
+      }
+      .writing > a {
+        font-size: 13px;
+        color: var(--accent);
+        white-space: nowrap;
+      }
+      footer {
+        display: flex;
+        justify-content: space-between;
+        gap: 24px;
+        padding: 0 0 38px;
+        font-size: 11px;
+        color: var(--muted);
+      }
+      footer nav {
+        display: flex;
+        gap: 24px;
+      }
+      @media (min-width: 1400px) {
+        .hero {
+          padding-top: 115px;
+          padding-bottom: 120px;
+        }
+      }
+      @media (max-width: 760px) {
+        .wrap {
+          width: calc(100% - 48px);
+        }
+        .nav {
+          padding: 27px 0;
+        }
+        .nav-links {
+          gap: 21px;
+        }
+        .hero {
+          padding: 76px 0 75px;
+        }
+        .intro {
+          font-size: 15px;
+        }
+        .projects {
+          column-gap: 32px;
+        }
+        .project h3 {
+          font-size: 23px;
+        }
+        .groups {
+          grid-template-columns: 1fr 1fr;
+          gap: 32px;
+        }
+        .project-group:last-child {
+          grid-column: 1/-1;
+        }
+        .project-group:last-child ul {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 0 32px;
+        }
+        .more {
+          margin-top: 55px;
+        }
+        .section-head p {
+          display: none;
+        }
+        .writing {
+          margin-top: 50px;
+          margin-bottom: 55px;
+        }
+      }
+      @media (max-width: 500px) {
+        .projects,
+        .groups {
+          grid-template-columns: 1fr;
+        }
+        .project {
+          padding: 27px 0 30px;
+        }
+        .project-description {
+          max-width: 100%;
+        }
+        .project h3 {
+          font-size: 26px;
+        }
+        .project-group:last-child {
+          grid-column: auto;
+        }
+        .project-group:last-child ul {
+          display: block;
+        }
+        .groups {
+          gap: 16px;
+        }
+        .hero {
+          padding: 62px 0 66px;
+        }
+        .nav-links {
+          font-size: 12px;
+          gap: 19px;
+        }
+        .nav-links .github-nav {
+          display: none;
+        }
+        .contributions {
+          gap: 15px;
+        }
+        .contribution-links {
+          gap: 20px;
+        }
+        .writing {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+        footer {
+          flex-direction: column;
+          gap: 12px;
+        }
+        .project-group h3 {
+          margin-bottom: 23px;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+        * {
+          transition: none !important;
+        }
       }
     </style>
   </head>
   <body>
-    <main>
-      <header class="hero">
-        <h1 class="name">John Knipper</h1>
-        <p class="tagline">TALL, SHARP, TOOLS</p>
-        <a class="hero-blog" href="/blog/">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M12 20h9" />
-            <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" />
-          </svg>
-          Read the blog
-        </a>
+    <a class="skip" href="#main">Skip to content</a>
+    <div class="wrap">
+      <header class="nav">
+        <a class="brand" href="/" aria-label="John Knipper home"
+          >jkn<span>.</span>me</a
+        >
+        <nav class="nav-links" aria-label="Main navigation">
+          <a href="#projects">Projects</a><a href="/blog/">Writing</a
+          ><a
+            class="github-nav"
+            href="https://github.com/jonx"
+            target="_blank"
+            rel="noopener"
+            >GitHub ↗</a
+          >
+        </nav>
       </header>
-
-      <section class="projects">
-        <a class="project" href="/ferail/">
-          <div class="project-visual project-visual--ferail" aria-hidden="true">
-            <img src="/ferail/assets/tour-grid.png" alt="" width="1400" height="900" />
-          </div>
-          <div class="project-body">
-            <span class="label">Desktop app</span>
-            <h2>Ferail <span class="arrow">→</span></h2>
-            <p>
-              A fast, keyboard-first file manager for macOS and Windows, with
-              disk usage, duplicates and archives built in.
-            </p>
-          </div>
-        </a>
-
-        <a class="project" href="/macaros/">
-          <div class="project-visual project-visual--macaros" aria-hidden="true">
-            <img src="/macaros/assets/macaros-hero.png" alt="" width="1400" height="823" />
-          </div>
-          <div class="project-body">
-            <span class="label">Operating system</span>
-            <h2>Macaros <span class="arrow">→</span></h2>
-            <p>
-              AmigaOS running as a native app on Apple silicon - AROS on a
-              fresh AArch64 backend, hosted on macOS.
-            </p>
-          </div>
-        </a>
-
-        <a class="project" href="/paw/">
-          <div class="project-visual project-visual--icon" aria-hidden="true">
-            <img src="/paw/assets/icon.png" alt="" width="2048" height="2048" />
-          </div>
-          <div class="project-body">
-            <span class="label">Mobile app</span>
-            <h2>PawSeeBility <span class="arrow">→</span></h2>
-            <p>
-              A playful AI that reads the paw, the companion, and the bond
-              between you. Coming soon to Android.
-            </p>
-          </div>
-        </a>
-
-        <a class="project" href="/chrome/">
-          <div class="project-visual project-visual--icon project-visual--chrome" aria-hidden="true">
-            <img src="/chrome/assets/demo-query-helper.png" alt="" width="512" height="512" />
-          </div>
-          <div class="project-body">
-            <span class="label">Chrome</span>
-            <h2>Extensions <span class="arrow">→</span></h2>
-            <p>
-              Small, focused browser extensions that fix everyday
-              friction. No telemetry, no ads, no accounts.
-            </p>
-          </div>
-        </a>
-
-        <a class="project" href="/pet/">
-          <div class="project-visual project-visual--pet" aria-hidden="true">
-            <img src="/pet/baby.png" alt="" width="1260" height="2800" />
-          </div>
-          <div class="project-body">
-            <span class="label">Experiment</span>
-            <h2>NonoGotchi <span class="arrow">→</span></h2>
-            <p>
-              A Tamagotchi-style virtual pet that lives on the Nothing
-              Phone 3's Glyph display.
-            </p>
-          </div>
-        </a>
-      </section>
-
-      <nav class="social" aria-label="Social links">
-        <a
-          href="https://github.com/jonx"
-          target="_blank"
-          rel="noopener"
-          aria-label="GitHub"
-        >
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path
-              d="M12 .5A11.5 11.5 0 0 0 .5 12a11.5 11.5 0 0 0 7.86 10.93c.58.11.79-.25.79-.56v-2c-3.2.7-3.88-1.36-3.88-1.36-.52-1.34-1.28-1.7-1.28-1.7-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.2 1.77 1.2 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.56-.3-5.25-1.28-5.25-5.7 0-1.26.45-2.29 1.19-3.1-.12-.3-.52-1.48.11-3.08 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.78 0c2.2-1.49 3.17-1.18 3.17-1.18.64 1.6.24 2.78.12 3.08.74.81 1.19 1.84 1.19 3.1 0 4.43-2.7 5.4-5.27 5.69.41.35.78 1.05.78 2.12v3.14c0 .31.2.68.8.56A11.5 11.5 0 0 0 23.5 12 11.5 11.5 0 0 0 12 .5Z"
+      <main id="main">
+        <section class="hero" aria-labelledby="intro-title">
+          <p class="eyebrow">John Knipper · Berlin</p>
+          <h1 id="intro-title">
+            Tools I build.<br /><span>Systems I explore.</span>
+          </h1>
+          <p class="intro">
+            Desktop apps, developer tools, and new work<br
+              class="desktop-break"
             />
-          </svg>
-          GitHub
-        </a>
-        <a
-          href="https://www.linkedin.com/in/knipjo/"
-          target="_blank"
-          rel="noopener"
-          aria-label="LinkedIn"
-        >
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path
-              d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.95v5.66H9.35V9h3.42v1.56h.05a3.75 3.75 0 0 1 3.37-1.85c3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.07 2.07 0 1 1 0-4.14 2.07 2.07 0 0 1 0 4.14ZM7.12 20.45H3.55V9h3.57v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z"
-            />
-          </svg>
-          LinkedIn
-        </a>
-        <a href="/blog/feed.xml" aria-label="RSS feed">
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <circle cx="6.2" cy="17.8" r="2.2" />
-            <path
-              d="M3.8 10.4a9.8 9.8 0 0 1 9.8 9.8h3a12.8 12.8 0 0 0-12.8-12.8v3Z"
-            />
-            <path
-              d="M3.8 4.2a15.9 15.9 0 0 1 16 16h3a18.9 18.9 0 0 0-19-19v3Z"
-            />
-          </svg>
-          RSS
-        </a>
-      </nav>
-
-      <footer class="c">© 2026 John Knipper</footer>
-    </main>
+            for the Amiga ecosystem.
+          </p>
+        </section>
+        <section id="projects" aria-labelledby="projects-title">
+          <div class="section-head">
+            <h2 id="projects-title">Selected projects</h2>
+            <p>A few things I've been working on</p>
+          </div>
+          <div class="projects">
+            <article class="project amiga">
+              <div class="project-meta">
+                <span>Web · New</span><span class="number">01</span>
+              </div>
+              <h3>Amigadex</h3>
+              <p class="project-title">The Amiga world, in one search.</p>
+              <p class="project-description">
+                News, open source projects and community sites. Find what’s
+                happening, or who’s already building your idea.
+              </p>
+              <a
+                class="project-link"
+                href="https://amigadex.com/"
+                target="_blank"
+                rel="noopener"
+                >Explore Amigadex <span aria-hidden="true">↗</span></a
+              >
+            </article>
+            <article class="project clip">
+              <div class="project-meta">
+                <span>Web · Desktop · Command line</span
+                ><span class="number">02</span>
+              </div>
+              <h3>ClipTo</h3>
+              <p class="project-title">Copy. Convert. Paste.</p>
+              <p class="project-description">
+                Turn clipboard content into Markdown, rich text or plain text.
+                In your browser, terminal or menu bar.
+              </p>
+              <div class="project-actions">
+                <a class="project-link" href="/clipto/"
+                  >Try ClipTo Web <span aria-hidden="true">↗</span></a
+                >
+                <a
+                  class="project-link"
+                  href="https://github.com/jonx/clip-to/releases"
+                  target="_blank"
+                  rel="noopener"
+                  >GitHub Releases <span aria-hidden="true">↗</span></a
+                >
+              </div>
+            </article>
+            <article class="project">
+              <div class="project-meta">
+                <span>Desktop app</span><span class="number">03</span>
+              </div>
+              <h3>Ferail</h3>
+              <p class="project-title">Find your way through your files.</p>
+              <p class="project-description">
+                A keyboard-first file manager with disk usage, duplicate
+                detection and archive tools built in.
+              </p>
+              <a class="project-link" href="/ferail/"
+                >Discover Ferail <span aria-hidden="true">↗</span></a
+              >
+            </article>
+            <article class="project">
+              <div class="project-meta">
+                <span>Operating system</span><span class="number">04</span>
+              </div>
+              <h3>Macaros</h3>
+              <p class="project-title">
+                A familiar desktop. A different world.
+              </p>
+              <p class="project-description">
+                Run AROS, an AmigaOS-compatible operating system, as a native
+                app on Apple Silicon.
+              </p>
+              <a class="project-link" href="/macaros/"
+                >Discover Macaros <span aria-hidden="true">↗</span></a
+              >
+            </article>
+            <article class="project">
+              <div class="project-meta">
+                <span>Developer tool</span><span class="number">05</span>
+              </div>
+              <h3>Agent Board</h3>
+              <p class="project-title">Give your agents a shared workspace.</p>
+              <p class="project-description">
+                Coding agents coordinate, exchange reviews and bring decisions
+                back to you. You can follow every conversation.
+              </p>
+              <a
+                class="project-link"
+                href="https://github.com/jonx/agent-board"
+                target="_blank"
+                rel="noopener"
+                >Explore Agent Board <span aria-hidden="true">↗</span></a
+              >
+            </article>
+            <article class="project">
+              <div class="project-meta">
+                <span>VS Code extension</span><span class="number">06</span>
+              </div>
+              <h3>Agent Activity Monitor</h3>
+              <p class="project-title">See what’s actually running.</p>
+              <p class="project-description">
+                Follow your coding agents across projects, inspect their running
+                commands and see when they need you.
+              </p>
+              <a
+                class="project-link"
+                href="https://github.com/jonx/agent-activity-monitor"
+                target="_blank"
+                rel="noopener"
+                >Explore the monitor <span aria-hidden="true">↗</span></a
+              >
+            </article>
+          </div>
+        </section>
+        <section class="more" aria-labelledby="more-title">
+          <div class="section-head">
+            <h2 id="more-title">More projects</h2>
+            <p>Small tools, deeper explorations, side quests</p>
+          </div>
+          <div class="groups">
+            <section class="project-group">
+              <h3>AROS &amp; systems</h3>
+              <ul>
+                <li>
+                  <a
+                    href="https://github.com/jonx/aros-pkg"
+                    target="_blank"
+                    rel="noopener"
+                    ><span class="item-name"
+                      >aros-pkg
+                      <span class="small-arrow" aria-hidden="true"
+                        >↗</span
+                      ></span
+                    ><span class="item-description"
+                      >Package management for AROS.</span
+                    ></a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="https://github.com/jonx/afsplus"
+                    target="_blank"
+                    rel="noopener"
+                    ><span class="item-name"
+                      >AFS+
+                      <span class="small-arrow" aria-hidden="true"
+                        >↗</span
+                      ></span
+                    ><span class="item-description"
+                      >A modern filesystem for the Amiga family.</span
+                    ></a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="https://github.com/jonx/aros-extfat"
+                    target="_blank"
+                    rel="noopener"
+                    ><span class="item-name"
+                      >aros-extfat
+                      <span class="small-arrow" aria-hidden="true"
+                        >↗</span
+                      ></span
+                    ><span class="item-description"
+                      >exFAT filesystem support for AROS.</span
+                    ></a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="https://github.com/jonx/rust-aros"
+                    target="_blank"
+                    rel="noopener"
+                    ><span class="item-name"
+                      >rust-aros
+                      <span class="small-arrow" aria-hidden="true"
+                        >↗</span
+                      ></span
+                    ><span class="item-description"
+                      >Rust’s standard library, adapted for AROS.</span
+                    ></a
+                  >
+                </li>
+              </ul>
+            </section>
+            <section class="project-group">
+              <h3>Developer tools</h3>
+              <ul>
+                <li>
+                  <a
+                    href="https://github.com/jonx/slow-ai-toolkit"
+                    target="_blank"
+                    rel="noopener"
+                    ><span class="item-name"
+                      >Slow AI Toolkit
+                      <span class="small-arrow" aria-hidden="true"
+                        >↗</span
+                      ></span
+                    ><span class="item-description"
+                      >A method for working with coding agents.</span
+                    ></a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="https://github.com/jonx/BrickBuilderMCP"
+                    target="_blank"
+                    rel="noopener"
+                    ><span class="item-name"
+                      >BrickBuilderMCP
+                      <span class="small-arrow" aria-hidden="true"
+                        >↗</span
+                      ></span
+                    ><span class="item-description"
+                      >Design buildable LEGO models with an LLM.</span
+                    ></a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="https://github.com/jonx/mail-trap"
+                    target="_blank"
+                    rel="noopener"
+                    ><span class="item-name"
+                      >mail-trap
+                      <span class="small-arrow" aria-hidden="true"
+                        >↗</span
+                      ></span
+                    ><span class="item-description"
+                      >A small local SMTP server for development.</span
+                    ></a
+                  >
+                </li>
+              </ul>
+            </section>
+            <section class="project-group">
+              <h3>Apps &amp; experiments</h3>
+              <ul>
+                <li>
+                  <a href="/chrome/"
+                    ><span class="item-name"
+                      >Chrome Extensions
+                      <span class="small-arrow" aria-hidden="true"
+                        >↗</span
+                      ></span
+                    ><span class="item-description"
+                      >jkSpeed, Demo Query Helper and more.</span
+                    ></a
+                  >
+                </li>
+                <li>
+                  <a href="/paw/"
+                    ><span class="item-name"
+                      >PawSeeBility
+                      <span class="small-arrow" aria-hidden="true"
+                        >↗</span
+                      ></span
+                    ><span class="item-description"
+                      >A playful AI take on paws and their companions.</span
+                    ></a
+                  >
+                </li>
+                <li>
+                  <a href="/pet/"
+                    ><span class="item-name"
+                      >NonoGotchi
+                      <span class="small-arrow" aria-hidden="true"
+                        >↗</span
+                      ></span
+                    ><span class="item-description"
+                      >A virtual pet for the Nothing Phone 3 Glyph
+                      display.</span
+                    ></a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="https://github.com/jonx/MoonshineNoteTakerCharp"
+                    target="_blank"
+                    rel="noopener"
+                    ><span class="item-name"
+                      >MoonshineNoteTakerCharp
+                      <span class="small-arrow" aria-hidden="true"
+                        >↗</span
+                      ></span
+                    ><span class="item-description"
+                      >Cross-platform, on-device audio transcription.</span
+                    ></a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="https://github.com/jonx/HotaCS"
+                    target="_blank"
+                    rel="noopener"
+                    ><span class="item-name"
+                      >HotaCS
+                      <span class="small-arrow" aria-hidden="true"
+                        >↗</span
+                      ></span
+                    ><span class="item-description"
+                      >A C# port of Heart of the Alien.</span
+                    ></a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="https://github.com/jonx/SubterraCS"
+                    target="_blank"
+                    rel="noopener"
+                    ><span class="item-name"
+                      >SubterraCS
+                      <span class="small-arrow" aria-hidden="true"
+                        >↗</span
+                      ></span
+                    ><span class="item-description"
+                      >Revisiting Subterranean Stryker in C#.</span
+                    ></a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="https://github.com/jonx/iManualTransfer"
+                    target="_blank"
+                    rel="noopener"
+                    ><span class="item-name"
+                      >iManualTransfer
+                      <span class="small-arrow" aria-hidden="true"
+                        >↗</span
+                      ></span
+                    ><span class="item-description"
+                      >Retrieve files from an iDevice that keeps
+                      disconnecting.</span
+                    ></a
+                  >
+                </li>
+              </ul>
+            </section>
+          </div>
+          <div class="contributions">
+            <h3>Ports &amp; contributions</h3>
+            <nav
+              class="contribution-links"
+              aria-label="Ports and contributions"
+            >
+              <a
+                href="https://github.com/jonx/zed-aros"
+                target="_blank"
+                rel="noopener"
+                >Zed for AROS ↗</a
+              ><a
+                href="https://github.com/jonx/gpui-component-aros"
+                target="_blank"
+                rel="noopener"
+                >GPUI for AROS ↗</a
+              ><a
+                href="https://github.com/jonx/AROS"
+                target="_blank"
+                rel="noopener"
+                >AROS ↗</a
+              ><a
+                href="https://github.com/jonx/contrib"
+                target="_blank"
+                rel="noopener"
+                >AROS contrib ↗</a
+              >
+            </nav>
+          </div>
+        </section>
+        <section class="writing" aria-labelledby="writing-title">
+          <div>
+            <h2 id="writing-title">Notes from the workbench.</h2>
+            <p>
+              What I’m building, how it works, and what I learn along the way.
+            </p>
+          </div>
+          <a href="/blog/">Read the blog <span aria-hidden="true">↗</span></a>
+        </section>
+      </main>
+      <footer>
+        <span>© 2026 John Knipper</span>
+        <nav aria-label="Social links">
+          <a href="https://github.com/jonx" target="_blank" rel="noopener"
+            >GitHub</a
+          ><a
+            href="https://www.linkedin.com/in/knipjo/"
+            target="_blank"
+            rel="noopener"
+            >LinkedIn</a
+          ><a href="/blog/feed.xml">RSS</a>
+        </nav>
+      </footer>
+    </div>
   </body>
 </html>

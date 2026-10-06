@@ -21,9 +21,13 @@ Layout is one directory per thing, each self-contained:
 
 House style, shared by every page:
 
-- Dark only. Palette tokens (`--bg-deep`, `--accent: #f4c35d`, `--text-hi/mid/lo`,
+- Dark only. Palette tokens (`--bg-deep`, `--accent: #ffb578`, `--text-hi/mid/lo`,
   `--stroke`) are duplicated per stylesheet on purpose — keep the values in sync.
-- Manrope for text, Cinzel for display headings, both from Google Fonts.
+- Manrope for text and headings, served locally from `/assets/fonts/`; headings use lighter weights.
+  `/typography.css` owns the shared font stack and title scale. Import it from
+  each page stylesheet; keep monospace for code only.
+- Violet background `#191323`, peach accents `#ffb578`, generous spacing and fine
+  separators instead of heavy cards. Keep article text at a readable width.
 - Every page carries `<title>`, `meta description`, `og:title`, `og:description`,
   a favicon and `theme-color`.
 - **Hyphens, not em dashes**, in user-visible copy.
@@ -116,7 +120,7 @@ Copy this verbatim and fill in the four marked spots. `body class="post"` and
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>TITLE - John Knipper</title>
     <meta name="description" content="DESCRIPTION" />
-    <meta name="theme-color" content="#07040F" />
+    <meta name="theme-color" content="#191323" />
     <meta property="og:title" content="TITLE - John Knipper" />
     <meta property="og:description" content="DESCRIPTION" />
     <link rel="icon" type="image/png" href="/paw/assets/icon.png" />
@@ -126,7 +130,7 @@ Copy this verbatim and fill in the four marked spots. `body class="post"` and
       title="John Knipper"
       href="/blog/feed.xml"
     />
-    <link rel="stylesheet" href="/blog/blog.css" />
+    <link rel="stylesheet" href="/blog/blog.css?v=20261006-typography" />
   </head>
   <body class="post">
     <main class="wrap">

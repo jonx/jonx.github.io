@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -8,7 +8,7 @@
       name="description"
       content="A keyboard-first file manager for macOS, Windows and Linux, written in Rust on GPUI. Disk usage, duplicates, archives, bulk rename and content-derived descriptions - built in."
     />
-    <meta name="theme-color" content="#07040F" />
+    <meta name="theme-color" content="#191323" />
     <meta property="og:title" content="Ferail - A fast, native file manager" />
     <meta
       property="og:description"
@@ -20,7 +20,7 @@
       content="https://www.jkn.me/ferail/assets/tour-shell.png"
     />
     <meta name="twitter:card" content="summary_large_image" />
-    <link rel="stylesheet" href="/ferail/ferail.css" />
+    <link rel="stylesheet" href="/ferail/ferail.css?v=20261006-release-links" />
   </head>
   <body>
     <main>
@@ -38,40 +38,22 @@
           <span>Rust + GPUI</span>
           <span>macOS 12+ · Windows 10+ · Linux</span>
           <span>no telemetry</span>
-          <span>v0.3.0</span>
         </div>
 
-        <div class="downloads">
+        <nav class="project-links" aria-label="Downloads and source code">
           <a
-            class="dl"
-            href="https://github.com/jonx/Ferail/releases/download/v0.3.0/Ferail-0.3.0.dmg"
+            href="https://github.com/jonx/Ferail/releases"
+            target="_blank"
+            rel="noopener"
+            >Releases on GitHub <span aria-hidden="true">↗</span></a
           >
-            Download for macOS
-            <small>Ferail-0.3.0.dmg · 20 MB · Apple silicon</small>
-          </a>
           <a
-            class="dl"
-            href="https://github.com/jonx/Ferail/releases/download/v0.3.0/Ferail-0.3.0-win-x64.zip"
+            href="https://github.com/jonx/Ferail"
+            target="_blank"
+            rel="noopener"
+            >Source code <span aria-hidden="true">↗</span></a
           >
-            Download for Windows
-            <small>Ferail-0.3.0-win-x64.zip · 36 MB · portable</small>
-          </a>
-          <a
-            class="dl"
-            href="https://github.com/jonx/Ferail/releases/download/v0.3.0/ferail_0.3.0-1_amd64.deb"
-          >
-            Download for Linux
-            <small>ferail_0.3.0-1_amd64.deb · 16 MB · Debian/Ubuntu</small>
-          </a>
-          <a class="dl dl-soft" href="https://github.com/jonx/Ferail">
-            Source on GitHub
-            <small>jonx/Ferail · Rust · MIT/Apache-2.0</small>
-          </a>
-        </div>
-        <p class="dl-note">
-          arm64 Linux and previous versions are on
-          <a href="https://github.com/jonx/Ferail/releases">the releases page</a>.
-        </p>
+        </nav>
       </section>
 
       <figure class="shot">
@@ -82,8 +64,8 @@
         />
         <figcaption>
           <b>The main window.</b> Tabs, a sidebar you can collapse, and a
-          preview pane that renders text and code with syntax highlighting -
-          not just thumbnails.
+          preview pane that renders text and code with syntax highlighting - not
+          just thumbnails.
         </figcaption>
       </figure>
 
@@ -213,9 +195,9 @@
         <div>
           <h3>The UI never blocks</h3>
           <p>
-            Nothing on the paint path touches the disk. Enumeration, hashing
-            and previews all run off-thread, so a spun-down drive stalls the
-            work and not the window.
+            Nothing on the paint path touches the disk. Enumeration, hashing and
+            previews all run off-thread, so a spun-down drive stalls the work
+            and not the window.
           </p>
         </div>
         <div>

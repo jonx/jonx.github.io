@@ -1,16 +1,16 @@
-@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap");
+@import url("/typography.css?v=20261006-1");
 
 :root {
-  --bg-deep: #020108;
-  --card: #151026;
-  --card-hi: #1c1433;
-  --accent: #f4c35d;
-  --accent-soft: rgba(244, 195, 93, 0.18);
-  --text-hi: #fff5e4;
-  --text-mid: #e4d7f7;
-  --text-lo: #a695c6;
-  --stroke: rgba(255, 255, 255, 0.14);
-  --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+  --bg-deep: #191323;
+  --card: #211a2b;
+  --card-hi: #2b2237;
+  --accent: #ffb578;
+  --accent-soft: rgba(255, 181, 120, 0.18);
+  --text-hi: #f4eff9;
+  --text-mid: #e3d9ec;
+  --text-lo: #b8acc5;
+  --stroke: #3b3048;
+  --mono: var(--font-code);
 }
 
 * {
@@ -21,21 +21,23 @@ html,
 body {
   margin: 0;
   padding: 0;
+
   background:
-    radial-gradient(1200px 800px at 20% 0%, #241641 0%, transparent 60%),
-    radial-gradient(900px 700px at 80% 120%, #1d1137 0%, transparent 55%),
+    radial-gradient(ellipse 900px 650px at 80% 0%, #30213e80, transparent),
     var(--bg-deep);
   color: var(--text-mid);
-  font-family: "Manrope", -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-family: var(--font-body);
   font-size: 16px;
-  line-height: 1.6;
+
+  line-height: 1.8;
   -webkit-font-smoothing: antialiased;
 }
 
 main {
-  max-width: 1000px;
+  max-width: 1112px;
   margin: 0 auto;
-  padding: 64px 24px 56px;
+
+  padding: 38px 24px 56px;
 }
 
 a {
@@ -46,7 +48,8 @@ a {
 
 .back {
   display: inline-block;
-  margin-bottom: 40px;
+
+  margin-bottom: 72px;
   color: var(--text-lo);
   text-decoration: none;
   font-size: 0.9rem;
@@ -58,7 +61,7 @@ a {
 /* ---- hero ----------------------------------------------------------- */
 
 .hero {
-  margin-bottom: 40px;
+  margin-bottom: 72px;
 }
 
 .label {
@@ -67,106 +70,99 @@ a {
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--accent);
-  background: var(--accent-soft);
-  border-radius: 999px;
-  padding: 4px 12px;
-  margin-bottom: 16px;
+
+  background: transparent;
+
+  border-radius: 0;
+
+  padding: 0;
+
+  margin-bottom: 22px;
 }
 
 h1 {
-  margin: 0 0 8px;
-  font-size: clamp(2.2rem, 6vw, 3rem);
-  font-weight: 700;
+  margin: 0 0 22px;
+
+  font-size: var(--title-size);
+
+  font-weight: var(--title-weight);
   color: var(--text-hi);
-  letter-spacing: -0.02em;
+
+  letter-spacing: var(--title-tracking);
+
+  font-family: var(--font-body);
+
+  line-height: var(--title-leading);
 }
 
 .tagline {
   font-size: 1.15rem;
-  color: var(--text-mid);
-  margin: 0 0 20px;
+
+  color: var(--text-lo);
+
+  margin: 0 0 28px;
   max-width: 62ch;
+
+  line-height: 1.85;
 }
 
 .specs {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px 20px;
+
+  gap: 12px 24px;
   font-size: 0.86rem;
   color: var(--text-lo);
-  font-family: var(--mono);
-  margin-bottom: 28px;
+
+  font-family: inherit;
+
+  margin-bottom: 36px;
 }
 
-/* ---- downloads ------------------------------------------------------ */
+/* ---- project links -------------------------------------------------- */
 
-.downloads {
+.project-links {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
-  align-items: center;
+  gap: 16px 28px;
 }
-
-.dl {
+.project-links a {
   display: inline-flex;
-  flex-direction: column;
-  gap: 2px;
+  align-items: center;
+  gap: 12px;
+  min-height: 32px;
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 600;
   text-decoration: none;
-  background: var(--accent);
-  color: #1c1326;
-  border-radius: 12px;
-  padding: 12px 22px;
-  font-weight: 700;
-  transition: transform 0.15s ease, filter 0.15s ease;
 }
-.dl:hover {
-  transform: translateY(-1px);
-  filter: brightness(1.06);
-}
-.dl small {
-  font-weight: 500;
-  font-size: 0.74rem;
-  opacity: 0.72;
-  font-family: var(--mono);
-}
-
-.dl-soft {
-  background: transparent;
-  color: var(--text-hi);
-  border: 1px solid var(--stroke);
-}
-.dl-soft small {
-  opacity: 0.6;
-}
-
-.dl-note {
-  margin: 10px 0 0;
-  font-size: 0.78rem;
-  color: var(--text-lo);
-}
-.dl-note a {
-  color: var(--text-mid);
+.project-links a:hover {
+  text-decoration: underline;
+  text-underline-offset: 5px;
 }
 
 /* ---- shots ---------------------------------------------------------- */
 
 .shot {
-  margin: 56px 0 0;
+  margin: 76px 0 0;
 }
 
 .shot img {
   width: 100%;
   height: auto;
   display: block;
-  border-radius: 12px;
+
+  border-radius: 8px;
   border: 1px solid var(--stroke);
   background: var(--card);
 }
 
 .shot figcaption {
-  margin-top: 12px;
+  margin-top: 18px;
   font-size: 0.92rem;
   color: var(--text-lo);
+
+  line-height: 1.8;
 }
 
 .shot figcaption b {
@@ -178,8 +174,10 @@ h1 {
 .pair {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 28px;
-  margin-top: 56px;
+
+  gap: 40px;
+
+  margin-top: 76px;
 }
 .pair .shot {
   margin: 0;
@@ -198,18 +196,22 @@ h1 {
 /* ---- notes ---------------------------------------------------------- */
 
 .notes {
-  margin-top: 64px;
-  padding-top: 28px;
+  margin-top: 80px;
+
+  padding-top: 36px;
   border-top: 1px solid var(--stroke);
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 24px 32px;
+
+  gap: 32px 48px;
 }
 
 .notes h3 {
-  margin: 0 0 6px;
+  margin: 0 0 12px;
   font-size: 0.95rem;
   color: var(--text-hi);
+
+  font-weight: 500;
 }
 
 .notes p {
@@ -227,14 +229,15 @@ h1 {
 /* ---- footer --------------------------------------------------------- */
 
 .site-footer {
-  margin-top: 56px;
+  margin-top: 80px;
   padding-top: 20px;
   border-top: 1px solid var(--stroke);
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 12px;
-  font-size: 0.86rem;
+
+  font-size: 12px;
   color: var(--text-lo);
 }
 .site-footer a {
@@ -243,4 +246,49 @@ h1 {
 }
 .site-footer a:hover {
   color: var(--text-hi);
+}
+
+html {
+  background: var(--bg-deep);
+  color-scheme: dark;
+}
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 5px;
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition: none !important;
+  }
+}
+
+.pair > *,
+.hero-row > *,
+.notes > * {
+  min-width: 0;
+}
+.notes p {
+  overflow-wrap: anywhere;
+}
+@media (max-width: 720px) {
+  main {
+    padding: 28px 24px 40px;
+  }
+  .back {
+    margin-bottom: 52px;
+  }
+  .hero {
+    margin-bottom: 52px;
+  }
+  .shot,
+  .pair {
+    margin-top: 48px;
+  }
+  .pair .shot {
+    margin: 0;
+  }
 }
