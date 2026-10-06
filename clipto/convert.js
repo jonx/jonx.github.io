@@ -1,5 +1,5 @@
-import { Marked } from "./vendor/marked.js?v=20261006-2";
-import DOMPurify from "./vendor/purify.mjs?v=20261006-2";
+import { Marked } from "./vendor/marked.js?v=20261006-3";
+import DOMPurify from "./vendor/purify.mjs?v=20261006-3";
 
 export const MAX_LENGTH = 200000;
 export const escapeHtml = (value) =>
@@ -292,7 +292,10 @@ export function plainToMarkdown(text) {
     .replace(/^([ \t]*)([-+*])(?=[ \t])/gm, "$1\\$2")
     .replace(/^([ \t]*\d{1,9})([.)])(?=[ \t])/gm, "$1\\$2")
     .replace(/^( {0,3})(`{3,}|~{3,})/gm, "$1\\$2")
-    .replace(/^( {0,3})([-=]+)([ \t]*)$/gm, "$1\\$2$3");
+    .replace(/^( {0,3})([-=]+)([ \t]*)$/gm, "$1\\$2$3")
+    // A single newline between two lines of text is a line break in plain text
+    // (an address, a signature). Keep it as a Markdown hard break.
+    .replace(/([^\n])\n(?=[^\n])/g, "$1  \n");
 }
 
 export function convert(source, target, mode = "auto") {

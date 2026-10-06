@@ -113,8 +113,16 @@ const english = {
   "Code HTML copié. Vous pouvez maintenant le coller dans votre application.":
     "HTML code copied. You can now paste it into your app.",
 };
-export let language =
-  new URLSearchParams(location.search).get("lang") === "en" ? "en" : "fr";
+function storedLanguage() {
+  try {
+    return localStorage.getItem("clipto-lang");
+  } catch {
+    return null;
+  }
+}
+const requested =
+  new URLSearchParams(location.search).get("lang") || storedLanguage();
+export let language = requested === "en" ? "en" : "fr";
 export const t = (text) => (language === "en" ? (english[text] ?? text) : text);
 
 // Capture static interface text once; never traverse user input or generated previews.
@@ -163,6 +171,11 @@ export function setLanguage(next) {
       "aria-label",
       language === "en" ? "Passer en français" : "Switch to English",
     );
+  try {
+    localStorage.setItem("clipto-lang", language);
+  } catch {
+    // Private mode or blocked storage: the choice lasts for this page only.
+  }
   const url = new URL(location.href);
   if (language === "en") url.searchParams.set("lang", "en");
   else url.searchParams.delete("lang");

@@ -1,10 +1,10 @@
-import { t, language, setLanguage } from "./i18n.js?v=20261006-2";
+import { t, language, setLanguage } from "./i18n.js?v=20261006-3";
 import {
   convert,
   htmlToPlain,
   previewDocument,
   MAX_LENGTH,
-} from "./convert.js?v=20261006-2";
+} from "./convert.js?v=20261006-3";
 const $ = (id) => document.getElementById(id);
 const meta = {
   rich: {
