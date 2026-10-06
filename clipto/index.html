@@ -22,7 +22,17 @@
       property="og:description"
       content="Convertissez votre presse-papiers en Markdown, texte brut, HTML ou texte enrichi. Votre contenu reste dans votre navigateur."
     />
-    <link rel="stylesheet" href="./style.css?v=20261006-jkn" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.jkn.me/clipto/" />
+    <meta property="og:image" content="https://www.jkn.me/clipto/share.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="ClipTo Web - Copiez. Choisissez. Collez. Convertisseur de presse-papiers."
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="stylesheet" href="./style.css?v=20261006-2" />
   </head>
   <body>
     <nav class="site-nav shell" aria-label="Navigation du site">
@@ -32,8 +42,17 @@
         href="https://github.com/jonx/clip-to/releases"
         target="_blank"
         rel="noopener noreferrer"
-        >L’application Mac & Windows <span aria-hidden="true">↗</span></a
+        >Mac, Windows &amp; CLI Linux <span aria-hidden="true">↗</span></a
       >
+      <button
+        id="language"
+        class="language-button"
+        type="button"
+        lang="en"
+        aria-label="Switch to English"
+      >
+        English
+      </button>
     </nav>
     <header class="site-header shell">
       <a class="brand" href="./" aria-label="ClipTo, accueil"
@@ -215,8 +234,8 @@
         >
       </nav>
     </footer>
-    <script src="./vendor/turndown.js"></script>
-    <script src="./vendor/turndown-gfm.js"></script>
-    <script type="module" src="./app.js"></script>
+    <script src="./vendor/turndown.js?v=20261006-2"></script>
+    <script src="./vendor/turndown-gfm.js?v=20261006-2"></script>
+    <script type="module" src="./app.js?v=20261006-2"></script>
   </body>
 </html>
