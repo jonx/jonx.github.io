@@ -444,6 +444,14 @@
           transition: none !important;
         }
       }
+      [hidden] { display: none !important; }
+      .account-button { font: inherit; color: var(--accent); border: 1px solid var(--line); background: transparent; padding: 10px 14px; min-height: 44px; border-radius: 10px; cursor: pointer; }
+      .account-button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+      .account-status { color: var(--muted); font-size: .85rem; }
+      .account-status:empty { display: none; }
+      #account-projects { margin-bottom: 32px; }
+      .nav, .nav-links { flex-wrap: wrap; }
+      .nav-links { align-items: center; }
     </style>
   </head>
   <body>
@@ -462,8 +470,11 @@
             rel="noopener"
             >GitHub ↗</a
           >
+          <button id="account-login" class="account-button" type="button">Sign in with GitHub</button>
+          <button id="account-logout" class="account-button" type="button" hidden>Sign out</button>
         </nav>
       </header>
+      <p id="account-status" class="account-status" role="status"></p>
       <main id="main">
         <section class="hero" aria-labelledby="intro-title">
           <p class="eyebrow">John Knipper · Berlin</p>
@@ -482,6 +493,7 @@
             <h2 id="projects-title">Selected projects</h2>
             <p>A few things I've been working on</p>
           </div>
+          <div id="account-projects" class="projects" aria-label="Your projects" hidden></div>
           <div class="projects">
             <article class="project amiga">
               <div class="project-meta">
@@ -872,5 +884,6 @@
         </nav>
       </footer>
     </div>
+    <script src="/assets/account.js"></script>
   </body>
 </html>
