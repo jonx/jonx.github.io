@@ -53,14 +53,14 @@
         const pending = JSON.parse(sessionStorage.getItem('jkn.oauth') || 'null');
         sessionStorage.removeItem('jkn.oauth');
         if (!pending || pending.state !== fragment.get('sonett_state') || Date.now() - pending.at > 600000) throw Error('Invalid sign-in');
-        const response = await fetch(endpoint, { method: 'POST', credentials: 'omit', headers: { 'content-type': 'application/json' },
+        const response = await fetch(endpoint, { method: 'POST', credentials: 'omit', headers: { 'content-type': 'text/plain;charset=UTF-8' },
           body: JSON.stringify({ code: fragment.get('sonett_code'), verifier: pending.verifier }), signal: AbortSignal.timeout(15000) });
         if (!response.ok) throw Error('Sign-in failed');
         const data = await response.json(); sessionStorage.setItem(key, data.token); render(data); return;
       }
       token = sessionStorage.getItem(key);
       if (!token) return;
-      const response = await fetch(endpoint, { credentials: 'omit', headers: { 'x-sonette-portal': token }, signal: AbortSignal.timeout(10000) });
+      const response = await fetch(endpoint, { method: 'POST', credentials: 'omit', headers: { 'content-type': 'text/plain;charset=UTF-8' }, body: JSON.stringify({ token }), signal: AbortSignal.timeout(10000) });
       if (!response.ok) throw Error('Session unavailable');
       render(await response.json());
     } catch {
