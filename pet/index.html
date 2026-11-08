@@ -3,9 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NonoGotchi Beta Test</title>
-    <link rel="stylesheet" href="/pet/pet.css?v=20261006-typography">
+    <title>NonoGotchi - A virtual pet for the Nothing Phone (3) Glyph Matrix</title>
+    <meta name="description" content="NonoGotchi is a Tamagotchi-style virtual pet that lives on the Glyph Matrix of the Nothing Phone (3). Feed it, play with it, run focus sessions with it. No ads, no tracking.">
     <meta name="theme-color" content="#191323">
+    <meta property="og:title" content="NonoGotchi - A virtual pet for your Glyph Matrix">
+    <meta property="og:description" content="A Tamagotchi-style pet on the back of your Nothing Phone (3). Designed for the 25x25 Glyph Matrix, degraded mode on smaller matrices. No ads, no tracking.">
+    <meta property="og:url" content="https://www.jkn.me/pet/">
+    <meta property="og:image" content="https://www.jkn.me/pet/baby.png">
+    <link rel="canonical" href="https://www.jkn.me/pet/">
+    <link rel="stylesheet" href="/pet/pet.css?v=20261108-release">
     <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=20261006" />
 </head>
 <body>
@@ -13,91 +19,106 @@
         <a class="back" href="/">← jkn.me</a>
         <header>
             <h1>NonoGotchi</h1>
-            <span class="badge">BETA TEST</span>
+            <span class="badge">VIRTUAL PET FOR THE GLYPH MATRIX</span>
         </header>
 
+        <nav class="doc-nav" aria-label="NonoGotchi pages">
+            <a href="/pet/" aria-current="page">Overview</a>
+            <a href="/pet/support.html">Support &amp; FAQ</a>
+            <a href="/pet/privacy.html">Privacy policy</a>
+            <a href="/pet/licenses.html">Open source licenses</a>
+        </nav>
+
         <div class="intro">
-            <p>Thanks for testing NonoGotchi! Built for <strong>Nothing Phone 3</strong> (fully working). Nothing Phone (4a) Pro should work too, but the graphics should look hilariously ugly due to the graphics having not been rework for the smaller 13&times;13 LED matrix. It should also run on any Android phone (without Glyph of course).</p>
+            <p class="lead">A Tamagotchi-style creature that lives on the back of your Nothing Phone. Feed it, clean up after it, play with it, let it sleep - and once it grows up, sit down and focus with it.</p>
+            <p>NonoGotchi is <strong>developed for the Nothing Phone (3)</strong> and its 25&times;25 Glyph Matrix. Every pixel of every animation is drawn for that grid. Other Glyph Matrix phones can run it, but see the compatibility table below before you install.</p>
         </div>
 
-        <h2>What is it?</h2>
-        <p>A Tamagotchi-style virtual pet that lives on your phone's <strong>Glyph display</strong> (the LED matrix on the back).</p>
+        <div class="downloads">
+            <a href="https://play.google.com/store/apps/details?id=com.nonogotchi" class="download-btn">
+                Get it on Google Play
+                <small>One-time purchase. No ads, no in-app purchases, no account.</small>
+            </a>
+        </div>
 
         <div class="screenshots">
-            <img src="/pet/welcome.png" alt="NonoGotchi welcome screen">
-            <img src="/pet/baby.png" alt="NonoGotchi gameplay screen">
-            <img src="/pet/weather.png" alt="NonoGotchi weather display">
+            <img src="/pet/welcome.png" alt="NonoGotchi welcome screen" loading="lazy">
+            <img src="/pet/baby.png" alt="NonoGotchi home screen with the pet on the virtual Glyph display" loading="lazy">
+            <img src="/pet/weather.png" alt="NonoGotchi weather display on the Glyph Matrix" loading="lazy">
         </div>
 
         <div class="video-section">
-            <video controls playsinline muted>
+            <video controls playsinline muted preload="metadata">
                 <source src="/pet/nono.mp4" type="video/mp4">
             </video>
         </div>
 
-        <h2>How to use</h2>
+        <h2 id="compatibility">Which phone do I need?</h2>
+        <div class="compat">
+            <p>The short version: <strong>Phone (3) is the device this was made for.</strong> Phones with a smaller Glyph Matrix get a downscaled picture, which works but looks rough. Phones without a matrix only get the in-app display.</p>
+            <table>
+                <thead>
+                    <tr><th>Device</th><th>Matrix</th><th>Experience</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Nothing Phone (3)</td>
+                        <td>25&times;25</td>
+                        <td><span class="tag full">Full</span> The reference device. Everything is designed and tested here.</td>
+                    </tr>
+                    <tr>
+                        <td>Nothing Phone (4a) Pro</td>
+                        <td>13&times;13</td>
+                        <td><span class="tag">Degraded</span> The 25&times;25 frame is downscaled to 13&times;13. The pet loses detail, small effects such as tears or music notes become hard to read, and the Glyph button has no touch input. The game itself works normally.</td>
+                    </tr>
+                    <tr>
+                        <td>Other Glyph Matrix phones</td>
+                        <td>varies</td>
+                        <td><span class="tag">Degraded</span> Same downscaling path as above. Untested.</td>
+                    </tr>
+                    <tr>
+                        <td>Phone (1), (2), (2a), (3a), other Android phones</td>
+                        <td>none</td>
+                        <td><span class="tag">App only</span> These phones have light strips or nothing at all, not a matrix. The pet lives on the virtual display inside the app and never appears on the back of the phone.</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p style="margin-top:16px">Android 14 or newer is required on every device. The Glyph part needs the Nothing <strong>Glyph Toys</strong> system: after installing, add NonoGotchi to your active toys (the app has a button for it in Settings).</p>
+        </div>
+
+        <h2>What your pet does</h2>
         <ul>
-            <li>Feed, clean, play, and pet your creature using the buttons</li>
-            <li>Shake your phone to wake up your pet</li>
-            <li>The pet grows through stages: Egg &rarr; Baby &rarr; Child &rarr; Teen &rarr; Adult</li>
-            <li>Watch the weather sync with your location</li>
+            <li>Grows through five stages: Egg &rarr; Baby &rarr; Child &rarr; Teen &rarr; Adult. Each stage has its own look and its own reactions to a shake of the phone.</li>
+            <li>Gets hungry, tired, dirty and occasionally sick. Feed, clean, wash, pet and give medicine from the home screen or straight from a notification.</li>
+            <li>Keeps living while the app is closed. Come back after a day of neglect and it will let you know.</li>
+            <li>Reacts to the weather of the city you type in: rain, snow or sunshine on the matrix. Cosmetic only.</li>
+            <li>Shows up on the always-on display and answers the Glyph button with a long press.</li>
+            <li>Has a secret. Overfeeding is not recommended.</li>
         </ul>
 
-        <h2>Download</h2>
-        <div class="downloads">
-            <a href="/pet/nono-release.apk" class="download-btn">
-                Download APK
-                <small>Nothing Phone 3 &amp; Phone (4a) Pro (about 40 MB)</small>
-            </a>
-        </div>
+        <h2 id="focus">Focus mode</h2>
+        <p>Once your pet is an adult, a <strong>Focus</strong> button appears on the home screen. Tap it to start a 25-minute session, Pomodoro style. Your pet sits still on the Glyph Matrix with a little thought bubble, refuses to play, and waits with you. When the timer runs out the session ends on its own and your pet gains happiness and health. Tap <strong>Stop focus</strong> before the end and the session is cancelled without a reward - no hard feelings, it will say so.</p>
+        <p>With the Glyph toy active you can also toggle a session by shaking the phone once. If you shake it again mid-session your pet will first try to talk you out of quitting. A strong shake ends the session right away.</p>
 
-        <div class="install-steps">
-            <strong>Installation:</strong>
-            <ol>
-                <li>Download the APK file</li>
-                <li>Open the file on your Nothing Phone</li>
-                <li>If prompted, enable "Install from unknown sources"</li>
-                <li>Complete the installation</li>
-                <li>Activate NonoGotchi as a Glyph Toy in Settings</li>
-            </ol>
-        </div>
-
-        <h2>What to test</h2>
-        <ul>
-            <li>Does the Glyph display work properly?</li>
-            <li>Is the pet responsive and animations smooth?</li>
-            <li>Try the new "Weather on Glyph" toggle in Settings</li>
-            <li>Let your pet get hungry/tired and see how it reacts</li>
-        </ul>
-
-        <div class="easter-egg">
-            There's a secret easter egg hidden in the app...
-        </div>
-
-        <div class="warning">
-            <strong>Known issues:</strong>
-            <ul>
-                <li>This is pre-release, expect bugs</li>
-                <li>Graphics are a work in progress &mdash; I am is not an artist, and it shows. Visual polish is coming! If someone wants to volonteer?</li>
-                <li>Database resets may happen between updates</li>
-                <li>When setting your city for weather, you must confirm by pressing the button on the right</li>
-                <li>Weather is live and syncs with your location, but it's purely cosmetic (rain/snow/sun on the display) &mdash; it doesn't affect your pet despite what the app may suggest</li>
-            </ul>
-        </div>
-
+        <h2>Privacy</h2>
         <div class="privacy">
-            <strong>Privacy:</strong>
-            <p>No data is collected or shared, at <u>all</u>. None. Not even here on the web site. The app only uses internet access to retrieve weather information based on the location you manually enter.</p>
+            <p>No data is collected or shared, at <u>all</u>. There is no account, no analytics, no crash reporting, and nothing on this website tracks you either. The only network request the app makes is to fetch the weather for the city you type in, and you can simply not type one. <a href="/pet/privacy.html" style="color:var(--accent)">Full privacy policy</a>.</p>
         </div>
 
-        <h2>Feedback</h2>
-        <p>Please report any issues or suggestions - screenshots and device info help a lot!</p>
-        <a href="https://nothing.community/d/53855-nonogotchi-beta-a-tamagotchi-for-your-glyph-display" class="download-btn" style="margin-top: 15px;">
-            Join the Discussion on Nothing Community
-        </a>
+        <h2 id="contact">Help &amp; contact</h2>
+        <div class="links">
+            <a href="/pet/support.html">Support &amp; FAQ<small>Installation, Glyph setup, known limits</small></a>
+            <a href="mailto:pet@jkn.me?subject=NonoGotchi">Email me<small>pet@jkn.me</small></a>
+            <a href="https://nothing.community/d/53855-nonogotchi-beta-a-tamagotchi-for-your-glyph-display" target="_blank" rel="noopener">Nothing Community thread<small>Discuss with other players</small></a>
+            <a href="/pet/licenses.html">Open source licenses<small>Libraries used by the app</small></a>
+        </div>
+        <div class="contact">
+            <strong>Something broken, or an idea?</strong>
+            <p style="margin-top:8px">Write to <a href="mailto:pet@jkn.me?subject=NonoGotchi">pet@jkn.me</a>. Tell me your phone model and, if it is a display problem, attach a photo of the Glyph Matrix or a screenshot of the in-app display. I read everything and answer within a few days.</p>
+        </div>
 
         <footer>
-            NonoGotchi Beta
+            NonoGotchi is an independent project by <a href="/" style="color:inherit">John Knipper</a>, not affiliated with Nothing Technology Limited or any virtual pet trademark holder.
         </footer>
     </div>
 </body>
